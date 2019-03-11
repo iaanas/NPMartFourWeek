@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/bo_cart"
+        android:icon="@drawable/ic_add_shopping_cart_white_24dp"
+        app:showAsAction="withText"
+        android:title="@string/backet_cart" />
+
+    <item
+        android:id="@+id/bo_order"
+        android:icon="@drawable/ic_star_border_black_24dp"
+        app:showAsAction="withText"
+        android:title="@string/basket_order" />
+
+</menu>

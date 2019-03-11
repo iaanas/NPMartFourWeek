@@ -2,6 +2,9 @@ package ru.ianasimonenko.fragmentproject;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
+import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
 import ru.ianasimonenko.fragmentproject.Model.Example;
 
 public interface ApiService {
@@ -12,4 +15,9 @@ public interface ApiService {
     */
     @GET("/api/app/menus/")
     Call<Example> getMyJSON();
+
+    @GET("/api/app/basket/")
+    Call<GenBasket> getMyBasket(@Header("Authorization") String token);
+
+
 }

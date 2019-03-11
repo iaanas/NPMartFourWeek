@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -69,6 +70,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'ru.tinkoff.decoro:decoro:1.1.1'
+    implementation 'com.android.support:multidex:1.0.3'
 
     implementation('com.mikepenz.materialdrawer:library:0.9.5@aar') {
         transitive = true

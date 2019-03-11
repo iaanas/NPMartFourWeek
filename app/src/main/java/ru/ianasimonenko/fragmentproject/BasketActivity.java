@@ -1,13 +1,59 @@
 package ru.ianasimonenko.fragmentproject;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ListView;
 
-public class BasketActivity extends Activity {
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
+import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
+import ru.ianasimonenko.fragmentproject.BasketModel.Menu_;
+
+public class BasketActivity extends AppCompatActivity {
+
+    private ArrayList<BasketPosition> priceCount;
+
+    private View parentView;
+    private ListView listView;
+
+    private BasketDataAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basket);
+
+        priceCount = new ArrayList<>();
+
+        parentView = findViewById(R.id.parentLayoutBasket);
+
+        listView = (ListView) findViewById(R.id.listViewBasket);
+
+        ApiService api = RetrofitClient.getApiService();
+        Call<GenBasket> call = api.getMyBasket("Bearer ccec704dc2854ace9141a609174cf92a");
+        call.enqueue(new Callback<GenBasket>() {
+            @Override
+            public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
+                if (response.isSuccessful()) {
+                    priceCount = (ArrayList<BasketPosition>) response.body().getBasketPositions();
+
+                    adapter = new BasketDataAdapter(BasketActivity.this, priceCount);
+                    listView.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenBasket> call, Throwable t) {
+
+            }
+        });
+
+
     }
+
 }
