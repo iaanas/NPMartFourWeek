@@ -18,7 +18,7 @@ import android.widget.Toast;
 import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
 
 public class HomeActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener,
-        RestaurantFragment.OnListFragmentInteractionListener {
+        RestaurantFragment.OnListFragmentInteractionListener, ProfileFragment.OnListFragmentInteractionListener {
     private ActionBar toolbar;
 
     @Override
@@ -45,8 +45,8 @@ public class HomeActivity extends AppCompatActivity implements ItemFragment.OnLi
                              case R.id.navigation_bonus:
                                  selectedFragment = RestaurantFragment.newInstance(0);
                                  break;
-//                             case R.id.navigation_profile:
-//                                 selectedFragment = ProfileFragment.newInstance();
+                             case R.id.navigation_profile:
+                                 selectedFragment = ProfileFragment.newInstance(0);
 //                             case R.id.navigation_info:
 //                                 selectedFragment = InfoFragment.newInstance();
                          }
@@ -80,7 +80,7 @@ public class HomeActivity extends AppCompatActivity implements ItemFragment.OnLi
 //        if(id == R.id.action_settings) return true;
 
         if(id == R.id.action_cart) {
-            Intent intent = new Intent(HomeActivity.this, BasketActivity.class);
+            Intent intent = new Intent(HomeActivity.this, InBasketOrdersActivity.class);
             startActivity(intent);
         }
 
@@ -101,6 +101,12 @@ public class HomeActivity extends AppCompatActivity implements ItemFragment.OnLi
 
     @Override
     public void onListFragmentInteraction(DataRestaurantAdapter item) {
+
+    }
+
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
     }
 }

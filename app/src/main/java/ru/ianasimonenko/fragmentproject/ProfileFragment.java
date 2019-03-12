@@ -1,18 +1,19 @@
 package ru.ianasimonenko.fragmentproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+import com.github.clans.fab.FloatingActionButton;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,12 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import ru.ianasimonenko.fragmentproject.Profile.Interface.ProfileGet;
 import ru.ianasimonenko.fragmentproject.Profile.Model.GET.Client;
 import ru.ianasimonenko.fragmentproject.Profile.Model.GET.Status;
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
 import ru.ianasimonenko.fragmentproject.dummy.DummyContent.DummyItem;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -43,9 +39,10 @@ public class ProfileFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    private ArrayList<Client> data;
+    private Client data;
     private ClientDataAdapter adapter;
     private ListView listView;
+    private View parentView;
 
     TextView full_name;
     TextView phone;
@@ -83,6 +80,20 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile_list, container, false);
+        View view2 = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        Button button = (Button) view2.findViewById(R.id.edit_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(inflater.getContext(), EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        data = new Client();
+        parentView = view.findViewById(R.id.parent_client_view);
+        listView = (ListView) view.findViewById(R.id.listViewProfile);
 
         // Set the adapter
         Retrofit.Builder builder = new Retrofit.Builder()
@@ -90,20 +101,25 @@ public class ProfileFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = builder.build();
-        ProfileGet userClient = retrofit.create(ProfileGet.class);
+        final ProfileGet userClient = retrofit.create(ProfileGet.class);
 
         Call<Status> call = userClient.getProfile("Bearer ccec704dc2854ace9141a609174cf92a", "get");
 
         call.enqueue(new Callback<Status>() {
             @Override
             public void onResponse(Call<Status> call, Response<Status> response) {
-                Toast.makeText(inflater.getContext(), "Данные профиля успешно получены",
-                        Toast.LENGTH_LONG).show();
 
-                Status jsonResponse = response.body();
-                data = new ArrayList<>(Arrays.asList(jsonResponse.getClient()));
-                adapter = new ClientDataAdapter(inflater.getContext(), data);
-                listView.setAdapter(adapter);
+                if (response.isSuccessful()) {
+
+                    Toast.makeText(inflater.getContext(), "Данные профиля успешно получены",
+                            Toast.LENGTH_LONG).show();
+
+                    data = response.body().getClient();
+                    adapter = new ClientDataAdapter(inflater.getContext(), data);
+                    listView.setAdapter(adapter);
+
+
+                }
 
             }
 

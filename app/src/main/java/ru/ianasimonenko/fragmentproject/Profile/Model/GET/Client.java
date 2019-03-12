@@ -3,9 +3,12 @@ package ru.ianasimonenko.fragmentproject.Profile.Model.GET;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.stream.Stream;
+
 import ru.ianasimonenko.fragmentproject.Profile.Interface.JSONClient;
 
-public class Client extends JSONClient {
+public class Client {
 
     @SerializedName("phone")
     @Expose
@@ -41,19 +44,19 @@ public class Client extends JSONClient {
     @Expose
     private Integer restaurantId;
 
-    public Client(String phone, String firstName, String lastName, String email, Integer loyaltyPoints, Boolean notifyAboutOrdersByEmail, Integer successfulOrders, Boolean needPrepay, Integer id, String role, Integer restaurantId) {
-        this.phone = phone;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.loyaltyPoints = loyaltyPoints;
-        this.notifyAboutOrdersByEmail = notifyAboutOrdersByEmail;
-        this.successfulOrders = successfulOrders;
-        this.needPrepay = needPrepay;
-        this.id = id;
-        this.role = role;
-        this.restaurantId = restaurantId;
-    }
+//    public Client(String phone, String firstName, String lastName, String email, Integer loyaltyPoints, Boolean notifyAboutOrdersByEmail, Integer successfulOrders, Boolean needPrepay, Integer id, String role, Integer restaurantId) {
+//        this.phone = phone;
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.email = email;
+//        this.loyaltyPoints = loyaltyPoints;
+//        this.notifyAboutOrdersByEmail = notifyAboutOrdersByEmail;
+//        this.successfulOrders = successfulOrders;
+//        this.needPrepay = needPrepay;
+//        this.id = id;
+//        this.role = role;
+//        this.restaurantId = restaurantId;
+//    }
 
     public String getPhone() {
         return phone;
@@ -142,5 +145,6 @@ public class Client extends JSONClient {
     public void setRestaurantId(Integer restaurantId) {
         this.restaurantId = restaurantId;
     }
+
 
 }
