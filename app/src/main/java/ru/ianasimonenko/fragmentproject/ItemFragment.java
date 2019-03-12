@@ -2,6 +2,7 @@ package ru.ianasimonenko.fragmentproject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import retrofit2.Call;
@@ -45,6 +47,8 @@ public class ItemFragment extends Fragment {
 
     private ArrayList<Menu> contactList;
     private MyMenuAdapter adapter;
+
+    private Button button;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -80,6 +84,15 @@ public class ItemFragment extends Fragment {
 
         // Set the adapter
         contactList = new ArrayList<>();
+
+        button = (Button) view.findViewById(R.id.buyButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(inflater.getContext(), Product34Activity.class);
+                startActivity(intent);
+            }
+        });
 
         parentView = view.findViewById(R.layout.fragment_item_list);
 

@@ -1,5 +1,6 @@
 package ru.ianasimonenko.fragmentproject;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,6 +48,11 @@ public class InCartFragment extends Fragment {
 
     private BasketDataAdapter adapter;
 
+    private ImageButton decButton;
+    private Button incButton;
+
+    private TextView decText;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -69,16 +79,21 @@ public class InCartFragment extends Fragment {
         }
     }
 
+    @SuppressLint("WrongViewCast")
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_incart_list2, container, false);
+        View view2 = inflater.inflate(R.layout.basket_row, container, false);
 
         priceCount = new ArrayList<>();
 
         parentView = view.findViewById(R.id.parentLayoutBasket);
 
         listView = (ListView) view.findViewById(R.id.listViewBasket);
+
+        decButton = (ImageButton) view2.findViewById(R.id.bask_min);
+
 
         ApiService api = RetrofitClient.getApiService();
         Call<GenBasket> call = api.getMyBasket("Bearer ccec704dc2854ace9141a609174cf92a");
@@ -90,6 +105,27 @@ public class InCartFragment extends Fragment {
 
                     adapter = new BasketDataAdapter(inflater.getContext(), priceCount);
                     listView.setAdapter(adapter);
+
+                    decButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Call<GenBasket> call = api.decReaseButton("Bearer ccec704dc2854ace9141a609174cf92a", Integer.parseInt(String.valueOf(response.body().getBasketPositions())), "decrease_quantity");
+                            call.enqueue(new Callback<GenBasket>() {
+                                @Override
+                                public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
+                                    Toast.makeText(InCartFragment.this.getActivity(), "DECREASE!!!", Toast.LENGTH_LONG).show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<GenBasket> call, Throwable t) {
+
+                                }
+                            });
+                        }
+                    });
+
+
+
                 }
             }
 
@@ -133,4 +169,6 @@ public class InCartFragment extends Fragment {
         // TODO: Update argument type and name
         void onListFragmentInteraction(BasketDataAdapter item);
     }
+
+
 }

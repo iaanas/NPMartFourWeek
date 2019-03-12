@@ -50,9 +50,19 @@ public class BasketDataAdapter extends ArrayAdapter<BasketPosition> {
         }
 
         BasketPosition item = getItem(position);
+
         vh.name_of_position.setText(item.getPosition().getName());
-        Picasso.with(context).load(String.valueOf(item.getPosition().getImages()))
-                .placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(vh.imageView);
+        vh.quantity.setText(item.getQuantity().toString());
+
+        ArrayList<String> arr = new ArrayList<>();
+        arr.addAll(item.getPosition().getImages());
+        for(int i = 0; i<arr.size(); i++) {
+            Picasso.with(context).load(item.getPosition().getImages().get(i)).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(vh.imageView);
+        }
+
+        vh.price_single_item.setText(item.getPriceSingleItem().toString() + "РУБ.");
+//        vh.price_sub_items.setText(item.getPriceSubitems().toString());
+        vh.price_total.setText("Итого: "+item.getPriceTotal().toString());
 
         return vh.rootView;
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,10 +31,10 @@ public class PhoneAuthActivity extends AppCompatActivity {
 
         final EditText phone = (EditText) findViewById(R.id.et_phone);
 
-        FormatWatcher formatWatcher2 = new MaskFormatWatcher(
-                MaskImpl.createTerminated(PredefinedSlots.RUS_PHONE_NUMBER) // маска для серии и номера
-        );
-        formatWatcher2.installOn(phone);
+//        FormatWatcher formatWatcher2 = new MaskFormatWatcher(
+//                MaskImpl.createTerminated(PredefinedSlots.RUS_PHONE_NUMBER) // маска для серии и номера
+//        );
+//        formatWatcher2.installOn(phone);
 
 
         Button submitBtn = (Button) findViewById(R.id.btn_submit);
@@ -62,6 +63,7 @@ public class PhoneAuthActivity extends AppCompatActivity {
             public void onResponse(Call<PhoneAuthModel> call, Response<PhoneAuthModel> response) {
 
                 if(response.isSuccessful()) {
+                    Toast.makeText(PhoneAuthActivity.this, "Tel: "+response.body().getPhoneNumber(), Toast.LENGTH_LONG).show();
                     showResponse(response.body().toString());
                     Log.i("SUCCESS", "post submitted to API." + response.body().toString());
                 }

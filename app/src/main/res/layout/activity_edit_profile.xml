@@ -13,6 +13,7 @@
 
         <RelativeLayout
             android:id="@+id/profile_layout"
+            android:layout_marginTop="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#EB85E0B6"
@@ -27,7 +28,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="70dp"
                 android:text="Имя Фамилия"
-                android:textColor="#fff"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -39,7 +40,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:text="9000 БАЛЛОВ"
-                android:textColor="#fff"
+                android:textColor="@color/colorPrimary"
                 android:textSize="16sp" />
 
             <TextView
@@ -50,7 +51,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:text="(+7(111) 111-11-11)"
-                android:textColor="#fff"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
         </RelativeLayout>
 
@@ -61,7 +62,7 @@
             android:layout_below="@+id/profile_layout"
             android:layout_margin="5dp"
             android:layout_marginTop="5dp"
-            android:background="#fff"
+            android:background="@color/colorPrimary"
             android:elevation="4dp"
             android:orientation="vertical"
             android:paddingTop="20dp"
@@ -140,6 +141,16 @@
                 android:textColor="@color/colorPrimary" />
 
         </LinearLayout>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:minHeight="?attr/actionBarSize"
+            android:paddingTop="@dimen/tool_bar_top_padding"
+            android:transitionName="actionBar"/>
 
 
 

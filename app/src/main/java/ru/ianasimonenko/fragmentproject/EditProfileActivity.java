@@ -2,6 +2,7 @@ package ru.ianasimonenko.fragmentproject;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -33,6 +34,11 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 //        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(EditProfileActivity.this), CookiePolicy.ACCEPT_ORIGINAL_SERVER);
 //        CookieHandler.setContext(cookieManager);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         findViewById(R.id.buttonSave).setOnClickListener(

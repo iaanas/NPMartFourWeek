@@ -43,6 +43,7 @@ public class ProfileFragment extends Fragment {
     private ClientDataAdapter adapter;
     private ListView listView;
     private View parentView;
+    private Button button;
 
     TextView full_name;
     TextView phone;
@@ -80,20 +81,20 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile_list, container, false);
-        View view2 = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        Button button = (Button) view2.findViewById(R.id.edit_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(inflater.getContext(), EditProfileActivity.class);
-                startActivity(intent);
-            }
-        });
 
         data = new Client();
         parentView = view.findViewById(R.id.parent_client_view);
         listView = (ListView) view.findViewById(R.id.listViewProfile);
+
+        button = (Button) view.findViewById(R.id.edit_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileFragment.this.getActivity(), EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Set the adapter
         Retrofit.Builder builder = new Retrofit.Builder()

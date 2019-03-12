@@ -84,9 +84,13 @@ public class HomeActivity extends AppCompatActivity implements ItemFragment.OnLi
             startActivity(intent);
         }
 
+        if(id == R.id.restart) {
+            Toast.makeText(HomeActivity.this, "RESTART", Toast.LENGTH_LONG).show();
+        }
+
 
         if(id == R.id.action_signout) {
-            Toast.makeText(HomeActivity.this, "Create Text",
+            Toast.makeText(HomeActivity.this, "SignOut",
                     Toast.LENGTH_LONG).show();
         }
 

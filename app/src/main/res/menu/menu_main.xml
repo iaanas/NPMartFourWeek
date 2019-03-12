@@ -15,6 +15,12 @@
         android:orderInCategory="200"
         app:showAsAction="ifRoom" />
 
+    <item android:id="@+id/restart"
+        android:title="Обновить"
+        android:icon="@drawable/ic_autorenew_black_24dp"
+        android:orderInCategory="200"
+        app:showAsAction="ifRoom" />
+
     <item android:id="@+id/action_signout"
         android:title="@string/action_signout"
         android:icon="@drawable/ic_exit_to_app_black_24dp"
