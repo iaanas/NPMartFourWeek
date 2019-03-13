@@ -1,5 +1,9 @@
 package ru.ianasimonenko.fragmentproject.BasketModel;
 
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

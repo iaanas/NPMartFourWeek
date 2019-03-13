@@ -18,7 +18,8 @@ import android.widget.Toast;
 import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
 
 public class HomeActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener,
-        RestaurantFragment.OnListFragmentInteractionListener, ProfileFragment.OnListFragmentInteractionListener {
+        RestaurantFragment.OnListFragmentInteractionListener, ProfileFragment.OnListFragmentInteractionListener,
+        TempProdFragment.OnListFragmentInteractionListener{
     private ActionBar toolbar;
 
     @Override

@@ -7,15 +7,22 @@
     tools:context=".InBasketOrdersActivity">
 
     <FrameLayout
-        android:id="@+id/frame_layout_bo"
+        android:id="@+id/frame_layout_total"
+        android:layout_marginTop="80dp"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="100dp"/>
+
+    <FrameLayout
+        android:id="@+id/frame_layout_bo"
+        android:layout_below="@+id/frame_layout_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
-        android:layout_marginTop="100dp"
         android:layout_above="@+id/navigation"
         android:animateLayoutChanges="true">
-
     </FrameLayout>
+
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigationBO"

@@ -10,18 +10,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
+import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
+import ru.ianasimonenko.fragmentproject.Model.Menu;
 import ru.ianasimonenko.fragmentproject.Model.Restaurant;
 import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
 import ru.ianasimonenko.fragmentproject.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,7 +37,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class RestaurantFragment extends Fragment {
+public class TotalBasketFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -38,21 +45,24 @@ public class RestaurantFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    private RecyclerView recyclerView;
-    private ArrayList<Restaurant> data;
-    private DataRestaurantAdapter adapter;
+    private ArrayList<GenBasket> priceCount;
+
+    private View parentView;
+    private ListView listView;
+
+    private BasketTotalAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public RestaurantFragment() {
+    public TotalBasketFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static RestaurantFragment newInstance(int columnCount) {
-        RestaurantFragment fragment = new RestaurantFragment();
+    public static TotalBasketFragment newInstance(int columnCount) {
+        TotalBasketFragment fragment = new TotalBasketFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -71,17 +81,35 @@ public class RestaurantFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_restaurant_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_total_basket_list, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.card_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
-                inflater.getContext()
-        );
-        recyclerView.setLayoutManager(layoutManager);
+        priceCount = new ArrayList<>();
 
-        loadJSON();
+        parentView = view.findViewById(R.id.parentLayoutBasket);
 
+        listView = (ListView) view.findViewById(R.id.listViewBasketTotal);
+
+
+        ApiService api = RetrofitClient.getApiService();
+        Call<GenBasket> call = api.getMyBasket("Bearer ccec704dc2854ace9141a609174cf92a");
+        call.enqueue(new Callback<GenBasket>() {
+            @Override
+            public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
+                if (response.isSuccessful()) {
+
+                    priceCount.add(response.body());
+
+                    adapter = new BasketTotalAdapter(inflater.getContext(), priceCount);
+                    listView.setAdapter(adapter);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenBasket> call, Throwable t) {
+
+            }
+        });
         return view;
     }
 
@@ -115,36 +143,8 @@ public class RestaurantFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-
-        void onListFragmentInteraction(DataRestaurantAdapter item);
+        void onListFragmentInteraction(DummyItem item);
     }
 
-    private void loadJSON() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://naparah.olegb.ru/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        RestaurantClient request = retrofit.create(RestaurantClient.class);
-        Call<JSONResponse> call = request.getJSON();
-
-        call.enqueue(new Callback<JSONResponse>() {
-            @Override
-            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
-
-                JSONResponse jsonResponse = response.body();
-                data = new ArrayList<>(Arrays.asList(jsonResponse.getRestaurants()));
-                adapter = new DataRestaurantAdapter(data, RestaurantFragment.this.getContext());
-                recyclerView.setAdapter(adapter);
-
-            }
-
-            @Override
-            public void onFailure(Call<JSONResponse> call, Throwable t) {
-                Log.d("Error",t.getMessage());
-
-            }
-        });
-
-    }
 }

@@ -11,11 +11,13 @@
         android:theme="@style/AppTheme">
         <activity android:name=".InBasketOrdersActivity"
                   android:parentActivityName=".HomeActivity">
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-            <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<action android:name="android.intent.action.USER_PRESENT" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity android:name=".PhoneAuthActivity">
             <!--<intent-filter>-->
@@ -35,12 +37,12 @@
         </activity>
         <activity android:name=".HomeActivity">
 
-             <!--<intent-filter>-->
-             <!--<action android:name="android.intent.action.MAIN" />-->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
 
 
-             <!--<category android:name="android.intent.category.LAUNCHER" />-->
-             <!--</intent-filter>-->
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
         <activity android:name=".MainActivity">
 
@@ -53,7 +55,7 @@
         </activity>
         <activity
             android:name=".EditProfileActivity"
-            android:parentActivityName=".LoginActivity">
+            android:parentActivityName=".HomeActivity">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -74,14 +76,15 @@
             <!-- </intent-filter> -->
         </activity>
         <activity android:name=".Product34Activity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".HomeActivity">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+             <!--<intent-filter>-->
+             <!--<action android:name="android.intent.action.MAIN" />-->
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <!--<category android:name="android.intent.category.LAUNCHER" />-->
+             <!--</intent-filter>-->
         </activity>
     </application>
 
