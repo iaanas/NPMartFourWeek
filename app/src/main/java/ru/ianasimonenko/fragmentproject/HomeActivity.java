@@ -19,7 +19,8 @@ import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
 
 public class HomeActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener,
         RestaurantFragment.OnListFragmentInteractionListener, ProfileFragment.OnListFragmentInteractionListener,
-        TempProdFragment.OnListFragmentInteractionListener{
+        TempProdFragment.OnListFragmentInteractionListener,
+        InfoFragment.OnListFragmentInteractionListener{
     private ActionBar toolbar;
 
     @Override
@@ -48,8 +49,10 @@ public class HomeActivity extends AppCompatActivity implements ItemFragment.OnLi
                                  break;
                              case R.id.navigation_profile:
                                  selectedFragment = ProfileFragment.newInstance(0);
-//                             case R.id.navigation_info:
-//                                 selectedFragment = InfoFragment.newInstance();
+                                 break;
+                             case R.id.navigation_info:
+                                 selectedFragment = InfoFragment.newInstance(0);
+                                 break;
                          }
 
                          FragmentTransaction transaction = getSupportFragmentManager()

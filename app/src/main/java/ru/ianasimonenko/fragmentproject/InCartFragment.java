@@ -4,25 +4,25 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
 import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +48,11 @@ public class InCartFragment extends Fragment {
 
     private BasketDataAdapter adapter;
 
-    private ImageButton decButton;
     private Button incButton;
 
     private TextView decText;
+
+    private static Integer basketPosition;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -92,7 +93,7 @@ public class InCartFragment extends Fragment {
 
         listView = (ListView) view.findViewById(R.id.listViewBasket);
 
-        decButton = (ImageButton) view2.findViewById(R.id.bask_min);
+//        decButton = (ImageButton) view2.findViewById(R.id.bask_min);
 
 
         ApiService api = RetrofitClient.getApiService();
@@ -106,23 +107,29 @@ public class InCartFragment extends Fragment {
                     adapter = new BasketDataAdapter(inflater.getContext(), priceCount);
                     listView.setAdapter(adapter);
 
-                    decButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Call<GenBasket> call = api.decReaseButton("Bearer ccec704dc2854ace9141a609174cf92a", Integer.parseInt(String.valueOf(response.body().getBasketPositions())), "decrease_quantity");
-                            call.enqueue(new Callback<GenBasket>() {
-                                @Override
-                                public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
-                                    Toast.makeText(InCartFragment.this.getActivity(), "DECREASE!!!", Toast.LENGTH_LONG).show();
-                                }
 
-                                @Override
-                                public void onFailure(Call<GenBasket> call, Throwable t) {
 
-                                }
-                            });
-                        }
-                    });
+//                    decButton.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            Call<GenBasket> call = api.decReaseButton("Bearer ccec704dc2854ace9141a609174cf92a", response.body().getBasketPositions().get(3).getId(), "decrease_quantity");
+//                            call.enqueue(new Callback<GenBasket>() {
+//                                @Override
+//                                public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
+//                                    if(response.isSuccessful()) {
+//                                        Toast.makeText(InCartFragment.this.getActivity(), "DECREASE!!!", Toast.LENGTH_LONG).show();
+//                                    } else {
+//                                        Toast.makeText(InCartFragment.this.getActivity(), "NOT!!!", Toast.LENGTH_LONG).show();
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onFailure(Call<GenBasket> call, Throwable t) {
+//                                    Toast.makeText(InCartFragment.this.getActivity(), "ERROR!!!", Toast.LENGTH_LONG).show();
+//                                }
+//                            });
+//                        }
+//                    });
 
 
 
@@ -168,6 +175,196 @@ public class InCartFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(BasketDataAdapter item);
+    }
+
+    public void decButton(Integer basketPosition2) {
+
+        ApiService api = RetrofitClient.getApiService();
+
+        Call<GenBasket> call = api.decReaseButton("Bearer ccec704dc2854ace9141a609174cf92a", basketPosition2, "decrease_quantity");
+        call.enqueue(new Callback<GenBasket>() {
+            @Override
+            public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
+
+                if(response.isSuccessful()) {
+                    Toast.makeText(InCartFragment.this.getActivity(), "DECREASE!!!"+basketPosition2, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(InCartFragment.this.getActivity(), "NOT SUCCESS!!!"+basketPosition2, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenBasket> call, Throwable t) {
+//                Toast.makeText(InCartFragment.this.getActivity(), "ERROR!!!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public void incButton(Integer basketPosition2) {
+
+        ApiService api = RetrofitClient.getApiService();
+
+        Call<GenBasket> call = api.decReaseButton("Bearer ccec704dc2854ace9141a609174cf92a", basketPosition2, "increase_quantity");
+        call.enqueue(new Callback<GenBasket>() {
+            @Override
+            public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
+
+                if(response.isSuccessful()) {
+                    Toast.makeText(InCartFragment.this.getActivity(), "INCREASE!!!"+basketPosition2, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(InCartFragment.this.getActivity(), "NOT SUCCESS!!!"+basketPosition2, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenBasket> call, Throwable t) {
+//                Toast.makeText(InCartFragment.this.getActivity(), "ERROR!!!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+
+
+    public void restartInCartFragment() {
+        InCartFragment fragment = (InCartFragment) getFragmentManager().findFragmentById(R.id.frame_layout_bo);
+
+        getFragmentManager().beginTransaction()
+                .detach(fragment)
+                .attach(fragment)
+                .commit();
+    }
+
+    public void restartInCartTotalFragment() {
+        TotalBasketFragment fragment = (TotalBasketFragment) getFragmentManager().findFragmentById(R.id.frame_layout_total);
+
+        getFragmentManager().beginTransaction()
+                .detach(fragment)
+                .attach(fragment)
+                .commit();
+    }
+
+
+
+
+    public class BasketDataAdapter extends ArrayAdapter<BasketPosition> {
+
+        List<BasketPosition> list;
+
+        Context context;
+        private LayoutInflater inflater;
+
+
+        public BasketDataAdapter(Context context, List<BasketPosition> objects) {
+            super(context, 0, objects);
+
+            this.context = context;
+            this.inflater = LayoutInflater.from(context);
+            list = objects;
+        }
+
+        @Override
+        public BasketPosition getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final ViewHolder vh;
+
+            if(convertView == null) {
+                View view = inflater.inflate(R.layout.basket_row, parent, false);
+                vh = (ViewHolder) ViewHolder.create((RelativeLayout) view);
+                view.setTag(vh);
+            } else {
+                vh = (ViewHolder) convertView.getTag();
+            }
+
+            BasketPosition item = getItem(position);
+
+            vh.name_of_position.setText(item.getPosition().getName());
+            vh.quantity.setText(item.getQuantity().toString());
+
+            ArrayList<String> arr = new ArrayList<>();
+            arr.addAll(item.getPosition().getImages());
+            for(int i = 0; i<arr.size(); i++) {
+                Picasso.with(context).load(item.getPosition().getImages().get(i)).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(vh.imageView);
+            }
+
+            vh.price_single_item.setText(item.getPriceSingleItem().toString() + "РУБ.");
+
+            vh.price_total.setText("Итого: "+item.getPriceTotal().toString());
+
+            vh.decButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    decButton(item.getId());
+                    restartInCartFragment();
+                    restartInCartTotalFragment();
+                }
+            });
+
+            vh.incButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    incButton(item.getId());
+                    restartInCartFragment();
+                    restartInCartTotalFragment();
+                }
+            });
+
+            return vh.rootView;
+
+
+        }
+
+    }
+    private static class ViewHolder {
+
+        public final RelativeLayout rootView;
+        public final ImageView imageView;
+        public final TextView quantity;
+        public final TextView price_single_item;
+        public final TextView price_sub_items;
+        public final TextView price_total;
+        public final TextView name_of_position;
+
+        public final ImageButton decButton;
+
+        public final ImageButton incButton;
+
+        private ViewHolder(RelativeLayout rootView, ImageView imageView,
+                           TextView quantity, TextView price_single_item,
+                           TextView price_sub_items, TextView price_total,
+                           TextView name_of_position, ImageButton decButton, ImageButton incButton) {
+            this.rootView = rootView;
+            this.imageView = imageView;
+            this.quantity = quantity;
+            this.price_single_item = price_single_item;
+            this.price_sub_items = price_sub_items;
+            this.price_total = price_total;
+            this.name_of_position = name_of_position;
+            this.decButton = decButton;
+            this.incButton = incButton;
+        }
+
+        public static ViewHolder create(RelativeLayout rootView) {
+            ImageView imageView = (ImageView) rootView.findViewById(R.id.bask_image);
+            TextView quantity = (TextView) rootView.findViewById(R.id.bask_count);
+            TextView price_single_item = (TextView) rootView.findViewById(R.id.bask_cost_item);
+            TextView price_sub_items = (TextView) rootView.findViewById(R.id.bask_subItems);
+            TextView price_total = (TextView) rootView.findViewById(R.id.bask_cost_total);
+            TextView name_of_position = (TextView) rootView.findViewById(R.id.bask_name);
+
+            ImageButton decButton = (ImageButton) rootView.findViewById(R.id.bask_min);
+
+            ImageButton incButton = (ImageButton) rootView.findViewById(R.id.back_max);
+
+            return new ViewHolder(rootView, imageView, quantity, price_single_item,
+                    price_sub_items, price_total, name_of_position, decButton, incButton);
+        }
+
     }
 
 

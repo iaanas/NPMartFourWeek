@@ -16,7 +16,7 @@ import java.util.List;
 
 import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
 
-public class BasketDataAdapter extends ArrayAdapter<BasketPosition> {
+public class BasketDataAdapterOld extends ArrayAdapter<BasketPosition> {
 
     List<BasketPosition> list;
 
@@ -24,7 +24,7 @@ public class BasketDataAdapter extends ArrayAdapter<BasketPosition> {
     private LayoutInflater inflater;
 
 
-    public BasketDataAdapter(Context context, List<BasketPosition> objects) {
+    public BasketDataAdapterOld(Context context, List<BasketPosition> objects) {
         super(context, 0, objects);
 
         this.context = context;
@@ -69,7 +69,7 @@ public class BasketDataAdapter extends ArrayAdapter<BasketPosition> {
 
     }
 
-    private static class ViewHolder {
+    public static class ViewHolder {
 
         public final RelativeLayout rootView;
         public final ImageView imageView;

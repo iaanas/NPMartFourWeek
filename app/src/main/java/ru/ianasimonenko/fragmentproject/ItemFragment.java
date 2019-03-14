@@ -88,14 +88,14 @@ public class ItemFragment extends Fragment {
         // Set the adapter
         contactList = new ArrayList<>();
 
-        button = (Button) view.findViewById(R.id.buyButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(inflater.getContext(), Product34Activity.class);
-                startActivity(intent);
-            }
-        });
+//        button = (Button) view.findViewById(R.id.buyButton);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(inflater.getContext(), Product34Activity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         parentView = view.findViewById(R.layout.fragment_item_list);
 

@@ -12,7 +12,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
 import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
-import ru.ianasimonenko.fragmentproject.BasketModel.Menu_;
 
 public class BasketActivity extends AppCompatActivity {
 
@@ -21,7 +20,7 @@ public class BasketActivity extends AppCompatActivity {
     private View parentView;
     private ListView listView;
 
-    private BasketDataAdapter adapter;
+    private BasketDataAdapterOld adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class BasketActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     priceCount = (ArrayList<BasketPosition>) response.body().getBasketPositions();
 
-                    adapter = new BasketDataAdapter(BasketActivity.this, priceCount);
+                    adapter = new BasketDataAdapterOld(BasketActivity.this, priceCount);
                     listView.setAdapter(adapter);
                 }
             }
