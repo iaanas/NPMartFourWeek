@@ -91,4 +91,9 @@ public class InBasketOrdersActivity extends AppCompatActivity implements InCartF
     public void onListFragmentInteraction(InCartFragment.BasketDataAdapter item) {
 
     }
+
+    @Override
+    public void onListFragmentInteraction(OrdersDataAdapter item) {
+
+    }
 }

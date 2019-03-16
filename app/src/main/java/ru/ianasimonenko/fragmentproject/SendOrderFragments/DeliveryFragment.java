@@ -1,4 +1,4 @@
-package ru.ianasimonenko.fragmentproject;
+package ru.ianasimonenko.fragmentproject.SendOrderFragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,17 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import ru.ianasimonenko.fragmentproject.OrdersModel.GenOrders;
-import ru.ianasimonenko.fragmentproject.OrdersModel.Order;
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent.DummyItem;
+import ru.ianasimonenko.fragmentproject.R;
+import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent;
+import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent.DummyItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +22,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class InOrdersFragment extends Fragment {
+public class DeliveryFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -36,24 +30,17 @@ public class InOrdersFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    private ArrayList<Order> priceCount;
-
-    private View parentView;
-    private ListView listView;
-
-    private OrdersDataAdapter adapter;
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public InOrdersFragment() {
+    public DeliveryFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static InOrdersFragment newInstance(int columnCount) {
-        InOrdersFragment fragment = new InOrdersFragment();
+    public static DeliveryFragment newInstance(int columnCount) {
+        DeliveryFragment fragment = new DeliveryFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -72,34 +59,19 @@ public class InOrdersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_orders, container, false);
+        View view = inflater.inflate(R.layout.fragment_delivery_list, container, false);
 
         // Set the adapter
-        priceCount = new ArrayList<>();
-
-        parentView = view.findViewById(R.id.parentLayoutOrders);
-
-        listView = (ListView) view.findViewById(R.id.listViewOrders);
-
-
-        ApiService api = RetrofitClient.getApiService();
-        Call<GenOrders> call = api.getOrders("Bearer ccec704dc2854ace9141a609174cf92a", "get");
-        call.enqueue(new Callback<GenOrders>() {
-            @Override
-            public void onResponse(Call<GenOrders> call, Response<GenOrders> response) {
-                if (response.isSuccessful()) {
-                    priceCount = (ArrayList<Order>) response.body().getOrders();
-
-                    adapter = new OrdersDataAdapter(inflater.getContext(), priceCount);
-                    listView.setAdapter(adapter);
-                }
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view;
+            if (mColumnCount <= 1) {
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            } else {
+                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-
-            @Override
-            public void onFailure(Call<GenOrders> call, Throwable t) {
-
-            }
-        });
+            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+        }
         return view;
     }
 
@@ -133,6 +105,6 @@ public class InOrdersFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(OrdersDataAdapter item);
+        void onListFragmentInteraction(DummyItem item);
     }
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/send_delivery"
+        android:icon="@drawable/ic_local_shipping_black_24dp"
+        app:showAsAction="withText"
+        android:title="С доставкой" />
+
+    <item
+        android:id="@+id/send_take_out"
+        android:icon="@drawable/ic_directions_walk_black_24dp"
+        app:showAsAction="withText"
+        android:title="Самовывоз" />
+
+    <item
+        android:id="@+id/send_in_house"
+        android:icon="@drawable/ic_restaurant_menu_black_24dp"
+        app:showAsAction="withText"
+        android:title="В ресторане" />
+
+</menu>
