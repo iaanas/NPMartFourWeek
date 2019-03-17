@@ -24,6 +24,10 @@ public class PhoneAuthActivity extends AppCompatActivity {
     private TextView mResponseTv;
     private PhoneAuthClient mAPIService;
 
+    private String phoneCleaned;
+    private String phoneClenedTwo;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,11 +35,12 @@ public class PhoneAuthActivity extends AppCompatActivity {
 
         final EditText phone = (EditText) findViewById(R.id.et_phone);
 
-//        FormatWatcher formatWatcher2 = new MaskFormatWatcher(
-//                MaskImpl.createTerminated(PredefinedSlots.RUS_PHONE_NUMBER) // маска для серии и номера
-//        );
-//        formatWatcher2.installOn(phone);
 
+
+        FormatWatcher formatWatcher2 = new MaskFormatWatcher(
+                MaskImpl.createTerminated(PredefinedSlots.RUS_PHONE_NUMBER) // маска
+        );
+        formatWatcher2.installOn(phone);
 
         Button submitBtn = (Button) findViewById(R.id.btn_submit);
 
@@ -48,9 +53,11 @@ public class PhoneAuthActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String phoneAuth = phone.getText().toString();
+                phoneCleaned = phoneAuth.replaceAll("[+7()-]", "");
+                phoneClenedTwo = phoneCleaned.replaceAll(" ", "");
                 if(!TextUtils.isEmpty(phoneAuth)) {
                     sendPost(phoneAuth);
-                    intent.putExtra("phone", phoneAuth);
+                    intent.putExtra("phone", phoneClenedTwo);
                     startActivity(intent);
                 }
             }
@@ -63,9 +70,9 @@ public class PhoneAuthActivity extends AppCompatActivity {
             public void onResponse(Call<PhoneAuthModel> call, Response<PhoneAuthModel> response) {
 
                 if(response.isSuccessful()) {
-                    Toast.makeText(PhoneAuthActivity.this, "Tel: "+response.body().getPhoneNumber(), Toast.LENGTH_LONG).show();
-                    showResponse(response.body().toString());
-                    Log.i("SUCCESS", "post submitted to API." + response.body().toString());
+                    Toast.makeText(PhoneAuthActivity.this, "Tel: "+ phoneClenedTwo, Toast.LENGTH_LONG).show();
+//                    showResponse(response.body().toString());
+//                    Log.i("SUCCESS", "post submitted to API." + response.body().toString());
                 }
 
             }

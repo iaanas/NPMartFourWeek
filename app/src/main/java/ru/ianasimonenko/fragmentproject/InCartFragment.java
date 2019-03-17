@@ -1,7 +1,9 @@
 package ru.ianasimonenko.fragmentproject;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -225,6 +227,28 @@ public class InCartFragment extends Fragment {
 
     }
 
+    public void deleteForeve(Integer basketPosition) {
+        ApiService api = RetrofitClient.getApiService();
+
+        Call<GenBasket> call = api.decReaseButton("Bearer ccec704dc2854ace9141a609174cf92a", basketPosition, "delete");
+        call.enqueue(new Callback<GenBasket>() {
+            @Override
+            public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
+
+                if(response.isSuccessful()) {
+                    Toast.makeText(InCartFragment.this.getActivity(), "DELETE FOREVER!!!"+basketPosition, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(InCartFragment.this.getActivity(), "NOT SUCCESS!!!"+basketPosition, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenBasket> call, Throwable t) {
+//                Toast.makeText(InCartFragment.this.getActivity(), "ERROR!!!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 
 
     public void restartInCartFragment() {
@@ -244,8 +268,6 @@ public class InCartFragment extends Fragment {
                 .attach(fragment)
                 .commit();
     }
-
-
 
 
     public class BasketDataAdapter extends ArrayAdapter<BasketPosition> {
@@ -286,6 +308,7 @@ public class InCartFragment extends Fragment {
             vh.name_of_position.setText(item.getPosition().getName());
             vh.quantity.setText(item.getQuantity().toString());
 
+
             ArrayList<String> arr = new ArrayList<>();
             arr.addAll(item.getPosition().getImages());
             for(int i = 0; i<arr.size(); i++) {
@@ -296,12 +319,38 @@ public class InCartFragment extends Fragment {
 
             vh.price_total.setText("Итого: "+item.getPriceTotal().toString());
 
+
             vh.decButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    decButton(item.getId());
-                    restartInCartFragment();
-                    restartInCartTotalFragment();
+                    if(item.getQuantity() == 1) {
+                        Toast.makeText(context, "ITS LOST", Toast.LENGTH_LONG).show();
+                        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT);
+                                builder.setTitle("Последний продукт в корзине")
+                                .setMessage("Вы действитеотно хотите его удалить из корзины?")
+                                .setNegativeButton("Нет, оставить",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        })
+                                .setPositiveButton("Да, удалить", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        decButton(item.getId());
+                                        restartInCartFragment();
+                                        restartInCartTotalFragment();
+                                    }
+                                });
+                                builder.show();
+
+                    } else {
+                        decButton(item.getId());
+                        restartInCartFragment();
+                        restartInCartTotalFragment();
+                    }
+
                 }
             });
 
@@ -311,6 +360,32 @@ public class InCartFragment extends Fragment {
                     incButton(item.getId());
                     restartInCartFragment();
                     restartInCartTotalFragment();
+                }
+            });
+
+
+            vh.deleteForeve.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT);
+                    builder.setTitle("Действительно удалить?")
+                            .setMessage("Подтверждение удаления блюда")
+                            .setNegativeButton("Нет, оставить",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    })
+                            .setPositiveButton("Да, удалить", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    deleteForeve(item.getId());
+                                    restartInCartFragment();
+                                    restartInCartTotalFragment();
+                                }
+                            });
+                    builder.show();
                 }
             });
 
@@ -334,10 +409,12 @@ public class InCartFragment extends Fragment {
 
         public final ImageButton incButton;
 
+        public final ImageButton deleteForeve;
+
         private ViewHolder(RelativeLayout rootView, ImageView imageView,
                            TextView quantity, TextView price_single_item,
                            TextView price_sub_items, TextView price_total,
-                           TextView name_of_position, ImageButton decButton, ImageButton incButton) {
+                           TextView name_of_position, ImageButton decButton, ImageButton incButton, ImageButton deleteForeve) {
             this.rootView = rootView;
             this.imageView = imageView;
             this.quantity = quantity;
@@ -347,6 +424,7 @@ public class InCartFragment extends Fragment {
             this.name_of_position = name_of_position;
             this.decButton = decButton;
             this.incButton = incButton;
+            this.deleteForeve = deleteForeve;
         }
 
         public static ViewHolder create(RelativeLayout rootView) {
@@ -361,8 +439,10 @@ public class InCartFragment extends Fragment {
 
             ImageButton incButton = (ImageButton) rootView.findViewById(R.id.back_max);
 
+            ImageButton deleteForeve = (ImageButton) rootView.findViewById(R.id.del_pos_total);
+
             return new ViewHolder(rootView, imageView, quantity, price_single_item,
-                    price_sub_items, price_total, name_of_position, decButton, incButton);
+                    price_sub_items, price_total, name_of_position, decButton, incButton, deleteForeve);
         }
 
     }

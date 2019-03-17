@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ru.ianasimonenko.fragmentproject">
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -10,12 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SendOrderFragments.InHouseActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.USER_PRESENT" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:name="android.intent.action.USER_PRESENT" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity android:name=".SendOrderActivity">
             <!--<intent-filter>-->
@@ -57,22 +58,22 @@
             android:name=".InBasketOrdersActivity"
             android:parentActivityName=".HomeActivity">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <action android:name="android.intent.action.USER_PRESENT" /> -->
+             <!--<intent-filter>-->
+             <!--<action android:name="android.intent.action.MAIN" />-->
+             <!--<action android:name="android.intent.action.USER_PRESENT" />-->
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <!--<category android:name="android.intent.category.LAUNCHER" />-->
+             <!--</intent-filter>-->
         </activity>
         <activity android:name=".PhoneAuthActivity">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
         <activity android:name=".RestaurantActivity" />
         <activity android:name=".BonusActivity" />
