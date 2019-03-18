@@ -22,4 +22,39 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string-array name="deliveryTimes">
+        <item>00.00</item>
+        <item>00.15</item>
+        <item>00.30</item>
+        <item>00.45</item>
+        <item>01.00</item>
+        <item>01.15</item>
+        <item>01.30</item>
+        <item>01.45</item>
+        <item>02.00</item>
+        <item>02.15</item>
+        <item>02.30</item>
+        <item>02.45</item>
+        <item>03.00</item>
+        <item>03.15</item>
+        <item>03.30</item>
+        <item>03.45</item>
+    </string-array>
+
+    <string-array name="peoples">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
 </resources>

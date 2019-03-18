@@ -134,7 +134,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
-                android:text="gmail@gmail.com"/>
+                android:text="gmail@gmail.com"
+                android:inputType="" />
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="25dp"
@@ -153,7 +154,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
-                android:text="+7 *** ***-**-**"/>
+                android:text="+7 *** ***-**-**"
+                android:inputType="" />
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="25dp"

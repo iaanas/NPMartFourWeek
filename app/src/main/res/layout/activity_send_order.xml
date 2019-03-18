@@ -8,15 +8,15 @@
 
     <FrameLayout
         android:id="@+id/frame_layout_one"
-        android:layout_marginTop="70dp"
+        android:layout_below="@+id/toolbar_send_order"
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="115dp"/>
 
     <FrameLayout
         android:id="@+id/frame_layout_two"
-        android:layout_below="@+id/frame_layout_one"
-        android:background="@color/menuBackColor"
+        android:layout_below="@+id/navigation_send_order"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"

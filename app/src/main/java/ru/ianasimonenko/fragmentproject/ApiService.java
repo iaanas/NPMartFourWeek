@@ -9,6 +9,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import ru.ianasimonenko.fragmentproject.BasketModel.Address;
 import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
+import ru.ianasimonenko.fragmentproject.BasketModel.ExampleTimes;
 import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
 import ru.ianasimonenko.fragmentproject.Model.Example;
 import ru.ianasimonenko.fragmentproject.OrdersModel.GenOrders;
@@ -21,6 +22,13 @@ public interface ApiService {
 
     @GET("/api/app/basket/")
     Call<GenBasket> getMyBasket(@Header("Authorization") String token);
+
+    @GET("/api/app/basket/")
+    Call<GenBasket> getMyBasketSendOrder(@Header("Authorization") String token,
+                                         @Field("basket_position_id") Integer basket_pos_id);
+
+    @GET("/api/app/basket/")
+    Call<ExampleTimes> getMyTimes(@Header("Authorization") String token);
 
     @FormUrlEncoded
     @POST("/api/app/basket/")

@@ -22,6 +22,7 @@ import java.util.List;
 
 import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
 import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
+import ru.ianasimonenko.fragmentproject.SendOrderFragments.InHouseActivity;
 
 public class BasketTotalAdapter  extends ArrayAdapter<GenBasket> {
 

@@ -1,23 +1,31 @@
 package ru.ianasimonenko.fragmentproject.SendOrderFragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,6 +35,8 @@ import ru.ianasimonenko.fragmentproject.BasketActivity;
 import ru.ianasimonenko.fragmentproject.BasketDataAdapterOld;
 import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
 import ru.ianasimonenko.fragmentproject.BasketModel.Client;
+import ru.ianasimonenko.fragmentproject.BasketModel.DeliveryTime;
+import ru.ianasimonenko.fragmentproject.BasketModel.ExampleTimes;
 import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
 import ru.ianasimonenko.fragmentproject.R;
 import ru.ianasimonenko.fragmentproject.RetrofitClient;
@@ -38,11 +48,25 @@ public class InHouseActivity extends AppCompatActivity {
     private View parentView;
     private ListView listView;
 
-    private String rest_id;
+    private Integer rest_id;
 
     RadioGroup radioGroup;
     RadioButton radioButton;
     CheckBox checkBox;
+
+    private Spinner spinnerTime;
+    private Spinner spinnerPeoples;
+    private TextView selectionSpinner;
+
+    private Button sendOrder;
+    private String selected;
+    private String selected2;
+    private String clientsideId;
+
+    private EditText commentView;
+    private Integer peoples;
+    private Boolean checked;
+    private String accessToken;
 
 //    private InHouseAdapter adapter;
 
@@ -81,22 +105,27 @@ public class InHouseActivity extends AppCompatActivity {
         radioButton.setText("Гостиный - Садовая улица, д. 55");
 
         checkBox = (CheckBox) findViewById(R.id.checkBox);
+        checked = checkBox.isChecked();
 
 
-        radioButton = (RadioButton) findViewById(R.id.radio_2_one);
-        radioButton.setText("01:30 при заказе до 01:30");
+        //Spinner
 
-        radioButton = (RadioButton) findViewById(R.id.radio_2_two);
-        radioButton.setText("01:45");
+        spinnerTime = (Spinner) findViewById(R.id.spinner_time);
+        selected = spinnerTime.getSelectedItem().toString();
 
-        radioButton = (RadioButton) findViewById(R.id.radio_3_three);
-        radioButton.setText("Дыбенко - Мурманское Шоссе, д. 63");
+        spinnerPeoples = (Spinner) findViewById(R.id.spinner_peoples);
+        selected2 = spinnerPeoples.getSelectedItem().toString();
 
-        radioButton = (RadioButton) findViewById(R.id.radio_4_for);
-        radioButton.setText("Литейный - Литейный, д. 352");
+        //Views
+        commentView = (EditText) findViewById(R.id.comment);
+        String comment = commentView.getText().toString();
 
-        radioButton = (RadioButton) findViewById(R.id.radio_5_five);
-        radioButton.setText("Ленинский - Бульвар Новаторов, д. 10");
+        sendOrder = (Button) findViewById(R.id.send_orders);
+
+
+
+
+
 
 
 //        listView = (ListView) findViewById(R.id.listViewBasket);
@@ -107,16 +136,55 @@ public class InHouseActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
                 if (response.isSuccessful()) {
-//                    priceCount = (ArrayList<BasketPosition>) response.body().getBasketPositions();
 
-                    rest_id = response.body().getClient().getRestaurantId().toString();
-                    Toast.makeText(InHouseActivity.this, "SUCCESS: "+rest_id, Toast.LENGTH_LONG).show();
+
+                    rest_id = response.body().getClient().getRestaurantId();
+                    Toast.makeText(InHouseActivity.this, "SUCCESS", Toast.LENGTH_LONG).show();
+
+                    sendOrder.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sendOrder(selected, comment, selected2, checked, rest_id);
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(InHouseActivity.this, "NOT SUCCESS"+rest_id, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenBasket> call, Throwable t) {
+                Toast.makeText(InHouseActivity.this, "ERROR: "+rest_id, Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public void getBasketForOrder(Integer basket_pos_id, String comment) {
+        ApiService api = RetrofitClient.getApiService();
+        Call<GenBasket> call = api.getMyBasketSendOrder("Bearer ccec704dc2854ace9141a609174cf92a", basket_pos_id);
+        call.enqueue(new Callback<GenBasket>() {
+            @Override
+            public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
+                if (response.isSuccessful()) {
+
+
+                    rest_id = response.body().getClient().getRestaurantId();
+                    Toast.makeText(InHouseActivity.this, "SUCCESS", Toast.LENGTH_LONG).show();
+
+                    sendOrder.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sendOrder(selected, comment, selected2, checked, rest_id);
+                        }
+                    });
 
 
 //                    adapter = new InHouseAdapter(InHouseActivity.this, priceCount);
 //                    listView.setAdapter(adapter);
                 } else {
-                    Toast.makeText(InHouseActivity.this, "NOT SUCCESS: "+rest_id, Toast.LENGTH_LONG).show();
+                    Toast.makeText(InHouseActivity.this, "NOT SUCCESS"+rest_id, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -126,6 +194,39 @@ public class InHouseActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void sendOrder(String selected, String comment, String selected2, Boolean checked, Integer rest_id) {
+
+        String clientId = UUID.randomUUID().toString();
+        String clientIdClean = clientId.replaceAll("-", "");
+
+        clientsideId = clientIdClean.substring(0, 16);
+
+
+        ApiService api = RetrofitClient.getApiService();
+        Call<GenBasket> call = api.postOrderInRest("Bearer ccec704dc2854ace9141a609174cf92a", selected, null,
+                                                    "VsU5h3d0FzWH3khL", comment, false, "", selected2, "stay",
+                                                    true, rest_id, false);
+        call.enqueue(new Callback<GenBasket>() {
+            @Override
+            public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
+                if (response.isSuccessful()) {
+
+                    Toast.makeText(InHouseActivity.this, "SUCCESS", Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(InHouseActivity.this, "NOT SUCCESS: "+clientsideId, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenBasket> call, Throwable t) {
+                Toast.makeText(InHouseActivity.this, "ERROR: "+rest_id, Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
 
 //    public class InHouseAdapter extends ArrayAdapter<BasketPosition> {
 //

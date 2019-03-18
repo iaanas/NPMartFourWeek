@@ -14,8 +14,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.ianasimonenko.fragmentproject.SendOrderFragments.InHouseActivity;
 
 public class LoginActivity extends AppCompatActivity {
+
+    public String token;
 
     Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl("https://naparah.olegb.ru/")
@@ -24,6 +27,9 @@ public class LoginActivity extends AppCompatActivity {
     Retrofit retrofit = builder.build();
     ResponseTokenClient userClient = retrofit.create(ResponseTokenClient.class);
 
+    public String getToken() {
+        return token;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private static String token;
     private static Boolean needDataUser;
 
     private void login() {
