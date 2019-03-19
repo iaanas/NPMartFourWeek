@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent.Du
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,10 +51,7 @@ import java.util.UUID;
  */
 public class InHouseFragment extends Fragment {
 
-    private ArrayList<BasketPosition> priceCount;
-
     private View parentView;
-    private ListView listView;
 
     private Integer rest_id;
 
@@ -73,6 +72,10 @@ public class InHouseFragment extends Fragment {
     private Integer peoples;
     private Boolean checked;
     private String accessToken;
+
+    private ArrayList<DeliveryTime> priceCount;
+    private ListView listView;
+    InHouseDataAdapter adapter;
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -110,6 +113,8 @@ public class InHouseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_in_house, container, false);
+
+        listView = (ListView) view.findViewById(R.id.list_time);
 
         priceCount = new ArrayList<>();
         parentView = view.findViewById(R.id.parentLayoutBasket);
@@ -155,12 +160,10 @@ public class InHouseFragment extends Fragment {
         //Spinner
 
         spinnerTime = (Spinner) view.findViewById(R.id.spinner_time);
-        selected = spinnerTime.getSelectedItem().toString();
+//        selected = spinnerTime.getSelectedItem().toString();
 
         spinnerPeoples = (Spinner) view.findViewById(R.id.spinner_peoples);
         selected2 = spinnerPeoples.getSelectedItem().toString();
-
-        ArrayList<DeliveryTime> list = new ArrayList<>();
 
         //Views
         commentView = (EditText) view.findViewById(R.id.comment);
@@ -182,13 +185,11 @@ public class InHouseFragment extends Fragment {
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
                 if (response.isSuccessful()) {
 
-                    list.addAll(response.body().getDeliveryTimes());
+                    priceCount = (ArrayList<DeliveryTime>) response.body().getDeliveryTimes();
+                    adapter = new InHouseDataAdapter(inflater.getContext(), priceCount);
+                    listView.setAdapter(adapter);
 
-//                    ArrayAdapter<DeliveryTime> deliveryTimeArrayAdapter = ArrayAdapter.createFromResource(
-//                            inflater.getContext(), list, android.R.layout.simple_spinner_item
-//                    );
 
-//                    rest_id = response.body().getClient().getRestaurantId();
                     Toast.makeText(inflater.getContext(), "SUCCESS: ", Toast.LENGTH_LONG).show();
 
                     sendOrder.setOnClickListener(new View.OnClickListener() {
@@ -220,29 +221,31 @@ public class InHouseFragment extends Fragment {
                     rest_id = 13;
                     break;
                 case R.id.radio_two:
-                    rest_id = 10;
+                    rest_id = 15;
                     break;
                 case R.id.radio_three:
-                    rest_id = 9;
+                    rest_id = 14;
                     break;
                 case R.id.radio_for:
                     rest_id = 12;
                 case R.id.radio_five:
-                    rest_id = 11;
+                    rest_id = 16;
                     break;
                 case R.id.radio_six:
-                    rest_id = 8;
+                    rest_id = 11;
                     break;
                 case R.id.radio_seven:
-                    rest_id = 7;
+                    rest_id = 10;
                     break;
                 case R.id.radio_eight:
-                    rest_id = 6;
+                    rest_id = 9;
+                    break;
             }
         }
     };
 
     public void sendOrder(String selected, String comment, String selected2, Boolean checked) {
+        Integer rest_id_total = rest_id;
 
         String clientId = UUID.randomUUID().toString();
         String clientIdClean = clientId.replaceAll("-", "");
@@ -251,9 +254,9 @@ public class InHouseFragment extends Fragment {
 
 
         ApiService api = RetrofitClient.getApiService();
-        Call<GenBasket> call = api.postOrderInRest(accessToken, "2000", null,
+        Call<GenBasket> call = api.postOrderInRest(accessToken, selected, null,
                 clientsideId+"", comment, "False", "cash", selected2, "stay",
-                true, 13, "False");
+                true, rest_id_total, "False");
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
@@ -305,5 +308,67 @@ public class InHouseFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
+    }
+
+    public class InHouseDataAdapter extends ArrayAdapter<DeliveryTime> {
+
+        List<DeliveryTime> list;
+
+        Context context;
+        private LayoutInflater inflater;
+
+
+        public InHouseDataAdapter(Context context, List<DeliveryTime> objects) {
+            super(context, 0, objects);
+
+            this.context = context;
+            this.inflater = LayoutInflater.from(context);
+            list = objects;
+        }
+
+        @Override
+        public DeliveryTime getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final ViewHolder vh;
+
+            if(convertView == null) {
+                View view = inflater.inflate(R.layout.spinner_row, parent, false);
+                vh = (ViewHolder) ViewHolder.create((RelativeLayout) view);
+                view.setTag(vh);
+            } else {
+                vh = (ViewHolder) convertView.getTag();
+            }
+
+            DeliveryTime item = getItem(position);
+
+            vh.selectedTime.setText(item.getName());
+
+
+            return vh.rootView;
+
+
+        }
+
+    }
+    private static class ViewHolder {
+
+        public final RelativeLayout rootView;
+        public final TextView selectedTime;
+
+        private ViewHolder(RelativeLayout rootView, TextView selectedTime) {
+            this.rootView = rootView;
+            this.selectedTime = selectedTime;
+        }
+
+        public static ViewHolder create(RelativeLayout rootView) {
+            TextView selectedTime = (TextView) rootView.findViewById(R.id.time_spinner);
+
+            return new ViewHolder(rootView, selectedTime);
+        }
+
     }
 }

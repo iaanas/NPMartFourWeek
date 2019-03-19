@@ -216,29 +216,31 @@ public class TakeOutFragment extends Fragment {
                     rest_id = 13;
                     break;
                 case R.id.radio_two:
-                    rest_id = 10;
+                    rest_id = 15;
                     break;
                 case R.id.radio_three:
-                    rest_id = 9;
+                    rest_id = 14;
                     break;
                 case R.id.radio_for:
                     rest_id = 12;
                 case R.id.radio_five:
-                    rest_id = 11;
+                    rest_id = 16;
                     break;
                 case R.id.radio_six:
-                    rest_id = 8;
+                    rest_id = 11;
                     break;
                 case R.id.radio_seven:
-                    rest_id = 7;
+                    rest_id = 10;
                     break;
                 case R.id.radio_eight:
-                    rest_id = 6;
+                    rest_id = 9;
+                    break;
             }
         }
     };
 
     public void sendOrder(String selected, String comment, String selected2, Boolean checked) {
+        Integer rest_id_total = rest_id;
 
         String clientId = UUID.randomUUID().toString();
         String clientIdClean = clientId.replaceAll("-", "");
@@ -249,16 +251,16 @@ public class TakeOutFragment extends Fragment {
         ApiService api = RetrofitClient.getApiService();
         Call<GenBasket> call = api.postOrderInRest(accessToken, "2000", null,
                 clientsideId+"", comment, "False", "cash", selected2, "takeaway",
-                true, 13, "False");
+                true, rest_id_total, "False");
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
                 if (response.isSuccessful()) {
 
-                    Toast.makeText(TakeOutFragment.this.getContext(), "SUCCESS", Toast.LENGTH_LONG).show();
+                    Toast.makeText(TakeOutFragment.this.getContext(), "SUCCESS"+rest_id_total, Toast.LENGTH_LONG).show();
 
                 } else {
-                    Toast.makeText(TakeOutFragment.this.getContext(), "NOT SUCCESS: "+clientsideId, Toast.LENGTH_LONG).show();
+                    Toast.makeText(TakeOutFragment.this.getContext(), "NOT SUCCESS: "+rest_id_total, Toast.LENGTH_LONG).show();
                 }
             }
 
