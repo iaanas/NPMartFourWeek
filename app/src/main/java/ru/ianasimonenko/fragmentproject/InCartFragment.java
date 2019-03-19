@@ -97,9 +97,12 @@ public class InCartFragment extends Fragment {
 
 //        decButton = (ImageButton) view2.findViewById(R.id.bask_min);
 
+        LoginActivity activity = new LoginActivity();
+        String accessToken = activity.getMyTokenFromLogin();
+
 
         ApiService api = RetrofitClient.getApiService();
-        Call<GenBasket> call = api.getMyBasket("Bearer ccec704dc2854ace9141a609174cf92a");
+        Call<GenBasket> call = api.getMyBasket(accessToken);
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
@@ -183,7 +186,10 @@ public class InCartFragment extends Fragment {
 
         ApiService api = RetrofitClient.getApiService();
 
-        Call<GenBasket> call = api.decReaseButton("Bearer ccec704dc2854ace9141a609174cf92a", basketPosition2, "decrease_quantity");
+        LoginActivity activity = new LoginActivity();
+        String accessToken = activity.getMyTokenFromLogin();
+
+        Call<GenBasket> call = api.decReaseButton(accessToken, basketPosition2, "decrease_quantity");
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
@@ -205,9 +211,12 @@ public class InCartFragment extends Fragment {
 
     public void incButton(Integer basketPosition2) {
 
+        LoginActivity activity = new LoginActivity();
+        String accessToken = activity.getMyTokenFromLogin();
+
         ApiService api = RetrofitClient.getApiService();
 
-        Call<GenBasket> call = api.decReaseButton("Bearer ccec704dc2854ace9141a609174cf92a", basketPosition2, "increase_quantity");
+        Call<GenBasket> call = api.decReaseButton(accessToken, basketPosition2, "increase_quantity");
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
@@ -228,9 +237,12 @@ public class InCartFragment extends Fragment {
     }
 
     public void deleteForeve(Integer basketPosition) {
+        LoginActivity activity = new LoginActivity();
+        String accessToken = activity.getMyTokenFromLogin();
+
         ApiService api = RetrofitClient.getApiService();
 
-        Call<GenBasket> call = api.decReaseButton("Bearer ccec704dc2854ace9141a609174cf92a", basketPosition, "delete");
+        Call<GenBasket> call = api.decReaseButton(accessToken, basketPosition, "delete");
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {

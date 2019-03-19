@@ -104,7 +104,10 @@ public class ProfileFragment extends Fragment {
         Retrofit retrofit = builder.build();
         final ProfileGet userClient = retrofit.create(ProfileGet.class);
 
-        Call<Status> call = userClient.getProfile("Bearer ccec704dc2854ace9141a609174cf92a", "get");
+        LoginActivity activity = new LoginActivity();
+        String accessToken = activity.getMyTokenFromLogin();
+
+        Call<Status> call = userClient.getProfile(accessToken, "get");
 
         call.enqueue(new Callback<Status>() {
             @Override

@@ -89,9 +89,12 @@ public class TotalBasketFragment extends Fragment {
 
         listView = (ListView) view.findViewById(R.id.listViewBasketTotal);
 
+        LoginActivity activity = new LoginActivity();
+        String accessToken = activity.getMyTokenFromLogin();
+
 
         ApiService api = RetrofitClient.getApiService();
-        Call<GenBasket> call = api.getMyBasket("Bearer ccec704dc2854ace9141a609174cf92a");
+        Call<GenBasket> call = api.getMyBasket(accessToken);
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {

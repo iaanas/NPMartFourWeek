@@ -134,7 +134,10 @@ public class Product34Activity extends AppCompatActivity {
         Retrofit retrofit = builder.build();
         ProductsClient userClient = retrofit.create(ProductsClient.class);
 
-        Call<Prod24Gen> call = userClient.prodToBusket("Bearer ccec704dc2854ace9141a609174cf92a", null,97, null,"add");
+        LoginActivity activity = new LoginActivity();
+        String accessToken = activity.getMyTokenFromLogin();
+
+        Call<Prod24Gen> call = userClient.prodToBusket(accessToken, null,97, null,"add");
 
         call.enqueue(new Callback<Prod24Gen>() {
             @Override

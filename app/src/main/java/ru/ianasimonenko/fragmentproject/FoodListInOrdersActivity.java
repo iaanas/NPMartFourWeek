@@ -36,8 +36,11 @@ public class FoodListInOrdersActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.list_products);
 
+        LoginActivity activity = new LoginActivity();
+        String accessToken = activity.getMyTokenFromLogin();
+
         ApiService api = RetrofitClient.getApiService();
-        Call<GenOrders> call = api.getOrders("Bearer ccec704dc2854ace9141a609174cf92a", "get");
+        Call<GenOrders> call = api.getOrders(accessToken, "get");
         call.enqueue(new Callback<GenOrders>() {
             @Override
             public void onResponse(Call<GenOrders> call, Response<GenOrders> response) {

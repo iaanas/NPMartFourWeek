@@ -84,7 +84,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
 //        Birthday birthday = new Birthday(1, 5, 1988);
 //        ProfileIn profileIn = new ProfileIn(birthday, emailStr, firstNameStr, lastNameStr, "3a5bca756710470da5112acd7f8fcde3", phoneStr, nitOrdByEmail, type);
-        Call<Client> call = userClient.signUp("Bearer ccec704dc2854ace9141a609174cf92a", emailStr, firstNameStr, lastNameStr, "True", type);
+        LoginActivity activity = new LoginActivity();
+        String accessToken = activity.getMyTokenFromLogin();
+
+        Call<Client> call = userClient.signUp(accessToken, emailStr, firstNameStr, lastNameStr, "True", type);
 
         call.enqueue(new Callback<Client>() {
 

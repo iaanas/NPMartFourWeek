@@ -22,11 +22,16 @@ public class HomeActivity extends AppCompatActivity implements ItemFragment.OnLi
         TempProdFragment.OnListFragmentInteractionListener,
         InfoFragment.OnListFragmentInteractionListener{
     private ActionBar toolbar;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+//        Intent intent = getIntent();
+//        token = intent.getStringExtra("access_token3");
+//        Toast.makeText(HomeActivity.this, "Token"+token, Toast.LENGTH_SHORT).show();
 
         Toolbar topToolBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
@@ -69,6 +74,11 @@ public class HomeActivity extends AppCompatActivity implements ItemFragment.OnLi
 
 
 
+    }
+
+
+    public String getMyToken() {
+        return "Bearer " + token + "!";
     }
 
     @Override

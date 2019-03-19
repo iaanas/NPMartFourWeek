@@ -3,12 +3,14 @@ package ru.ianasimonenko.fragmentproject.SendOrderFragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -24,13 +26,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ru.ianasimonenko.fragmentproject.ApiService;
 import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
+import ru.ianasimonenko.fragmentproject.BasketModel.DeliveryTime;
 import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
+import ru.ianasimonenko.fragmentproject.BasketModel.PossibleTimes;
+import ru.ianasimonenko.fragmentproject.HomeActivity;
+import ru.ianasimonenko.fragmentproject.LoginActivity;
 import ru.ianasimonenko.fragmentproject.R;
 import ru.ianasimonenko.fragmentproject.RetrofitClient;
 import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent;
 import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -111,27 +118,35 @@ public class InHouseFragment extends Fragment {
         radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
         radioButton = (RadioButton) view.findViewById(R.id.radio_one);
         radioButton.setText("В. О. - 7-я линия В.О., д. 63");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) view.findViewById(R.id.radio_two);
         radioButton.setText("Марата - Марата, 69-71");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) view.findViewById(R.id.radio_three);
         radioButton.setText("Спортивная - Большой проспект, д. 49");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) view.findViewById(R.id.radio_for);
         radioButton.setText("Дыбенко - Мурманское Шоссе, д. 63");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) view.findViewById(R.id.radio_five);
         radioButton.setText("Литейный - Литейный, д. 352");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) view.findViewById(R.id.radio_six);
         radioButton.setText("Ленинский - Бульвар Новаторов, д. 10");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) view.findViewById(R.id.radio_seven);
         radioButton.setText("Пионерская - Коломяжский проспект, 15А");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) view.findViewById(R.id.radio_eight);
         radioButton.setText("Гостиный - Садовая улица, д. 55");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         checkBox = (CheckBox) view.findViewById(R.id.checkBox);
         checked = checkBox.isChecked();
@@ -145,28 +160,41 @@ public class InHouseFragment extends Fragment {
         spinnerPeoples = (Spinner) view.findViewById(R.id.spinner_peoples);
         selected2 = spinnerPeoples.getSelectedItem().toString();
 
+        ArrayList<DeliveryTime> list = new ArrayList<>();
+
         //Views
         commentView = (EditText) view.findViewById(R.id.comment);
         String comment = commentView.getText().toString();
 
         sendOrder = (Button) view.findViewById(R.id.send_orders);
 
+
+        LoginActivity activity = new LoginActivity();
+        Toast.makeText(inflater.getContext(), "TOKEN: "+ activity.getMyTokenFromLogin(), Toast.LENGTH_LONG).show();
+
+        accessToken = activity.getMyTokenFromLogin();
+
         // Set the adapter
         ApiService api = RetrofitClient.getApiService();
-        Call<GenBasket> call = api.getMyBasket("Bearer ccec704dc2854ace9141a609174cf92a");
+        Call<GenBasket> call = api.getMyBasket(accessToken);
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
                 if (response.isSuccessful()) {
 
+                    list.addAll(response.body().getDeliveryTimes());
 
-                    rest_id = response.body().getClient().getRestaurantId();
-                    Toast.makeText(inflater.getContext(), "SUCCESS", Toast.LENGTH_LONG).show();
+//                    ArrayAdapter<DeliveryTime> deliveryTimeArrayAdapter = ArrayAdapter.createFromResource(
+//                            inflater.getContext(), list, android.R.layout.simple_spinner_item
+//                    );
+
+//                    rest_id = response.body().getClient().getRestaurantId();
+                    Toast.makeText(inflater.getContext(), "SUCCESS: ", Toast.LENGTH_LONG).show();
 
                     sendOrder.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            sendOrder(selected, comment, selected2, checked, rest_id);
+                            sendOrder(selected, comment, selected2, checked);
                         }
                     });
 
@@ -183,7 +211,38 @@ public class InHouseFragment extends Fragment {
         return view;
     }
 
-    public void sendOrder(String selected, String comment, String selected2, Boolean checked, Integer rest_id) {
+    View.OnClickListener radioButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            RadioButton rb = (RadioButton) v;
+            switch (rb.getId()) {
+                case R.id.radio_one:
+                    rest_id = 13;
+                    break;
+                case R.id.radio_two:
+                    rest_id = 10;
+                    break;
+                case R.id.radio_three:
+                    rest_id = 9;
+                    break;
+                case R.id.radio_for:
+                    rest_id = 12;
+                case R.id.radio_five:
+                    rest_id = 11;
+                    break;
+                case R.id.radio_six:
+                    rest_id = 8;
+                    break;
+                case R.id.radio_seven:
+                    rest_id = 7;
+                    break;
+                case R.id.radio_eight:
+                    rest_id = 6;
+            }
+        }
+    };
+
+    public void sendOrder(String selected, String comment, String selected2, Boolean checked) {
 
         String clientId = UUID.randomUUID().toString();
         String clientIdClean = clientId.replaceAll("-", "");
@@ -192,9 +251,9 @@ public class InHouseFragment extends Fragment {
 
 
         ApiService api = RetrofitClient.getApiService();
-        Call<GenBasket> call = api.postOrderInRest("Bearer ccec704dc2854ace9141a609174cf92a", selected, null,
-                "VsU5h3d0FzWH3khL", comment, false, "", selected2, "stay",
-                true, rest_id, false);
+        Call<GenBasket> call = api.postOrderInRest(accessToken, "2000", null,
+                clientsideId+"", comment, "False", "cash", selected2, "stay",
+                true, 13, "False");
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {

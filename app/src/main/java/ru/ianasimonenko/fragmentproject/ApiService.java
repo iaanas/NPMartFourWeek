@@ -79,13 +79,13 @@ public interface ApiService {
                                     @Field("cash_change") String cash_change,
                                     @Field("clientside_id") String clientside_id,
                                     @Field("comment") String comment,
-                                    @Field("online_order") Boolean online_order,
+                                    @Field("online_order") String online_order,
                                     @Field("payment_type") String payment_type,
                                     @Field("people_amount") String people_amount,
                                     @Field("presence") String presence,
                                     @Field("remember_restaurant") Boolean remember_restaurant,
                                     @Field("restaurant_id") Integer restaurant_id,
-                                    @Field("should_not_call") Boolean should_not_call);
+                                    @Field("should_not_call") String should_not_call);
 
 
 

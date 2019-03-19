@@ -22,6 +22,12 @@ public class GenBasket {
     @SerializedName("calories_total")
     @Expose
     private Integer caloriesTotal;
+    @SerializedName("times")
+    @Expose
+    private Times times;
+    @SerializedName("delivery_times")
+    @Expose
+    private List<DeliveryTime> deliveryTimes = null;
     @SerializedName("restaurants")
     @Expose
     private List<Restaurant> restaurants = null;
@@ -154,4 +160,19 @@ public class GenBasket {
         this.company = company;
     }
 
+    public List<DeliveryTime> getDeliveryTimes() {
+        return deliveryTimes;
+    }
+
+    public void setDeliveryTimes(List<DeliveryTime> deliveryTimes) {
+        this.deliveryTimes = deliveryTimes;
+    }
+
+    public Times getTimes() {
+        return times;
+    }
+
+    public void setTimes(Times times) {
+        this.times = times;
+    }
 }

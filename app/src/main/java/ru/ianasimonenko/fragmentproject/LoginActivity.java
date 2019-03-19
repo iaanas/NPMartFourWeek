@@ -1,7 +1,10 @@
 package ru.ianasimonenko.fragmentproject;
 
+import android.support.v4.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,10 +18,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.ianasimonenko.fragmentproject.SendOrderFragments.InHouseActivity;
+import ru.ianasimonenko.fragmentproject.SendOrderFragments.InHouseFragment;
+import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements InHouseFragment.OnListFragmentInteractionListener {
 
-    public String token;
+    private static String token;
+    private String testToken;
+    private Intent intent2;
+
 
     Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl("https://naparah.olegb.ru/")
@@ -27,14 +35,13 @@ public class LoginActivity extends AppCompatActivity {
     Retrofit retrofit = builder.build();
     ResponseTokenClient userClient = retrofit.create(ResponseTokenClient.class);
 
-    public String getToken() {
-        return token;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        testToken = "jkjkjhgjhgjh";
 
 
         findViewById(R.id.btn_login).setOnClickListener(
@@ -71,14 +78,16 @@ public class LoginActivity extends AppCompatActivity {
                         token = response.body().getAccessToken();
                         needDataUser = response.body().getNeedUserData();
 
+
                         if (needDataUser) {
                             Intent intent = new Intent(LoginActivity.this, EditProfileActivity.class);
-                            intent.putExtra("access_token", response.body().getAccessToken());
+                            intent.putExtra("access_token2", response.body().getAccessToken());
                             startActivity(intent);
                         } else {
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            intent.putExtra("access_token", token);
-                            startActivity(intent);
+                            intent2 = new Intent(LoginActivity.this, HomeActivity.class);
+                            intent2.putExtra("access_token", ""+ token);
+                            startActivity(intent2);
+
                         }
                     }
 
@@ -96,6 +105,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public String getMyTokenFromLogin() {
+        testToken = token.toString();
+        return "Bearer "+testToken;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 
     private void getSecret() {
@@ -126,5 +146,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
+    }
 }

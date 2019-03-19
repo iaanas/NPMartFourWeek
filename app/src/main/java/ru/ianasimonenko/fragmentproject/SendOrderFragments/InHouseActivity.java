@@ -38,6 +38,7 @@ import ru.ianasimonenko.fragmentproject.BasketModel.Client;
 import ru.ianasimonenko.fragmentproject.BasketModel.DeliveryTime;
 import ru.ianasimonenko.fragmentproject.BasketModel.ExampleTimes;
 import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
+import ru.ianasimonenko.fragmentproject.LoginActivity;
 import ru.ianasimonenko.fragmentproject.R;
 import ru.ianasimonenko.fragmentproject.RetrofitClient;
 
@@ -82,27 +83,37 @@ public class InHouseActivity extends AppCompatActivity {
         radioGroup = (RadioGroup) findViewById(R.id.radio_group);
         radioButton = (RadioButton) findViewById(R.id.radio_one);
         radioButton.setText("В. О. - 7-я линия В.О., д. 63");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) findViewById(R.id.radio_two);
         radioButton.setText("Марата - Марата, 69-71");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) findViewById(R.id.radio_three);
         radioButton.setText("Спортивная - Большой проспект, д. 49");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) findViewById(R.id.radio_for);
         radioButton.setText("Дыбенко - Мурманское Шоссе, д. 63");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) findViewById(R.id.radio_five);
         radioButton.setText("Литейный - Литейный, д. 352");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) findViewById(R.id.radio_six);
         radioButton.setText("Ленинский - Бульвар Новаторов, д. 10");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) findViewById(R.id.radio_seven);
         radioButton.setText("Пионерская - Коломяжский проспект, 15А");
+        radioButton.setOnClickListener(radioButtonClickListener);
 
         radioButton = (RadioButton) findViewById(R.id.radio_eight);
         radioButton.setText("Гостиный - Садовая улица, д. 55");
+        radioButton.setOnClickListener(radioButtonClickListener);
+
+
 
         checkBox = (CheckBox) findViewById(R.id.checkBox);
         checked = checkBox.isChecked();
@@ -122,16 +133,14 @@ public class InHouseActivity extends AppCompatActivity {
 
         sendOrder = (Button) findViewById(R.id.send_orders);
 
-
-
-
-
+        LoginActivity activity = new LoginActivity();
+        accessToken = activity.getMyTokenFromLogin();
 
 
 //        listView = (ListView) findViewById(R.id.listViewBasket);
 
         ApiService api = RetrofitClient.getApiService();
-        Call<GenBasket> call = api.getMyBasket("Bearer ccec704dc2854ace9141a609174cf92a");
+        Call<GenBasket> call = api.getMyBasket(accessToken);
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
@@ -161,9 +170,40 @@ public class InHouseActivity extends AppCompatActivity {
 
     }
 
+    View.OnClickListener radioButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            RadioButton rb = (RadioButton) v;
+            switch (rb.getId()) {
+                case R.id.radio_one:
+                    rest_id = 13;
+                    break;
+                case R.id.radio_two:
+                    rest_id = 10;
+                    break;
+                case R.id.radio_three:
+                    rest_id = 9;
+                    break;
+                case R.id.radio_for:
+                    rest_id = 12;
+                case R.id.radio_five:
+                    rest_id = 11;
+                    break;
+                case R.id.radio_six:
+                    rest_id = 8;
+                    break;
+                case R.id.radio_seven:
+                    rest_id = 7;
+                    break;
+                case R.id.radio_eight:
+                    rest_id = 6;
+            }
+        }
+    };
+
     public void getBasketForOrder(Integer basket_pos_id, String comment) {
         ApiService api = RetrofitClient.getApiService();
-        Call<GenBasket> call = api.getMyBasketSendOrder("Bearer ccec704dc2854ace9141a609174cf92a", basket_pos_id);
+        Call<GenBasket> call = api.getMyBasketSendOrder(accessToken, basket_pos_id);
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
@@ -204,9 +244,9 @@ public class InHouseActivity extends AppCompatActivity {
 
 
         ApiService api = RetrofitClient.getApiService();
-        Call<GenBasket> call = api.postOrderInRest("Bearer ccec704dc2854ace9141a609174cf92a", selected, null,
-                                                    "VsU5h3d0FzWH3khL", comment, false, "", selected2, "stay",
-                                                    true, rest_id, false);
+        Call<GenBasket> call = api.postOrderInRest(accessToken, selected, null,
+                                                    clientsideId, comment, "False", "", selected2, "stay",
+                                                    true, rest_id, "False");
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
