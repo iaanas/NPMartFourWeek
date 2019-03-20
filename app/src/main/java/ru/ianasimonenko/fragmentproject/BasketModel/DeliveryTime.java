@@ -12,6 +12,11 @@ public class DeliveryTime {
     @Expose
     private String name;
 
+    public DeliveryTime(String name, String stamp) {
+        this.stamp = stamp;
+        this.name = name;
+    }
+
     public String getStamp() {
         return stamp;
     }
@@ -28,4 +33,8 @@ public class DeliveryTime {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return ""+this.name;
+    }
 }

@@ -1,19 +1,23 @@
 package ru.ianasimonenko.fragmentproject.SendOrderFragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -34,6 +38,7 @@ import ru.ianasimonenko.fragmentproject.HomeActivity;
 import ru.ianasimonenko.fragmentproject.LoginActivity;
 import ru.ianasimonenko.fragmentproject.R;
 import ru.ianasimonenko.fragmentproject.RetrofitClient;
+import ru.ianasimonenko.fragmentproject.SendOrderActivity;
 import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent;
 import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent.DummyItem;
 
@@ -61,20 +66,17 @@ public class InHouseFragment extends Fragment {
 
     private Spinner spinnerTime;
     private Spinner spinnerPeoples;
-    private TextView selectionSpinner;
 
     private Button sendOrder;
-    private String selected;
+    private Object selected;
     private String selected2;
     private String clientsideId;
 
     private EditText commentView;
-    private Integer peoples;
     private Boolean checked;
     private String accessToken;
 
     private ArrayList<DeliveryTime> priceCount;
-    private ListView listView;
     InHouseDataAdapter adapter;
 
     // TODO: Customize parameter argument names
@@ -114,10 +116,10 @@ public class InHouseFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_in_house, container, false);
 
-        listView = (ListView) view.findViewById(R.id.list_time);
+//        listView = (ListView) view.findViewById(R.id.list_time);
 
         priceCount = new ArrayList<>();
-        parentView = view.findViewById(R.id.parentLayoutBasket);
+        parentView = view.findViewById(R.id.activity_in_house);
 
         //View
         radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
@@ -156,12 +158,8 @@ public class InHouseFragment extends Fragment {
         checkBox = (CheckBox) view.findViewById(R.id.checkBox);
         checked = checkBox.isChecked();
 
-
         //Spinner
-
         spinnerTime = (Spinner) view.findViewById(R.id.spinner_time);
-//        selected = spinnerTime.getSelectedItem().toString();
-
         spinnerPeoples = (Spinner) view.findViewById(R.id.spinner_peoples);
         selected2 = spinnerPeoples.getSelectedItem().toString();
 
@@ -178,8 +176,8 @@ public class InHouseFragment extends Fragment {
         accessToken = activity.getMyTokenFromLogin();
 
         // Set the adapter
-        ApiService api = RetrofitClient.getApiService();
-        Call<GenBasket> call = api.getMyBasket(accessToken);
+        final ApiService[] api = {RetrofitClient.getApiService()};
+        Call<GenBasket> call = api[0].getMyBasket(accessToken);
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
@@ -187,20 +185,33 @@ public class InHouseFragment extends Fragment {
 
                     priceCount = (ArrayList<DeliveryTime>) response.body().getDeliveryTimes();
                     adapter = new InHouseDataAdapter(inflater.getContext(), priceCount);
-                    listView.setAdapter(adapter);
+                    spinnerTime.setAdapter(adapter);
 
 
-                    Toast.makeText(inflater.getContext(), "SUCCESS: ", Toast.LENGTH_LONG).show();
+                    spinnerTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            selected = spinnerTime.getSelectedItem().toString().replaceAll(":", "");
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
+
+                    Toast.makeText(inflater.getContext(), "SUCCESS: "+selected, Toast.LENGTH_LONG).show();
 
                     sendOrder.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            sendOrder(selected, comment, selected2, checked);
+                            sendOrder(selected.toString(), comment, selected2, checked);
                         }
                     });
 
                 } else {
-                    Toast.makeText(inflater.getContext(), "NOT SUCCESS"+rest_id, Toast.LENGTH_LONG).show();
+                    Toast.makeText(inflater.getContext(), "NOT SUCCESS"+selected.toString(), Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -265,7 +276,7 @@ public class InHouseFragment extends Fragment {
                     Toast.makeText(InHouseFragment.this.getContext(), "SUCCESS", Toast.LENGTH_LONG).show();
 
                 } else {
-                    Toast.makeText(InHouseFragment.this.getContext(), "NOT SUCCESS: "+clientsideId, Toast.LENGTH_LONG).show();
+                    Toast.makeText(InHouseFragment.this.getContext(), "NOT SUCCESS: "+selected, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -319,7 +330,7 @@ public class InHouseFragment extends Fragment {
 
 
         public InHouseDataAdapter(Context context, List<DeliveryTime> objects) {
-            super(context, 0, objects);
+            super(context, R.layout.spinner_row, objects);
 
             this.context = context;
             this.inflater = LayoutInflater.from(context);
@@ -337,15 +348,17 @@ public class InHouseFragment extends Fragment {
 
             if(convertView == null) {
                 View view = inflater.inflate(R.layout.spinner_row, parent, false);
-                vh = (ViewHolder) ViewHolder.create((RelativeLayout) view);
+                vh = (ViewHolder) ViewHolder.create((TextView) view);
                 view.setTag(vh);
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }
 
             DeliveryTime item = getItem(position);
+            final String timeOfName = item.getName();
 
-            vh.selectedTime.setText(item.getName());
+
+            vh.selectedTime.setText(timeOfName);
 
 
             return vh.rootView;
@@ -356,19 +369,22 @@ public class InHouseFragment extends Fragment {
     }
     private static class ViewHolder {
 
-        public final RelativeLayout rootView;
+        public final TextView rootView;
         public final TextView selectedTime;
 
-        private ViewHolder(RelativeLayout rootView, TextView selectedTime) {
+        private ViewHolder(TextView rootView, TextView selectedTime) {
             this.rootView = rootView;
             this.selectedTime = selectedTime;
         }
 
-        public static ViewHolder create(RelativeLayout rootView) {
+        public static ViewHolder create(TextView rootView) {
             TextView selectedTime = (TextView) rootView.findViewById(R.id.time_spinner);
 
             return new ViewHolder(rootView, selectedTime);
         }
 
     }
+
+
+
 }

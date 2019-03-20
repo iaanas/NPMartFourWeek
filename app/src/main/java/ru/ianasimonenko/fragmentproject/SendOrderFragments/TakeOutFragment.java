@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -44,7 +46,7 @@ import java.util.UUID;
  */
 public class TakeOutFragment extends Fragment {
 
-    private ArrayList<BasketPosition> priceCount;
+    private ArrayList<DeliveryTime> priceCount;
 
     private View parentView;
     private ListView listView;
@@ -74,6 +76,8 @@ public class TakeOutFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+
+    TakeOutDataAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -179,13 +183,27 @@ public class TakeOutFragment extends Fragment {
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
                 if (response.isSuccessful()) {
 
-                    list.addAll(response.body().getDeliveryTimes());
+                    priceCount = (ArrayList<DeliveryTime>) response.body().getDeliveryTimes();
+                    adapter = new TakeOutDataAdapter(inflater.getContext(), priceCount);
+                    spinnerTime.setAdapter(adapter);
 
-//                    ArrayAdapter<DeliveryTime> deliveryTimeArrayAdapter = ArrayAdapter.createFromResource(
-//                            inflater.getContext(), list, android.R.layout.simple_spinner_item
-//                    );
 
-//                    rest_id = response.body().getClient().getRestaurantId();
+                    spinnerTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            selected = spinnerTime.getSelectedItem().toString().replaceAll(":", "");
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
+
+                    Toast.makeText(inflater.getContext(), "SUCCESS: "+selected, Toast.LENGTH_LONG).show();
+
+
                     Toast.makeText(inflater.getContext(), "SUCCESS: ", Toast.LENGTH_LONG).show();
 
                     sendOrder.setOnClickListener(new View.OnClickListener() {
@@ -250,7 +268,7 @@ public class TakeOutFragment extends Fragment {
 
 
         ApiService api = RetrofitClient.getApiService();
-        Call<GenBasket> call = api.postOrderInRest(accessToken, "2000", null,
+        Call<GenBasket> call = api.postOrderInRest(accessToken, selected, null,
                 clientsideId+"", comment, "False", "cash", selected2, "takeaway",
                 true, rest_id_total, "False");
         call.enqueue(new Callback<GenBasket>() {
@@ -304,5 +322,71 @@ public class TakeOutFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
+    }
+
+
+
+    public class TakeOutDataAdapter extends ArrayAdapter<DeliveryTime> {
+
+        List<DeliveryTime> list;
+
+        Context context;
+        private LayoutInflater inflater;
+
+
+        public TakeOutDataAdapter(Context context, List<DeliveryTime> objects) {
+            super(context, R.layout.spinner_row_take_out, objects);
+
+            this.context = context;
+            this.inflater = LayoutInflater.from(context);
+            list = objects;
+        }
+
+        @Override
+        public DeliveryTime getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final ViewHolder vh;
+
+            if(convertView == null) {
+                View view = inflater.inflate(R.layout.spinner_row_take_out, parent, false);
+                vh = (ViewHolder) ViewHolder.create((TextView) view);
+                view.setTag(vh);
+            } else {
+                vh = (ViewHolder) convertView.getTag();
+            }
+
+            DeliveryTime item = getItem(position);
+            final String timeOfName = item.getName();
+
+
+            vh.selectedTime.setText(timeOfName);
+
+
+            return vh.rootView;
+
+
+        }
+
+    }
+    private static class ViewHolder {
+
+        public final TextView rootView;
+        public final TextView selectedTime;
+
+        private ViewHolder(TextView rootView, TextView selectedTime) {
+            this.rootView = rootView;
+            this.selectedTime = selectedTime;
+        }
+
+        public static ViewHolder create(TextView rootView) {
+            TextView selectedTime = (TextView) rootView.findViewById(R.id.time_spinner);
+
+            return new ViewHolder(rootView, selectedTime);
+        }
+
     }
 }

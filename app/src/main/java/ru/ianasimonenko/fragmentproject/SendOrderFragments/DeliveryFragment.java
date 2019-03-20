@@ -9,12 +9,32 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import ru.ianasimonenko.fragmentproject.ApiService;
+import ru.ianasimonenko.fragmentproject.BasketModel.DeliveryTime;
+import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
+import ru.ianasimonenko.fragmentproject.LoginActivity;
 import ru.ianasimonenko.fragmentproject.R;
+import ru.ianasimonenko.fragmentproject.RetrofitClient;
 import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent;
 import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * A fragment representing a list of Items.
@@ -23,6 +43,28 @@ import java.util.List;
  * interface.
  */
 public class DeliveryFragment extends Fragment {
+    private View parentView;
+
+    private Integer rest_id;
+
+    RadioGroup radioGroup;
+    RadioButton radioButton;
+    CheckBox checkBox;
+
+    private Spinner spinnerTime;
+    private Spinner spinnerPeoples;
+
+    private Button sendOrder;
+    private Object selected;
+    private String selected2;
+    private String clientsideId;
+
+    private EditText commentView;
+    private Boolean checked;
+    private String accessToken;
+
+    private ArrayList<DeliveryTime> priceCount;
+    DeliveryDataAdapter adapter;
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -59,20 +101,173 @@ public class DeliveryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_delivery_list, container, false);
+        View view = inflater.inflate(R.layout.activity_with_delivery, container, false);
+
+        //View
+        radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
+        radioButton = (RadioButton) view.findViewById(R.id.radio_one);
+        radioButton.setText("В. О. - 7-я линия В.О., д. 63");
+        radioButton.setOnClickListener(radioButtonClickListener);
+
+        radioButton = (RadioButton) view.findViewById(R.id.radio_two);
+        radioButton.setText("Марата - Марата, 69-71");
+        radioButton.setOnClickListener(radioButtonClickListener);
+
+        radioButton = (RadioButton) view.findViewById(R.id.radio_three);
+        radioButton.setText("Спортивная - Большой проспект, д. 49");
+        radioButton.setOnClickListener(radioButtonClickListener);
+
+        radioButton = (RadioButton) view.findViewById(R.id.radio_for);
+        radioButton.setText("Дыбенко - Мурманское Шоссе, д. 63");
+        radioButton.setOnClickListener(radioButtonClickListener);
+
+        radioButton = (RadioButton) view.findViewById(R.id.radio_five);
+        radioButton.setText("Литейный - Литейный, д. 352");
+        radioButton.setOnClickListener(radioButtonClickListener);
+
+        radioButton = (RadioButton) view.findViewById(R.id.radio_six);
+        radioButton.setText("Ленинский - Бульвар Новаторов, д. 10");
+        radioButton.setOnClickListener(radioButtonClickListener);
+
+        radioButton = (RadioButton) view.findViewById(R.id.radio_seven);
+        radioButton.setText("Пионерская - Коломяжский проспект, 15А");
+        radioButton.setOnClickListener(radioButtonClickListener);
+
+        radioButton = (RadioButton) view.findViewById(R.id.radio_eight);
+        radioButton.setText("Гостиный - Садовая улица, д. 55");
+        radioButton.setOnClickListener(radioButtonClickListener);
+
+        checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+        checked = checkBox.isChecked();
+
+        //Spinner
+        spinnerTime = (Spinner) view.findViewById(R.id.spinner_time);
+        spinnerPeoples = (Spinner) view.findViewById(R.id.spinner_peoples);
+        selected2 = spinnerPeoples.getSelectedItem().toString();
+
+        //Views
+        commentView = (EditText) view.findViewById(R.id.comment);
+        String comment = commentView.getText().toString();
+
+        sendOrder = (Button) view.findViewById(R.id.send_orders);
+
+
+        LoginActivity activity = new LoginActivity();
+        Toast.makeText(inflater.getContext(), "TOKEN: "+ activity.getMyTokenFromLogin(), Toast.LENGTH_LONG).show();
+
+        accessToken = activity.getMyTokenFromLogin();
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        final ApiService[] api = {RetrofitClient.getApiService()};
+        Call<GenBasket> call = api[0].getMyBasket(accessToken);
+        call.enqueue(new Callback<GenBasket>() {
+            @Override
+            public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
+                if (response.isSuccessful()) {
+
+                    priceCount = (ArrayList<DeliveryTime>) response.body().getDeliveryTimes();
+                    adapter = new DeliveryDataAdapter(inflater.getContext(), priceCount);
+                    spinnerTime.setAdapter(adapter);
+
+
+                    spinnerTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            selected = spinnerTime.getSelectedItem().toString().replaceAll(":", "");
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
+
+                    Toast.makeText(inflater.getContext(), "SUCCESS: "+selected, Toast.LENGTH_LONG).show();
+
+                    sendOrder.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sendOrder(selected.toString(), comment, selected2, checked);
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(inflater.getContext(), "NOT SUCCESS"+selected.toString(), Toast.LENGTH_LONG).show();
+                }
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
-        }
+
+            @Override
+            public void onFailure(Call<GenBasket> call, Throwable t) {
+                Toast.makeText(inflater.getContext(), "ERROR: "+rest_id, Toast.LENGTH_LONG).show();
+            }
+        });
         return view;
+    }
+
+    View.OnClickListener radioButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            RadioButton rb = (RadioButton) v;
+            switch (rb.getId()) {
+                case R.id.radio_one:
+                    rest_id = 13;
+                    break;
+                case R.id.radio_two:
+                    rest_id = 15;
+                    break;
+                case R.id.radio_three:
+                    rest_id = 14;
+                    break;
+                case R.id.radio_for:
+                    rest_id = 12;
+                case R.id.radio_five:
+                    rest_id = 16;
+                    break;
+                case R.id.radio_six:
+                    rest_id = 11;
+                    break;
+                case R.id.radio_seven:
+                    rest_id = 10;
+                    break;
+                case R.id.radio_eight:
+                    rest_id = 9;
+                    break;
+            }
+        }
+    };
+
+    public void sendOrder(String selected, String comment, String selected2, Boolean checked) {
+        Integer rest_id_total = rest_id;
+
+        String clientId = UUID.randomUUID().toString();
+        String clientIdClean = clientId.replaceAll("-", "");
+
+        clientsideId = clientIdClean.substring(0, 16);
+
+
+        ApiService api = RetrofitClient.getApiService();
+        Call<GenBasket> call = api.postOrderInRest(accessToken, selected, null,
+                clientsideId+"", comment, "False", "cash", selected2, "stay",
+                true, rest_id_total, "False");
+        call.enqueue(new Callback<GenBasket>() {
+            @Override
+            public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
+                if (response.isSuccessful()) {
+
+                    Toast.makeText(DeliveryFragment.this.getContext(), "SUCCESS", Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(DeliveryFragment.this.getContext(), "NOT SUCCESS: "+selected, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GenBasket> call, Throwable t) {
+                Toast.makeText(DeliveryFragment.this.getContext(), "ERROR: "+rest_id, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
 
@@ -106,5 +301,69 @@ public class DeliveryFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
+    }
+
+    public class DeliveryDataAdapter extends ArrayAdapter<DeliveryTime> {
+
+        List<DeliveryTime> list;
+
+        Context context;
+        private LayoutInflater inflater;
+
+
+        public DeliveryDataAdapter(Context context, List<DeliveryTime> objects) {
+            super(context, R.layout.spinner_row_delivery, objects);
+
+            this.context = context;
+            this.inflater = LayoutInflater.from(context);
+            list = objects;
+        }
+
+        @Override
+        public DeliveryTime getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final ViewHolder vh;
+
+            if(convertView == null) {
+                View view = inflater.inflate(R.layout.spinner_row_delivery, parent, false);
+                vh = (ViewHolder) ViewHolder.create((TextView) view);
+                view.setTag(vh);
+            } else {
+                vh = (ViewHolder) convertView.getTag();
+            }
+
+            DeliveryTime item = getItem(position);
+            final String timeOfName = item.getName();
+
+
+            vh.selectedTime.setText(timeOfName);
+
+
+            return vh.rootView;
+
+
+        }
+
+    }
+    private static class ViewHolder {
+
+        public final TextView rootView;
+        public final TextView selectedTime;
+
+        private ViewHolder(TextView rootView, TextView selectedTime) {
+            this.rootView = rootView;
+            this.selectedTime = selectedTime;
+        }
+
+        public static ViewHolder create(TextView rootView) {
+            TextView selectedTime = (TextView) rootView.findViewById(R.id.time_spinner);
+
+            return new ViewHolder(rootView, selectedTime);
+        }
+
     }
 }
