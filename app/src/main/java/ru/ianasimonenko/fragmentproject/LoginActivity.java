@@ -1,5 +1,7 @@
 package ru.ianasimonenko.fragmentproject;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -26,6 +28,8 @@ public class LoginActivity extends AppCompatActivity implements InHouseFragment.
     private static String token;
     private String testToken;
     private Intent intent2;
+
+    SharedPreferences sToken;
 
 
     Retrofit.Builder builder = new Retrofit.Builder()
@@ -150,4 +154,11 @@ public class LoginActivity extends AppCompatActivity implements InHouseFragment.
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
     }
+
+    public String saveToken() {
+        sToken = getPreferences(MODE_PRIVATE);
+        String savedToken = sToken.getString(token, "");
+        return savedToken;
+    }
+
 }

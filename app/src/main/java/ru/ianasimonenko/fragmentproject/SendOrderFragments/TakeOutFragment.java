@@ -106,6 +106,7 @@ public class TakeOutFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_take_out, container, false);
 
+
         // Set the adapter
         priceCount = new ArrayList<>();
         parentView = view.findViewById(R.id.parentLayoutBasket);
