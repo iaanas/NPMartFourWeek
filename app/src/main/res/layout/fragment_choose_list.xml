@@ -8,15 +8,16 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
+    android:background="@color/white"
     app:layoutManager="LinearLayoutManager"
     tools:context=".SendOrderFragments.ChooseOrderFragment"
     tools:listitem="@layout/fragment_choose">
 
     <TextView
         android:text="ВЫБЕРИТЕ ПОДХОДЯЩИЙ ВАРИАНТ ДОСТАВКИ"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/menuBackColor"
-        android:textSize="25sp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

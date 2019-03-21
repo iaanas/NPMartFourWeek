@@ -14,20 +14,55 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Адресс доставки:"
+                    android:textSize="18dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/street"
+                    android:hint="Улица"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/corp"
+                    android:hint="Корпус"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/house"
+                    android:hint="Номер дома"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/flat"
+                    android:hint="Номер квартиры"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
             <TextView
-                android:text="Выберите ресторан:"
+                android:text="Выберите способ оплаты:"
                 android:textSize="18sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <RadioGroup
-                android:id="@+id/radioGroup"
+                android:id="@+id/radioGroupPayment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <RadioButton
-                    android:id="@+id/radio_one"
+                    android:id="@+id/radio_cash"
                     android:textColor="@color/colorAccent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -35,62 +70,13 @@
                     android:layout_weight="1" />
 
                 <RadioButton
-                    android:id="@+id/radio_two"
+                    android:id="@+id/radio_cashless"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorAccent"
                     android:layout_marginLeft="24dp"
                     android:layout_weight="1" />
 
-                <RadioButton
-                    android:id="@+id/radio_three"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:layout_marginLeft="24dp"
-                    android:layout_weight="1" />
-
-                <RadioButton
-                    android:id="@+id/radio_for"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:layout_marginLeft="24dp"
-                    android:layout_weight="1"
-                    android:checked="true" />
-
-                <RadioButton
-                    android:id="@+id/radio_five"
-                    android:textColor="@color/colorAccent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:layout_weight="1" />
-
-                <RadioButton
-                    android:id="@+id/radio_six"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:layout_marginLeft="24dp"
-                    android:layout_weight="1" />
-
-                <RadioButton
-                    android:id="@+id/radio_seven"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:layout_marginLeft="24dp"
-                    android:layout_weight="1" />
-
-                <RadioButton
-                    android:id="@+id/radio_eight"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:layout_marginLeft="24dp"
-                    android:layout_weight="1"
-                    android:checked="true" />
             </RadioGroup>
 
             <CheckBox
@@ -100,6 +86,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="запомнить ресторан как основной" />
+
+            <TextView
+                android:textSize="18sp"
+                android:text="Укажите время доставки:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <Spinner
                 android:id="@+id/spinner_time"
@@ -114,6 +106,7 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="Кол-во приборов:"
+                    android:textSize="18sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
                 <Spinner

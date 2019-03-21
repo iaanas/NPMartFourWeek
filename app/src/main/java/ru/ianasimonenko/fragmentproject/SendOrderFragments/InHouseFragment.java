@@ -1,11 +1,12 @@
 package ru.ianasimonenko.fragmentproject.SendOrderFragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +36,7 @@ import ru.ianasimonenko.fragmentproject.BasketModel.DeliveryTime;
 import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
 import ru.ianasimonenko.fragmentproject.BasketModel.PossibleTimes;
 import ru.ianasimonenko.fragmentproject.HomeActivity;
+import ru.ianasimonenko.fragmentproject.InBasketOrdersActivity;
 import ru.ianasimonenko.fragmentproject.LoginActivity;
 import ru.ianasimonenko.fragmentproject.R;
 import ru.ianasimonenko.fragmentproject.RetrofitClient;
@@ -274,6 +276,20 @@ public class InHouseFragment extends Fragment {
                 if (response.isSuccessful()) {
 
                     Toast.makeText(InHouseFragment.this.getContext(), "SUCCESS", Toast.LENGTH_LONG).show();
+
+                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(InHouseFragment.this.getContext(), android.app.AlertDialog.THEME_HOLO_LIGHT);
+                    builder.setTitle("Заказ успешно отправлен!")
+                            .setMessage("Скоро с Вами свяжется нам менеджер для подтверждения деталей заказа.")
+                            .setCancelable(false)
+                            .setNegativeButton("Ок, жду звонка", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(InHouseFragment.this.getContext(), InBasketOrdersActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
 
                 } else {
                     Toast.makeText(InHouseFragment.this.getContext(), "NOT SUCCESS: "+selected, Toast.LENGTH_LONG).show();

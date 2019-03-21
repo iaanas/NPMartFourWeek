@@ -1,11 +1,12 @@
 package ru.ianasimonenko.fragmentproject.SendOrderFragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,21 +21,35 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.ianasimonenko.fragmentproject.ApiService;
+import ru.ianasimonenko.fragmentproject.BasketModel.Address;
 import ru.ianasimonenko.fragmentproject.BasketModel.DeliveryTime;
+import ru.ianasimonenko.fragmentproject.BasketModel.Example;
 import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
+import ru.ianasimonenko.fragmentproject.InBasketOrdersActivity;
 import ru.ianasimonenko.fragmentproject.LoginActivity;
 import ru.ianasimonenko.fragmentproject.R;
 import ru.ianasimonenko.fragmentproject.RetrofitClient;
-import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent;
 import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent.DummyItem;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import javax.annotation.Nullable;
 
 /**
  * A fragment representing a list of Items.
@@ -46,6 +61,7 @@ public class DeliveryFragment extends Fragment {
     private View parentView;
 
     private Integer rest_id;
+    private String choosePay;
 
     RadioGroup radioGroup;
     RadioButton radioButton;
@@ -55,9 +71,21 @@ public class DeliveryFragment extends Fragment {
     private Spinner spinnerPeoples;
 
     private Button sendOrder;
-    private Object selected;
+    private String selected;
     private String selected2;
     private String clientsideId;
+
+    private EditText street;
+    private EditText corp;
+    private EditText house;
+    private EditText flat;
+
+//    private String streetStr;
+//    private String corpStr;
+//    private String houseStr;
+//    private String flatStr;
+
+    Address address;
 
     private EditText commentView;
     private Boolean checked;
@@ -65,6 +93,8 @@ public class DeliveryFragment extends Fragment {
 
     private ArrayList<DeliveryTime> priceCount;
     DeliveryDataAdapter adapter;
+
+    private String addressString;
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -104,38 +134,16 @@ public class DeliveryFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_with_delivery, container, false);
 
         //View
-        radioGroup = (RadioGroup) view.findViewById(R.id.radio_group);
-        radioButton = (RadioButton) view.findViewById(R.id.radio_one);
-        radioButton.setText("В. О. - 7-я линия В.О., д. 63");
+        radioGroup = (RadioGroup) view.findViewById(R.id.radioGroupPayment);
+
+        radioButton = (RadioButton) view.findViewById(R.id.radio_cash);
+        radioButton.setText("Наличные");
         radioButton.setOnClickListener(radioButtonClickListener);
 
-        radioButton = (RadioButton) view.findViewById(R.id.radio_two);
-        radioButton.setText("Марата - Марата, 69-71");
+        radioButton = (RadioButton) view.findViewById(R.id.radio_cashless);
+        radioButton.setText("Карта");
         radioButton.setOnClickListener(radioButtonClickListener);
 
-        radioButton = (RadioButton) view.findViewById(R.id.radio_three);
-        radioButton.setText("Спортивная - Большой проспект, д. 49");
-        radioButton.setOnClickListener(radioButtonClickListener);
-
-        radioButton = (RadioButton) view.findViewById(R.id.radio_for);
-        radioButton.setText("Дыбенко - Мурманское Шоссе, д. 63");
-        radioButton.setOnClickListener(radioButtonClickListener);
-
-        radioButton = (RadioButton) view.findViewById(R.id.radio_five);
-        radioButton.setText("Литейный - Литейный, д. 352");
-        radioButton.setOnClickListener(radioButtonClickListener);
-
-        radioButton = (RadioButton) view.findViewById(R.id.radio_six);
-        radioButton.setText("Ленинский - Бульвар Новаторов, д. 10");
-        radioButton.setOnClickListener(radioButtonClickListener);
-
-        radioButton = (RadioButton) view.findViewById(R.id.radio_seven);
-        radioButton.setText("Пионерская - Коломяжский проспект, 15А");
-        radioButton.setOnClickListener(radioButtonClickListener);
-
-        radioButton = (RadioButton) view.findViewById(R.id.radio_eight);
-        radioButton.setText("Гостиный - Садовая улица, д. 55");
-        radioButton.setOnClickListener(radioButtonClickListener);
 
         checkBox = (CheckBox) view.findViewById(R.id.checkBox);
         checked = checkBox.isChecked();
@@ -151,6 +159,20 @@ public class DeliveryFragment extends Fragment {
 
         sendOrder = (Button) view.findViewById(R.id.send_orders);
 
+        //Address
+        street = (EditText) view.findViewById(R.id.street);
+        corp = (EditText) view.findViewById(R.id.corp);
+        house = (EditText) view.findViewById(R.id.house);
+        flat = (EditText) view.findViewById(R.id.flat);
+
+        address = new Address("Санкт-Петербург", corp.getText().toString(),
+                flat.getText().toString(), house.getText().toString(), street.getText().toString());
+
+        addressString = "?grant_type=" + "address"+ "&city="+"Санкт-петербург"+"&corp="+corp.getText().toString()+
+                "&flat="+flat.getText().toString()+"&house="+house.getText().toString()+"&street="+street.getText().toString();
+
+
+
 
         LoginActivity activity = new LoginActivity();
         Toast.makeText(inflater.getContext(), "TOKEN: "+ activity.getMyTokenFromLogin(), Toast.LENGTH_LONG).show();
@@ -158,8 +180,8 @@ public class DeliveryFragment extends Fragment {
         accessToken = activity.getMyTokenFromLogin();
 
         // Set the adapter
-        final ApiService[] api = {RetrofitClient.getApiService()};
-        Call<GenBasket> call = api[0].getMyBasket(accessToken);
+        ApiService api = RetrofitClient.getApiService();
+        Call<GenBasket> call = api.getMyBasket(accessToken);
         call.enqueue(new Callback<GenBasket>() {
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
@@ -185,15 +207,18 @@ public class DeliveryFragment extends Fragment {
 
                     Toast.makeText(inflater.getContext(), "SUCCESS: "+selected, Toast.LENGTH_LONG).show();
 
+
+                    Toast.makeText(inflater.getContext(), "SUCCESS: ", Toast.LENGTH_LONG).show();
+
                     sendOrder.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            sendOrder(selected.toString(), comment, selected2, checked);
+                            sendOrder(selected, comment, selected2, checked);
                         }
                     });
 
                 } else {
-                    Toast.makeText(inflater.getContext(), "NOT SUCCESS"+selected.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(inflater.getContext(), "NOT SUCCESS"+selected, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -210,28 +235,11 @@ public class DeliveryFragment extends Fragment {
         public void onClick(View v) {
             RadioButton rb = (RadioButton) v;
             switch (rb.getId()) {
-                case R.id.radio_one:
-                    rest_id = 13;
+                case R.id.radio_cash:
+                    choosePay = "cash";
                     break;
-                case R.id.radio_two:
-                    rest_id = 15;
-                    break;
-                case R.id.radio_three:
-                    rest_id = 14;
-                    break;
-                case R.id.radio_for:
-                    rest_id = 12;
-                case R.id.radio_five:
-                    rest_id = 16;
-                    break;
-                case R.id.radio_six:
-                    rest_id = 11;
-                    break;
-                case R.id.radio_seven:
-                    rest_id = 10;
-                    break;
-                case R.id.radio_eight:
-                    rest_id = 9;
+                case R.id.radio_cashless:
+                    choosePay = "cashless";
                     break;
             }
         }
@@ -239,34 +247,56 @@ public class DeliveryFragment extends Fragment {
 
     public void sendOrder(String selected, String comment, String selected2, Boolean checked) {
         Integer rest_id_total = rest_id;
+        String payment = choosePay;
 
         String clientId = UUID.randomUUID().toString();
         String clientIdClean = clientId.replaceAll("-", "");
 
         clientsideId = clientIdClean.substring(0, 16);
 
+        Address address = new Address("Санкт-Петербург", street.getText().toString(), house.getText().toString(),
+                corp.getText().toString(), flat.getText().toString());
+
+        Example example = new Example(address, selected, null, clientsideId+"", comment, "False", "cash", selected2, "delivery",
+                true, rest_id_total, "False");
+
+
 
         ApiService api = RetrofitClient.getApiService();
-        Call<GenBasket> call = api.postOrderInRest(accessToken, selected, null,
-                clientsideId+"", comment, "False", "cash", selected2, "stay",
-                true, rest_id_total, "False");
-        call.enqueue(new Callback<GenBasket>() {
-            @Override
-            public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
-                if (response.isSuccessful()) {
 
-                    Toast.makeText(DeliveryFragment.this.getContext(), "SUCCESS", Toast.LENGTH_LONG).show();
+        Call<Example> call = api.postOrderDelivery(accessToken, example);
+        call.enqueue(new Callback<Example>() {
+            @Override
+            public void onResponse(Call<Example> call, Response<Example> response) {
+                if(response.isSuccessful()) {
+                    Toast.makeText(DeliveryFragment.this.getContext(), "SUCCESS: "+ example, Toast.LENGTH_SHORT).show();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DeliveryFragment.this.getContext(), AlertDialog.THEME_HOLO_LIGHT);
+                    builder.setTitle("Заказ успешно отправлен!")
+                            .setMessage("Скоро с Вами свяжется нам менеджер для подтверждения деталей заказа.")
+                            .setCancelable(false)
+                            .setNegativeButton("Ок, жду звонка", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(DeliveryFragment.this.getContext(), InBasketOrdersActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
 
                 } else {
-                    Toast.makeText(DeliveryFragment.this.getContext(), "NOT SUCCESS: "+selected, Toast.LENGTH_LONG).show();
+                    Toast.makeText(DeliveryFragment.this.getContext(), "NOT SUCCESS: "+ example, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<GenBasket> call, Throwable t) {
-                Toast.makeText(DeliveryFragment.this.getContext(), "ERROR: "+rest_id, Toast.LENGTH_LONG).show();
+            public void onFailure(Call<Example> call, Throwable t) {
+                Toast.makeText(DeliveryFragment.this.getContext(), "ERROR: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+
 
     }
 

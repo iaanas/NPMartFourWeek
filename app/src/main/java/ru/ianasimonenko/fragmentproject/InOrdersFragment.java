@@ -9,7 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,6 +44,8 @@ public class InOrdersFragment extends Fragment {
     private ListView listView;
 
     private OrdersDataAdapter adapter;
+
+    private Button addOrderAgain;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -81,8 +85,11 @@ public class InOrdersFragment extends Fragment {
 
         listView = (ListView) view.findViewById(R.id.listViewOrders);
 
+        addOrderAgain = (Button) view.findViewById(R.id.button_add_in_orders);
+
         LoginActivity activity = new LoginActivity();
         String accessToken = activity.getMyTokenFromLogin();
+
 
 
         ApiService api = RetrofitClient.getApiService();

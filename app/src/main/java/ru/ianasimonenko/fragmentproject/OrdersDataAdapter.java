@@ -1,7 +1,10 @@
 package ru.ianasimonenko.fragmentproject;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,18 +12,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
+import ru.ianasimonenko.fragmentproject.OrdersModel.GenOrders;
 import ru.ianasimonenko.fragmentproject.OrdersModel.Order;
+import ru.ianasimonenko.fragmentproject.SendOrderFragments.DeliveryFragment;
 
 public class OrdersDataAdapter extends ArrayAdapter<Order> {
     List<Order> list;
@@ -80,6 +90,50 @@ public class OrdersDataAdapter extends ArrayAdapter<Order> {
 
         vh.total_cost_create.setText(item.getPriceTotal().toString());
 
+        LoginActivity activity = new LoginActivity();
+        String accessToken = activity.getMyTokenFromLogin();
+
+        vh.addOrderAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApiService api = RetrofitClient.getApiService();
+                Call<GenOrders> callorderAgain = api.addOrderAgain(accessToken, item.getId(), "add_again");
+                callorderAgain.enqueue(new Callback<GenOrders>() {
+                    @Override
+                    public void onResponse(Call<GenOrders> call, Response<GenOrders> response) {
+                        if(response.isSuccessful()) {
+                            Toast.makeText(context, "SUCCESS "+
+                                    item.getId(), Toast.LENGTH_SHORT).show();
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT);
+                            builder.setTitle("Заказ в корзине!")
+                                    .setMessage("Заказ повторно успешно добавлен в корзину.")
+                                    .setCancelable(false)
+                                    .setNegativeButton("Ок", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent intent = new Intent(context, InBasketOrdersActivity.class);
+                                            context.startActivity(intent);
+                                        }
+                                    });
+                            AlertDialog alertDialog = builder.create();
+                            alertDialog.show();
+
+                        } else {
+                            Toast.makeText(context, "NOT SUCCESS "+
+                                    item.getId(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GenOrders> call, Throwable t) {
+                        Toast.makeText(context, "ERROR "+
+                                t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
 
         return vh.rootView;
     }
@@ -100,9 +154,11 @@ public class OrdersDataAdapter extends ArrayAdapter<Order> {
 
         public final ListView list_of_products;
 
+        public final Button addOrderAgain;
+
         private ViewHolder(RelativeLayout rootView, TextView number, TextView date_create, TextView restaurant_create, TextView status_create,
                            TextView what_todo_create, TextView delivery_create, TextView peoples_create, TextView time_of_delivery_create,
-                           TextView comment_create, TextView total_cost_create, ListView list_of_products) {
+                           TextView comment_create, TextView total_cost_create, ListView list_of_products, Button addOrderAgain) {
             this.rootView = rootView;
             this.number = number;
             this.date_create = date_create;
@@ -116,6 +172,8 @@ public class OrdersDataAdapter extends ArrayAdapter<Order> {
             this.total_cost_create = total_cost_create;
 
             this.list_of_products = list_of_products;
+
+            this.addOrderAgain = addOrderAgain;
         }
 
         public static ViewHolder create(RelativeLayout rootView) {
@@ -132,8 +190,10 @@ public class OrdersDataAdapter extends ArrayAdapter<Order> {
 
             ListView list_of_products = (ListView) rootView.findViewById(R.id.list_products);
 
+            Button addOrderAgain = (Button) rootView.findViewById(R.id.button_add_in_orders);
+
             return new ViewHolder(rootView, number, date_create, restaurant_create, status_create, what_todo_create, delivery_create, peoples_create,
-                    time_of_delivery_create, comment_create, total_cost_create, list_of_products);
+                    time_of_delivery_create, comment_create, total_cost_create, list_of_products, addOrderAgain);
         }
 
     }

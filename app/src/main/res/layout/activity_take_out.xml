@@ -101,6 +101,12 @@
                 android:layout_height="wrap_content"
                 android:text="запомнить ресторан как основной" />
 
+            <TextView
+                android:textSize="18sp"
+                android:text="Укажите время доставки:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <Spinner
                 android:id="@+id/spinner_time"
                 android:drawSelectorOnTop="true"
@@ -114,6 +120,7 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="Кол-во приборов:"
+                    android:textSize="18sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
                 <Spinner

@@ -8,68 +8,65 @@ public class Address {
     @SerializedName("city")
     @Expose
     private String city;
-
+    @SerializedName("street")
+    @Expose
+    private String street;
+    @SerializedName("house")
+    @Expose
+    private String house;
     @SerializedName("corp")
     @Expose
     private String corp;
-
     @SerializedName("flat")
     @Expose
     private String flat;
 
-    @SerializedName("house")
-    @Expose
-    private String house;
-
-    @SerializedName("street")
-    @Expose
-    private String street;
-
-    public Address(String city, String corp, String flat, String house, String street) {
+    public Address(String city, String street, String house, String corp, String flat) {
         this.city = city;
+        this.street = street;
+        this.house = house;
         this.corp = corp;
         this.flat = flat;
-        this.house = house;
-        this.street = street;
     }
 
     public String getCity() {
         return city;
     }
 
-    public String getCorp() {
-        return corp;
-    }
-
-    public String getFlat() {
-        return flat;
-    }
-
-    public String getHouse() {
-        return house;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getStreet() {
         return street;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    public void setCorp(String corp) {
-        this.corp = corp;
-    }
-
-    public void setFlat(String flat) {
-        this.flat = flat;
+    public String getHouse() {
+        return house;
     }
 
     public void setHouse(String house) {
         this.house = house;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public String getCorp() {
+        return corp;
     }
+
+    public void setCorp(String corp) {
+        this.corp = corp;
+    }
+
+    public String getFlat() {
+        return flat;
+    }
+
+    public void setFlat(String flat) {
+        this.flat = flat;
+    }
+
 }

@@ -1,12 +1,24 @@
 package ru.ianasimonenko.fragmentproject;
 
+import com.google.gson.JsonObject;
+
+import java.util.Map;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import ru.ianasimonenko.fragmentproject.BasketModel.Address;
 import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
 import ru.ianasimonenko.fragmentproject.BasketModel.ExampleTimes;
@@ -42,20 +54,16 @@ public interface ApiService {
                               @Field("type") String type);
 
     @FormUrlEncoded
+    @POST("/api/app/orders/")
+    Call<GenOrders> addOrderAgain(@Header("Authorization") String token,
+                                  @Field("order_id") Integer orderId,
+                                  @Field("type") String type);
+
+
+
     @POST("/api/app/order/")
-    Call<GenBasket> postOrderDelivery(@Header("Authorization") String token,
-                                      @Body Address address,
-                                      @Field("arriving") String arriving,
-                                      @Field("cash_change") String cash_change,
-                                      @Field("clientside_id") String clientside_id,
-                                      @Field("comment") String comment,
-                                      @Field("online_order") Boolean online_order,
-                                      @Field("payment_type") String payment_type,
-                                      @Field("people_amount") String people_amount,
-                                      @Field("presence") String presence,
-                                      @Field("remember_restaurant") Boolean remember_restaurant,
-                                      @Field("restaurant_id") Integer restaurant_id,
-                                      @Field("should_not_call") Boolean should_not_call);
+    Call<ru.ianasimonenko.fragmentproject.BasketModel.Example> postOrderDelivery(@Header("Authorization") String token,
+                                                                                 @Body ru.ianasimonenko.fragmentproject.BasketModel.Example body);
 
     @FormUrlEncoded
     @POST("/api/app/order/")

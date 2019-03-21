@@ -1,6 +1,9 @@
 package ru.ianasimonenko.fragmentproject.SendOrderFragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,6 +31,7 @@ import ru.ianasimonenko.fragmentproject.ApiService;
 import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
 import ru.ianasimonenko.fragmentproject.BasketModel.DeliveryTime;
 import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
+import ru.ianasimonenko.fragmentproject.InBasketOrdersActivity;
 import ru.ianasimonenko.fragmentproject.LoginActivity;
 import ru.ianasimonenko.fragmentproject.R;
 import ru.ianasimonenko.fragmentproject.RetrofitClient;
@@ -277,6 +281,20 @@ public class TakeOutFragment extends Fragment {
                 if (response.isSuccessful()) {
 
                     Toast.makeText(TakeOutFragment.this.getContext(), "SUCCESS"+rest_id_total, Toast.LENGTH_LONG).show();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(TakeOutFragment.this.getContext(), AlertDialog.THEME_HOLO_LIGHT);
+                    builder.setTitle("Заказ успешно отправлен!")
+                            .setMessage("Скоро с Вами свяжется нам менеджер для подтверждения деталей заказа.")
+                            .setCancelable(false)
+                            .setNegativeButton("Ок, жду звонка", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(TakeOutFragment.this.getContext(), InBasketOrdersActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
 
                 } else {
                     Toast.makeText(TakeOutFragment.this.getContext(), "NOT SUCCESS: "+rest_id_total, Toast.LENGTH_LONG).show();
