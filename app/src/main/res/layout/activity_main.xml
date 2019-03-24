@@ -7,6 +7,6 @@
         android:id="@+id/listFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="ru.ianasimonenko.fragmentproject.ItemFragment"/>
+        android:name="ru.naparahandroid.fragmentproject.ItemFragment"/>
 
 </RelativeLayout>

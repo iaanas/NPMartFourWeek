@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.ianasimonenko.fragmentproject">
+    package="ru.naparahandroid.fragmentproject">
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -11,23 +11,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor">
-        <activity android:name=".SendOrderFragments.InHouseActivity">
+        <activity android:name="ru.naparahandroid.fragmentproject.SendOrderFragments.InHouseActivity">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
                 <!--<action android:name="android.intent.action.USER_PRESENT" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".SendOrderActivity">
+        <activity android:name="ru.naparahandroid.fragmentproject.SendOrderActivity">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
                 <!--<action android:name="android.intent.action.USER_PRESENT" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".FoodListInOrdersActivity">
+        <activity android:name="ru.naparahandroid.fragmentproject.FoodListInOrdersActivity">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -37,7 +37,7 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".OrdersActivity">
+        <activity android:name="ru.naparahandroid.fragmentproject.OrdersActivity">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -45,29 +45,29 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".BasketActivityTwo">
+        <activity android:name="ru.naparahandroid.fragmentproject.BasketActivityTwo">
 
              <!--<intent-filter>-->
              <!--<action android:name="android.intent.action.MAIN" />-->
              <!--<action android:name="android.intent.action.USER_PRESENT" />-->
 
 
-             <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
              <!--</intent-filter>-->
         </activity>
         <activity
-            android:name=".InBasketOrdersActivity"
-            android:parentActivityName=".HomeActivity">
+            android:name="ru.naparahandroid.fragmentproject.InBasketOrdersActivity"
+            android:parentActivityName="ru.naparahandroid.fragmentproject.HomeActivity">
 
              <!--<intent-filter>-->
              <!--<action android:name="android.intent.action.MAIN" />-->
              <!--<action android:name="android.intent.action.USER_PRESENT" />-->
 
 
-             <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
              <!--</intent-filter>-->
         </activity>
-        <activity android:name=".PhoneAuthActivity">
+        <activity android:name="ru.naparahandroid.fragmentproject.PhoneAuthActivity">
 
              <intent-filter>
              <action android:name="android.intent.action.MAIN" />
@@ -76,9 +76,9 @@
              <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
         </activity>
-        <activity android:name=".RestaurantActivity" />
-        <activity android:name=".BonusActivity" />
-        <activity android:name=".BasketActivity">
+        <activity android:name="ru.naparahandroid.fragmentproject.RestaurantActivity" />
+        <activity android:name="ru.naparahandroid.fragmentproject.BonusActivity" />
+        <activity android:name="ru.naparahandroid.fragmentproject.BasketActivity">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -87,7 +87,7 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".HomeActivity">
+        <activity android:name="ru.naparahandroid.fragmentproject.HomeActivity">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -96,18 +96,7 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".MainActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity
-            android:name=".EditProfileActivity"
-            android:parentActivityName=".HomeActivity">
+        <activity android:name="ru.naparahandroid.fragmentproject.MainActivity">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -117,8 +106,8 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".LoginActivity"
-            android:parentActivityName=".MainActivity">
+            android:name="ru.naparahandroid.fragmentproject.EditProfileActivity"
+            android:parentActivityName="ru.naparahandroid.fragmentproject.HomeActivity">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -128,8 +117,19 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".Product34Activity"
-            android:parentActivityName=".HomeActivity"
+            android:name="ru.naparahandroid.fragmentproject.LoginActivity"
+            android:parentActivityName="ru.naparahandroid.fragmentproject.MainActivity">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name="ru.naparahandroid.fragmentproject.Product34Activity"
+            android:parentActivityName="ru.naparahandroid.fragmentproject.HomeActivity"
             android:theme="@style/AppTheme">
 
             <!-- <intent-filter> -->

@@ -5,7 +5,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "ru.ianasimonenko.fragmentproject"
+        applicationId "ru.naparahandroid.fragmentproject"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
