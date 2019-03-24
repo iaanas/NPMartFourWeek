@@ -3,7 +3,7 @@ package ru.ianasimonenko.fragmentproject.Profile.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ProfileIn {
+class ProfileIn {
     @SerializedName("birthday")
     @Expose
     private Birthday birthday;

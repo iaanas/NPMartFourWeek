@@ -1,6 +1,7 @@
 package ru.ianasimonenko.fragmentproject;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,11 @@ import java.util.List;
 import ru.ianasimonenko.fragmentproject.Products.GenProducts;
 
 
-public class ProdAdapter extends ArrayAdapter<GenProducts> {
+class ProdAdapter extends ArrayAdapter<GenProducts> {
 
-    List<GenProducts> contactList;
-    Context context;
-    private LayoutInflater mInflater;
+    private final List<GenProducts> contactList;
+    private final Context context;
+    private final LayoutInflater mInflater;
 
     // Constructors
     public ProdAdapter(Context context, List<GenProducts> objects) {
@@ -35,8 +36,9 @@ public class ProdAdapter extends ArrayAdapter<GenProducts> {
         return contactList.get(position);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         final ProdAdapter.ViewHolder vh;
         if (convertView == null) {
             View view = mInflater.inflate(R.layout.menu_row, parent, false);
@@ -48,6 +50,7 @@ public class ProdAdapter extends ArrayAdapter<GenProducts> {
 
         GenProducts item = getItem(position);
 
+        assert item != null;
         vh.textViewName.setText(item.getDish().getName());
         vh.textViewDescription.setText(item.getDish().getDescription());
         vh.textViewCalories.setText(item.getDish().getCalories());
@@ -61,13 +64,13 @@ public class ProdAdapter extends ArrayAdapter<GenProducts> {
     }
 
     private static class ViewHolder {
-        public final RelativeLayout rootView;
-        public final ImageView imageView;
-        public final TextView textViewName;
-        public final TextView textViewPrice;
-        public final TextView textViewGrams;
-        public final TextView textViewCalories;
-        public final TextView textViewDescription;
+        final RelativeLayout rootView;
+        final ImageView imageView;
+        final TextView textViewName;
+        final TextView textViewPrice;
+        final TextView textViewGrams;
+        final TextView textViewCalories;
+        final TextView textViewDescription;
 
         private ViewHolder(RelativeLayout rootView, ImageView imageView, TextView textViewName, TextView textViewPrice, TextView textViewGrams, TextView textViewCalories, TextView textViewDescription) {
             this.rootView = rootView;
@@ -79,13 +82,13 @@ public class ProdAdapter extends ArrayAdapter<GenProducts> {
             this.textViewDescription = textViewDescription;
         }
 
-        public static ProdAdapter.ViewHolder create(RelativeLayout rootView) {
-            ImageView imageView = (ImageView) rootView.findViewById(R.id.product_image);
-            TextView textViewName = (TextView) rootView.findViewById(R.id.product_name);
-            TextView textViewPrice = (TextView) rootView.findViewById(R.id.product_price);
-            TextView textViewGrams = (TextView) rootView.findViewById(R.id.product_grams);
-            TextView textViewCalories = (TextView) rootView.findViewById(R.id.product_calories);
-            TextView textViewDescription = (TextView) rootView.findViewById(R.id.product_description);
+        static ProdAdapter.ViewHolder create(RelativeLayout rootView) {
+            ImageView imageView = rootView.findViewById(R.id.product_image);
+            TextView textViewName = rootView.findViewById(R.id.product_name);
+            TextView textViewPrice = rootView.findViewById(R.id.product_price);
+            TextView textViewGrams = rootView.findViewById(R.id.product_grams);
+            TextView textViewCalories = rootView.findViewById(R.id.product_calories);
+            TextView textViewDescription = rootView.findViewById(R.id.product_description);
             return new ProdAdapter.ViewHolder(rootView, imageView, textViewName, textViewPrice, textViewGrams, textViewCalories, textViewDescription);
         }
     }

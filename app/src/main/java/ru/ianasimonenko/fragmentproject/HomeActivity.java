@@ -1,10 +1,7 @@
 package ru.ianasimonenko.fragmentproject;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -33,40 +30,38 @@ public class HomeActivity extends AppCompatActivity implements ItemFragment.OnLi
 //        token = intent.getStringExtra("access_token3");
 //        Toast.makeText(HomeActivity.this, "Token"+token, Toast.LENGTH_SHORT).show();
 
-        Toolbar topToolBar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar topToolBar = findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
 
         //BottomNavigationBar
         BottomNavigationView bottomNavigationView =
-                (BottomNavigationView) findViewById(R.id.navigation);
+                findViewById(R.id.navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener
-                (new BottomNavigationView.OnNavigationItemSelectedListener() {
-                     @Override
-                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                         Fragment selectedFragment = null;
-                         switch (item.getItemId()) {
-                             case R.id.navigation_menu:
-                                 selectedFragment = ItemFragment.newInstance(0);
-                                 break;
-                             case R.id.navigation_bonus:
-                                 selectedFragment = RestaurantFragment.newInstance(0);
-                                 break;
-                             case R.id.navigation_profile:
-                                 selectedFragment = ProfileFragment.newInstance(0);
-                                 break;
-                             case R.id.navigation_info:
-                                 selectedFragment = InfoFragment.newInstance(0);
-                                 break;
-                         }
+                (item -> {
+                    Fragment selectedFragment = null;
+                    switch (item.getItemId()) {
+                        case R.id.navigation_menu:
+                            selectedFragment = ItemFragment.newInstance(0);
+                            break;
+                        case R.id.navigation_bonus:
+                            selectedFragment = RestaurantFragment.newInstance(0);
+                            break;
+                        case R.id.navigation_profile:
+                            selectedFragment = ProfileFragment.newInstance(0);
+                            break;
+                        case R.id.navigation_info:
+                            selectedFragment = InfoFragment.newInstance(0);
+                            break;
+                    }
 
-                         FragmentTransaction transaction = getSupportFragmentManager()
-                                 .beginTransaction();
-                         transaction.replace(R.id.frame_layout, selectedFragment);
-                         transaction.commit();
-                         return true;
-                     }
-                 }
+                    FragmentTransaction transaction = getSupportFragmentManager()
+                            .beginTransaction();
+                    assert selectedFragment != null;
+                    transaction.replace(R.id.frame_layout, selectedFragment);
+                    transaction.commit();
+                    return true;
+                }
                 );
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, ItemFragment.newInstance(0));
@@ -109,17 +104,6 @@ public class HomeActivity extends AppCompatActivity implements ItemFragment.OnLi
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onListFragmentInteraction(MyMenuAdapter item) {
-
-    }
-
-
-    @Override
-    public void onListFragmentInteraction(DataRestaurantAdapter item) {
-
     }
 
 

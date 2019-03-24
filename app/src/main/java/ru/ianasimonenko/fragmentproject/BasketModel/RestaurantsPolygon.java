@@ -3,7 +3,7 @@ package ru.ianasimonenko.fragmentproject.BasketModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RestaurantsPolygon {
+class RestaurantsPolygon {
 
     @SerializedName("geometry")
     @Expose

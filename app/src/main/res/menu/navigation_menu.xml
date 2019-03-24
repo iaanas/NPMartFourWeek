@@ -4,15 +4,15 @@
     <group android:checkableBehavior="single">
         <item android:id="@+id/account"
             android:icon="@drawable/ic_person_black_24dp"
-            android:title="Мой Профиль"/>
+            android:title="@string/navigationMenuMyprofile"/>
 
         <item android:id="@+id/orders"
             android:icon="@drawable/ic_star_border_black_24dp"
-            android:title="Мои заказы"/>
+            android:title="@string/navigationMenuMyOrders"/>
 
         <item android:id="@+id/restorants"
             android:icon="@drawable/ic_store_black_24dp"
-            android:title="Рестораны"/>
+            android:title="@string/navigationMenuRestaurants"/>
     </group>
 
 </menu>

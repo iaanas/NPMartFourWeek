@@ -2,6 +2,7 @@ package ru.ianasimonenko.fragmentproject;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +14,6 @@ import android.view.ViewGroup;
 import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
 import ru.ianasimonenko.fragmentproject.dummy.DummyContent.DummyItem;
 
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -56,7 +56,7 @@ public class InfoFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_info_list, container, false);
 

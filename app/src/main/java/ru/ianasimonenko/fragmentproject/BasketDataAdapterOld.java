@@ -1,6 +1,8 @@
 package ru.ianasimonenko.fragmentproject;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +18,12 @@ import java.util.List;
 
 import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
 
-public class BasketDataAdapterOld extends ArrayAdapter<BasketPosition> {
+class BasketDataAdapterOld extends ArrayAdapter<BasketPosition> {
 
-    List<BasketPosition> list;
+    private final List<BasketPosition> list;
 
-    Context context;
-    private LayoutInflater inflater;
+    private final Context context;
+    private final LayoutInflater inflater;
 
 
     public BasketDataAdapterOld(Context context, List<BasketPosition> objects) {
@@ -37,8 +39,10 @@ public class BasketDataAdapterOld extends ArrayAdapter<BasketPosition> {
         return list.get(position);
     }
 
+    @NonNull
+    @SuppressLint("SetTextI18n")
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         final ViewHolder vh;
 
         if(convertView == null) {
@@ -51,18 +55,20 @@ public class BasketDataAdapterOld extends ArrayAdapter<BasketPosition> {
 
         BasketPosition item = getItem(position);
 
+        assert item != null;
         vh.name_of_position.setText(item.getPosition().getName());
-        vh.quantity.setText(item.getQuantity().toString());
+        vh.quantity.setText(String.valueOf(item.getQuantity()));
 
-        ArrayList<String> arr = new ArrayList<>();
-        arr.addAll(item.getPosition().getImages());
+        ArrayList<String> arr = new ArrayList<>(item.getPosition().getImages());
         for(int i = 0; i<arr.size(); i++) {
             Picasso.with(context).load(item.getPosition().getImages().get(i)).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(vh.imageView);
         }
 
-        vh.price_single_item.setText(item.getPriceSingleItem().toString() + "РУБ.");
+        String MONEY_CHOOSE = "РУБ.";
+        vh.price_single_item.setText(String.valueOf(item.getPriceSingleItem()) + MONEY_CHOOSE);
 //        vh.price_sub_items.setText(item.getPriceSubitems().toString());
-        vh.price_total.setText("Итого: "+item.getPriceTotal().toString());
+        String TOTAL_SUM = "Итого: ";
+        vh.price_total.setText(TOTAL_SUM +String.valueOf(item.getPriceTotal()));
 
         return vh.rootView;
 
@@ -71,13 +77,13 @@ public class BasketDataAdapterOld extends ArrayAdapter<BasketPosition> {
 
     public static class ViewHolder {
 
-        public final RelativeLayout rootView;
-        public final ImageView imageView;
-        public final TextView quantity;
-        public final TextView price_single_item;
-        public final TextView price_sub_items;
-        public final TextView price_total;
-        public final TextView name_of_position;
+        final RelativeLayout rootView;
+        final ImageView imageView;
+        final TextView quantity;
+        final TextView price_single_item;
+        final TextView price_sub_items;
+        final TextView price_total;
+        final TextView name_of_position;
 
         private ViewHolder(RelativeLayout rootView, ImageView imageView,
                            TextView quantity, TextView price_single_item,
@@ -92,13 +98,13 @@ public class BasketDataAdapterOld extends ArrayAdapter<BasketPosition> {
             this.name_of_position = name_of_position;
         }
 
-        public static ViewHolder create(RelativeLayout rootView) {
-            ImageView imageView = (ImageView) rootView.findViewById(R.id.bask_image);
-            TextView quantity = (TextView) rootView.findViewById(R.id.bask_count);
-            TextView price_single_item = (TextView) rootView.findViewById(R.id.bask_cost_item);
-            TextView price_sub_items = (TextView) rootView.findViewById(R.id.bask_subItems);
-            TextView price_total = (TextView) rootView.findViewById(R.id.bask_cost_total);
-            TextView name_of_position = (TextView) rootView.findViewById(R.id.bask_name);
+        static ViewHolder create(RelativeLayout rootView) {
+            ImageView imageView = rootView.findViewById(R.id.bask_image);
+            TextView quantity = rootView.findViewById(R.id.bask_count);
+            TextView price_single_item = rootView.findViewById(R.id.bask_cost_item);
+            TextView price_sub_items = rootView.findViewById(R.id.bask_subItems);
+            TextView price_total = rootView.findViewById(R.id.bask_cost_total);
+            TextView name_of_position = rootView.findViewById(R.id.bask_name);
 
             return new ViewHolder(rootView, imageView, quantity, price_single_item,
                     price_sub_items, price_total, name_of_position);

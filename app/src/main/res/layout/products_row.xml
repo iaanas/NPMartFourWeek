@@ -26,7 +26,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="Название: "
+                android:text="@string/prodrowTitles"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold"
                 android:textSize="18sp"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="Кол-во: "
+                android:text="@string/prodRowQuality"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold"
                 android:textSize="18sp"
@@ -70,7 +70,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="Цена: "
+                android:text="@string/prodRowCost"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold"
                 android:textSize="18sp"
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="Итого: "
+                android:text="@string/prodRowTotal"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold"
                 android:textSize="18sp"

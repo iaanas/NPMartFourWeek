@@ -2,6 +2,7 @@ package ru.ianasimonenko.fragmentproject;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +13,6 @@ import android.view.ViewGroup;
 
 import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
 import ru.ianasimonenko.fragmentproject.dummy.DummyContent.DummyItem;
-
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -56,7 +55,7 @@ public class TempProdFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_temp_prod_list, container, false);
 
@@ -69,7 +68,7 @@ public class TempProdFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter3(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyItemRecyclerViewAdapterThree(DummyContent.ITEMS, mListener));
         }
         return view;
     }

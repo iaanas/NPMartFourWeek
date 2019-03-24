@@ -2,6 +2,7 @@ package ru.ianasimonenko.fragmentproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,7 +34,7 @@ public class PhoneAuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_auth);
 
-        final EditText phone = (EditText) findViewById(R.id.et_phone);
+        final EditText phone = findViewById(R.id.et_phone);
 
 
 
@@ -42,14 +43,14 @@ public class PhoneAuthActivity extends AppCompatActivity {
         );
         formatWatcher2.installOn(phone);
 
-        Button submitBtn = (Button) findViewById(R.id.btn_submit);
+        Button submitBtn = findViewById(R.id.btn_submit);
 
-        mResponseTv = (TextView) findViewById(R.id.tv_response);
+        mResponseTv = findViewById(R.id.tv_response);
 
         mAPIService = ApiUtils.getAPIService();
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
-            Intent intent = new Intent(PhoneAuthActivity.this, LoginActivity.class);
+            final Intent intent = new Intent(PhoneAuthActivity.this, LoginActivity.class);
             @Override
             public void onClick(View v) {
                 String phoneAuth = phone.getText().toString();
@@ -64,10 +65,10 @@ public class PhoneAuthActivity extends AppCompatActivity {
         });
 
     }
-    public void sendPost(String phoneAuth) {
+    private void sendPost(String phoneAuth) {
         mAPIService.savePhone(phoneAuth).enqueue(new Callback<PhoneAuthModel>() {
             @Override
-            public void onResponse(Call<PhoneAuthModel> call, Response<PhoneAuthModel> response) {
+            public void onResponse(@NonNull Call<PhoneAuthModel> call, @NonNull Response<PhoneAuthModel> response) {
 
                 if(response.isSuccessful()) {
                     Toast.makeText(PhoneAuthActivity.this, "Tel: "+ phoneClenedTwo, Toast.LENGTH_LONG).show();
@@ -78,7 +79,7 @@ public class PhoneAuthActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<PhoneAuthModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<PhoneAuthModel> call, @NonNull Throwable t) {
                 Log.e("ERROR", "Unable to submit post to API.");
             }
         });

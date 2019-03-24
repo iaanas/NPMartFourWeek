@@ -4,17 +4,17 @@
     <item
         android:id="@+id/action_item1"
         android:icon="@drawable/ic_restaurant_menu_black_24dp"
-        android:title="Меню"/>
+        android:title="@string/botNavItemsMenu"/>
     <item
         android:id="@+id/action_item2"
         android:icon="@drawable/ic_card_giftcard_black_24dp"
-        android:title="Блюда за баллы"/>
+        android:title="@string/botNavItemsBonus"/>
     <item
         android:id="@+id/action_item7"
         android:icon="@drawable/ic_folder_shared_black_24dp"
-        android:title="Профиль"/>
+        android:title="@string/botNavItemsProfile"/>
     <item
         android:id="@+id/action_item4"
         android:icon="@drawable/ic_info_black_24dp"
-        android:title="Инфо"/>
+        android:title="@string/botNavItemsinfo"/>
 </menu>

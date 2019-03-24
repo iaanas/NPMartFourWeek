@@ -12,7 +12,7 @@
         android:id="@+id/navigation_bonus"
         android:icon="@drawable/ic_store_black_24dp"
         app:showAsAction="withText"
-        android:title="Наши рестораны" />
+        android:title="@string/nadigationOurRestorants" />
 
     <item
         android:id="@+id/navigation_profile"

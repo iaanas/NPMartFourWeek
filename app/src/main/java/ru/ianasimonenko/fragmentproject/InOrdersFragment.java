@@ -2,27 +2,21 @@ package ru.ianasimonenko.fragmentproject;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.ianasimonenko.fragmentproject.OrdersModel.GenOrders;
 import ru.ianasimonenko.fragmentproject.OrdersModel.Order;
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -34,18 +28,13 @@ public class InOrdersFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     private ArrayList<Order> priceCount;
 
-    private View parentView;
     private ListView listView;
 
     private OrdersDataAdapter adapter;
-
-    private Button addOrderAgain;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -69,23 +58,24 @@ public class InOrdersFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            // TODO: Customize parameters
+            int mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_orders, container, false);
 
         // Set the adapter
         priceCount = new ArrayList<>();
 
-        parentView = view.findViewById(R.id.parentLayoutOrders);
+        View parentView = view.findViewById(R.id.parentLayoutOrders);
 
-        listView = (ListView) view.findViewById(R.id.listViewOrders);
+        listView = view.findViewById(R.id.listViewOrders);
 
-        addOrderAgain = (Button) view.findViewById(R.id.button_add_in_orders);
+        Button addOrderAgain = view.findViewById(R.id.button_add_in_orders);
 
         LoginActivity activity = new LoginActivity();
         String accessToken = activity.getMyTokenFromLogin();
@@ -96,8 +86,9 @@ public class InOrdersFragment extends Fragment {
         Call<GenOrders> call = api.getOrders(accessToken, "get");
         call.enqueue(new Callback<GenOrders>() {
             @Override
-            public void onResponse(Call<GenOrders> call, Response<GenOrders> response) {
+            public void onResponse(@NonNull Call<GenOrders> call, @NonNull Response<GenOrders> response) {
                 if (response.isSuccessful()) {
+                    assert response.body() != null;
                     priceCount = (ArrayList<Order>) response.body().getOrders();
 
                     adapter = new OrdersDataAdapter(inflater.getContext(), priceCount);
@@ -106,7 +97,7 @@ public class InOrdersFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<GenOrders> call, Throwable t) {
+            public void onFailure(@NonNull Call<GenOrders> call, @NonNull Throwable t) {
 
             }
         });
@@ -142,7 +133,5 @@ public class InOrdersFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(OrdersDataAdapter item);
     }
 }

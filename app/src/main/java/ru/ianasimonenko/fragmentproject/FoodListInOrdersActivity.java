@@ -9,20 +9,20 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.ianasimonenko.fragmentproject.OrdersModel.GenOrders;
 import ru.ianasimonenko.fragmentproject.OrdersModel.Order;
-import ru.ianasimonenko.fragmentproject.OrdersModel.Position;
 
 public class FoodListInOrdersActivity extends AppCompatActivity {
     private ArrayList<Order> priceCount;
 
-    private View parentView;
     private ListView listView;
 
-    private OrdersDataAdapter2 adapter;
+    private OrdersDataAdapterTwo adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +32,9 @@ public class FoodListInOrdersActivity extends AppCompatActivity {
 
         priceCount = new ArrayList<>();
 
-        parentView = findViewById(R.id.rowParent);
+        View parentView = findViewById(R.id.rowParent);
 
-        listView = (ListView) findViewById(R.id.list_products);
+        listView = findViewById(R.id.list_products);
 
         LoginActivity activity = new LoginActivity();
         String accessToken = activity.getMyTokenFromLogin();
@@ -42,19 +42,23 @@ public class FoodListInOrdersActivity extends AppCompatActivity {
         ApiService api = RetrofitClient.getApiService();
         Call<GenOrders> call = api.getOrders(accessToken, "get");
         call.enqueue(new Callback<GenOrders>() {
+            @ParametersAreNonnullByDefault
             @Override
             public void onResponse(Call<GenOrders> call, Response<GenOrders> response) {
                 if (response.isSuccessful()) {
+                    assert response.body() != null;
                     priceCount = (ArrayList<Order>) response.body().getOrders();
                     Toast.makeText(FoodListInOrdersActivity.this, "SUCCESS: "+response.body().getOrders().get(0).getNumber(), Toast.LENGTH_LONG).show();
 
-                    adapter = new OrdersDataAdapter2(FoodListInOrdersActivity.this, priceCount);
+                    adapter = new OrdersDataAdapterTwo(FoodListInOrdersActivity.this, priceCount);
                     listView.setAdapter(adapter);
                 } else {
+                    assert response.body() != null;
                     Toast.makeText(FoodListInOrdersActivity.this, "NOT SUCCESS: "+response.body().getOrders().get(0).getNumber(), Toast.LENGTH_LONG).show();
                 }
             }
 
+            @ParametersAreNonnullByDefault
             @Override
             public void onFailure(Call<GenOrders> call, Throwable t) {
                 Toast.makeText(FoodListInOrdersActivity.this, "ERROR"+t.getMessage(), Toast.LENGTH_LONG).show();

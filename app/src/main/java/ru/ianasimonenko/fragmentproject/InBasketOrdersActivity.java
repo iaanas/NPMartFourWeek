@@ -1,6 +1,5 @@
 package ru.ianasimonenko.fragmentproject;
 
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -9,11 +8,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
+import java.util.Objects;
 
 public class InBasketOrdersActivity extends AppCompatActivity implements InCartFragment.OnListFragmentInteractionListener, InOrdersFragment.OnListFragmentInteractionListener,
                                                                          TotalBasketFragment.OnListFragmentInteractionListener {
-    private Toolbar toolbar;
 
 
     @Override
@@ -24,40 +22,37 @@ public class InBasketOrdersActivity extends AppCompatActivity implements InCartF
         Fragment totalBasket = TotalBasketFragment.newInstance(0);
 
 
-
-        toolbar = (Toolbar) findViewById(R.id.toolbarBO);
+        Toolbar toolbar = findViewById(R.id.toolbarBO);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigationBO);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigationBO);
         bottomNavigationView.setOnNavigationItemSelectedListener
-                (new BottomNavigationView.OnNavigationItemSelectedListener() {
-                     @Override
-                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                         Fragment selectedFragment = null;
-                         switch (item.getItemId()) {
-                             case R.id.bo_cart:
-                                 selectedFragment = InCartFragment.newInstance(0);
-                                 break;
-                             case R.id.bo_order:
-                                 selectedFragment = InOrdersFragment.newInstance(0);
-                                 break;
-                         }
+                (item -> {
+                    Fragment selectedFragment = null;
+                    switch (item.getItemId()) {
+                        case R.id.bo_cart:
+                            selectedFragment = InCartFragment.newInstance(0);
+                            break;
+                        case R.id.bo_order:
+                            selectedFragment = InOrdersFragment.newInstance(0);
+                            break;
+                    }
 
-                         FragmentTransaction transaction = getSupportFragmentManager()
-                                 .beginTransaction();
-                         transaction.replace(R.id.frame_layout_bo, selectedFragment);
-                         transaction.commit();
+                    FragmentTransaction transaction = getSupportFragmentManager()
+                            .beginTransaction();
+                    assert selectedFragment != null;
+                    transaction.replace(R.id.frame_layout_bo, selectedFragment);
+                    transaction.commit();
 
 //                         FragmentTransaction transaction1 = getSupportFragmentManager()
 //                                 .beginTransaction();
 //                         transaction1.add(R.id.frame_layout_total, totalBasket);
 //                         transaction1.commit();
 
-                         return true;
-                     }
-                 }
+                    return true;
+                }
                 );
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -67,11 +62,6 @@ public class InBasketOrdersActivity extends AppCompatActivity implements InCartF
         FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
         transaction1.add(R.id.frame_layout_total, totalBasket);
         transaction1.commit();
-    }
-
-    @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-
     }
 
     @Override
@@ -87,13 +77,4 @@ public class InBasketOrdersActivity extends AppCompatActivity implements InCartF
     }
 
 
-    @Override
-    public void onListFragmentInteraction(InCartFragment.BasketDataAdapter item) {
-
-    }
-
-    @Override
-    public void onListFragmentInteraction(OrdersDataAdapter item) {
-
-    }
 }

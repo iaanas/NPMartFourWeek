@@ -22,11 +22,11 @@
             <ImageView
                 android:id="@+id/bask_image"
                 android:layout_width="60dp"
-                android:layout_height="60dp" />
+                android:layout_height="60dp"
+                android:contentDescription="@string/contentDescription" />
 
             <LinearLayout
                 android:id="@+id/gen_cont"
-                android:layout_alignRight="@+id/bask_image"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -48,7 +48,8 @@
                         android:background="@color/wallet_bright_foreground_holo_dark"
                         android:src="@drawable/ic_remove_circle_black_24dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/contentDescription" />
 
                     <TextView
                         android:id="@+id/bask_count"
@@ -61,7 +62,8 @@
                         android:background="@color/wallet_bright_foreground_holo_dark"
                         android:src="@drawable/ic_add_circle_black_24dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/contentDescription" />
 
                 </LinearLayout>
 

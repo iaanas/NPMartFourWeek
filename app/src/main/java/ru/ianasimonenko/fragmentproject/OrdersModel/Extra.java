@@ -10,10 +10,10 @@ public class Extra {
     private Integer id;
     @SerializedName("client")
     @Expose
-    private Client_ client;
+    private ClientOrdMod client;
     @SerializedName("position")
     @Expose
-    private Position__ position;
+    private PositionOrdModTwo position;
     @SerializedName("quantity")
     @Expose
     private Integer quantity;
@@ -53,19 +53,19 @@ public class Extra {
         this.id = id;
     }
 
-    public Client_ getClient() {
+    public ClientOrdMod getClient() {
         return client;
     }
 
-    public void setClient(Client_ client) {
+    public void setClient(ClientOrdMod client) {
         this.client = client;
     }
 
-    public Position__ getPosition() {
+    public PositionOrdModTwo getPosition() {
         return position;
     }
 
-    public void setPosition(Position__ position) {
+    public void setPosition(PositionOrdModTwo position) {
         this.position = position;
     }
 

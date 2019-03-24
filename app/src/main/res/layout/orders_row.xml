@@ -25,8 +25,8 @@
             android:id="@+id/number_const"
             android:textColor="@color/colorAccent"
             android:textSize="22sp"
-            android:text="ЗАКАЗ №   "
-            android:gravity="left"
+            android:text="@string/ordRowOrders"
+            android:gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -34,7 +34,7 @@
             android:id="@+id/number"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="17sp"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -51,8 +51,8 @@
             android:id="@+id/date_create_const"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
-            android:text="Создан:   "
-            android:gravity="left"
+            android:text="@string/ordRowCreate"
+            android:gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -60,7 +60,7 @@
             android:id="@+id/date_create"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -85,8 +85,8 @@
             android:id="@+id/restaurant_const"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
-            android:text="Ресторан:   "
-            android:gravity="left"
+            android:text="@string/ordRowRestaurant"
+            android:gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -94,7 +94,7 @@
             android:id="@+id/restaurant_create"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -111,8 +111,8 @@
             android:id="@+id/status_const"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
-            android:text="Статус:   "
-            android:gravity="left"
+            android:text="@string/ordRowStatus"
+            android:gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -120,7 +120,7 @@
             android:id="@+id/status_create"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -137,8 +137,8 @@
             android:id="@+id/what_todo_const"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
-            android:text="Что делать:   "
-            android:gravity="left"
+            android:text="@string/ordRowWhatToDo"
+            android:gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -146,7 +146,7 @@
             android:id="@+id/what_todo_create"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -163,8 +163,8 @@
             android:id="@+id/delivery_const"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
-            android:text="Адрес доставки:   "
-            android:gravity="left"
+            android:text="@string/ordRowAddress"
+            android:gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -172,7 +172,7 @@
             android:id="@+id/delivery_create"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -189,8 +189,8 @@
             android:id="@+id/peoples_const"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
-            android:text="Количество приборов:   "
-            android:gravity="left"
+            android:text="@string/ordRowPeoples"
+            android:gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -198,7 +198,7 @@
             android:id="@+id/peoples_create"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -215,8 +215,8 @@
             android:id="@+id/time_of_delivery_const"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
-            android:text="Время доставки:   "
-            android:gravity="left"
+            android:text="@string/ordRowTimeDelivery"
+            android:gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -224,7 +224,7 @@
             android:id="@+id/time_of_delivery_create"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -241,8 +241,8 @@
             android:id="@+id/comment_const"
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
-            android:text="Комментарий:   "
-            android:gravity="left"
+            android:text="@string/ordRowComments"
+            android:gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -250,7 +250,7 @@
             android:id="@+id/comment_create"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="14sp"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -268,8 +268,8 @@
             android:textColor="@color/colorAccent"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:text="Итого:   "
-            android:gravity="left"
+            android:text="@string/ordRowTotal"
+            android:gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -278,7 +278,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
             android:textSize="18sp"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -287,7 +287,7 @@
     <Button
         android:id="@+id/button_add_in_orders"
         android:layout_below="@+id/line10"
-        android:text="ДОБАВИТЬ БЛЮДА В КОРЗИНУ"
+        android:text="@string/ordRowAddDish"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

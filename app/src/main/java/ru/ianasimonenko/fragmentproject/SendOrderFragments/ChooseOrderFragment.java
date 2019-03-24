@@ -2,19 +2,14 @@ package ru.ianasimonenko.fragmentproject.SendOrderFragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import ru.ianasimonenko.fragmentproject.R;
-import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent;
 import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent.DummyItem;
-
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -26,8 +21,6 @@ public class ChooseOrderFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -52,14 +45,14 @@ public class ChooseOrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            // TODO: Customize parameters
+            int mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_choose_list, container, false);
 
         // Set the adapter
 //        if (view instanceof RecyclerView) {
@@ -72,7 +65,7 @@ public class ChooseOrderFragment extends Fragment {
 //            }
 //            recyclerView.setAdapter(new MyItemRecyclerViewAdapter4(DummyContent.ITEMS, mListener));
 //        }
-        return view;
+        return inflater.inflate(R.layout.fragment_choose_list, container, false);
     }
 
 

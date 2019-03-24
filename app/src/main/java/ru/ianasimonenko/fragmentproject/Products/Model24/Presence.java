@@ -3,7 +3,7 @@ package ru.ianasimonenko.fragmentproject.Products.Model24;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Presence {
+class Presence {
 
     @SerializedName("key")
     @Expose

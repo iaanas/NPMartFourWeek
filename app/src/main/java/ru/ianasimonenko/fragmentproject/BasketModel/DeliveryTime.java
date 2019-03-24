@@ -1,5 +1,7 @@
 package ru.ianasimonenko.fragmentproject.BasketModel;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -33,6 +35,7 @@ public class DeliveryTime {
         this.name = name;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return ""+this.name;

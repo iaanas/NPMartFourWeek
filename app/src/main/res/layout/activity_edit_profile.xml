@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/layout">
 
 
@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:background="#EB85E0B6"
             android:elevation="4dp"
-            android:paddingBottom="24dp">
+            android:paddingBottom="24dp"
+            tools:targetApi="lollipop">
 
 
             <TextView
@@ -28,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="70dp"
-                android:text="Имя Фамилия"
+                android:text="@string/editProfileNameSoname"
                 android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -40,7 +41,7 @@
                 android:layout_below="@+id/designation"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:text="9000 БАЛЛОВ"
+                android:text="@string/editProfileBonus"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp" />
 
@@ -51,7 +52,7 @@
                 android:layout_below="@+id/name"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:text="(+7(111) 111-11-11)"
+                android:text="@string/editProfileNumberOfTel"
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
         </RelativeLayout>
@@ -69,12 +70,13 @@
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:paddingRight="5dp"
-            android:paddingLeft="5dp">
+            android:paddingLeft="5dp"
+            tools:targetApi="lollipop">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ВАШИ ДАННЫЕ:"
+                android:text="@string/editProfileYourData"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
             <EditText
@@ -82,12 +84,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
-                android:hint="+7(___)___-__-__"
-                android:inputType="phone" />
+                android:hint="@string/NumberOfTelHint"
+                android:inputType="phone"
+                android:importantForAutofill="no"
+                tools:targetApi="o" />
 
             <TextView
                 android:id="@+id/balls_bonus"
-                android:text="БОНУСНЫХ БАЛЛОВ: 150"
+                android:text="@string/editProfileYourBonus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -96,38 +100,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
-                android:hint="Email"
-                android:inputType="textEmailAddress" />
+                android:hint="@string/editProfileEmail"
+                android:inputType="textEmailAddress"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
-                android:hint="Имя"
-                android:inputType="textPersonName" />
+                android:hint="@string/editProfileName"
+                android:inputType="textPersonName"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/editLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawablePadding="5dp"
-                android:hint="Фамилия"
-                android:inputType="textPersonName" />
+                android:hint="@string/editProfileSoname"
+                android:inputType="textPersonName"
+                android:importantForAutofill="no" />
 
             <TextView
                 android:id="@+id/birthday"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:text="Дата рождения:"
+                 android:clickable="true"
+                android:text="@string/editProfileDateOfBirthday"
                 android:textSize="22sp"
-                tools:ignore="OnClick" />
+                tools:ignore="OnClick"
+                android:focusable="true" />
 
 
             <CheckBox
                 android:id="@+id/checkbox"
-                android:text="Получать информацию о заказах по email"
+                android:text="@string/editProfileSpam"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -136,7 +144,7 @@
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="СОХРАНИТЬ"
+                android:text="@string/editProfileSave"
                 android:textAllCaps="false" />
 
         </LinearLayout>

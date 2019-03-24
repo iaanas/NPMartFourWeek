@@ -14,7 +14,7 @@
     tools:listitem="@layout/fragment_choose">
 
     <TextView
-        android:text="ВЫБЕРИТЕ ПОДХОДЯЩИЙ ВАРИАНТ ДОСТАВКИ"
+        android:text="@string/fragChooseListDelivery"
         android:layout_marginTop="10dp"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"

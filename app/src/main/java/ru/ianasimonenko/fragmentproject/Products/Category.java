@@ -16,7 +16,7 @@ public class Category {
     private String slug;
     @SerializedName("menu")
     @Expose
-    private Menu_ menu;
+    private MenuMod menu;
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -45,11 +45,11 @@ public class Category {
         this.slug = slug;
     }
 
-    public Menu_ getMenu() {
+    public MenuMod getMenu() {
         return menu;
     }
 
-    public void setMenu(Menu_ menu) {
+    public void setMenu(MenuMod menu) {
         this.menu = menu;
     }
 

@@ -2,35 +2,19 @@ package ru.ianasimonenko.fragmentproject;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import ru.ianasimonenko.fragmentproject.BasketModel.BasketPosition;
 import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
-import ru.ianasimonenko.fragmentproject.Model.Menu;
-import ru.ianasimonenko.fragmentproject.Model.Restaurant;
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -41,13 +25,10 @@ public class TotalBasketFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     private ArrayList<GenBasket> priceCount;
 
-    private View parentView;
     private ListView listView;
 
     private BasketTotalAdapter adapter;
@@ -74,20 +55,21 @@ public class TotalBasketFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            // TODO: Customize parameters
+            int mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_total_basket_list, container, false);
 
         priceCount = new ArrayList<>();
 
-        parentView = view.findViewById(R.id.parentLayoutBasket);
+        View parentView = view.findViewById(R.id.parentLayoutBasket);
 
-        listView = (ListView) view.findViewById(R.id.listViewBasketTotal);
+        listView = view.findViewById(R.id.listViewBasketTotal);
 
         LoginActivity activity = new LoginActivity();
         String accessToken = activity.getMyTokenFromLogin();
@@ -97,7 +79,7 @@ public class TotalBasketFragment extends Fragment {
         Call<GenBasket> call = api.getMyBasket(accessToken);
         call.enqueue(new Callback<GenBasket>() {
             @Override
-            public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
+            public void onResponse(@NonNull Call<GenBasket> call, @NonNull Response<GenBasket> response) {
                 if (response.isSuccessful()) {
 
                     priceCount.add(response.body());
@@ -109,7 +91,7 @@ public class TotalBasketFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<GenBasket> call, Throwable t) {
+            public void onFailure(@NonNull Call<GenBasket> call, @NonNull Throwable t) {
 
             }
         });
@@ -145,8 +127,6 @@ public class TotalBasketFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
     }
 
 

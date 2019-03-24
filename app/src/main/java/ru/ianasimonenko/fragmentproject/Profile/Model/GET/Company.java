@@ -45,7 +45,7 @@ public class Company {
     private Integer id;
     @SerializedName("presences")
     @Expose
-    private List<Presence> presences = null;
+    private List<Presence> presences;
 
     public Company(String name, String logo, String description, String telegramBotUsername, Integer deliveryMinPrice, String passTemplateId, String ymapCenterLat, String ymapCenterLon, Integer ymapZoom, String googlePlayId, Integer appStoreId, Integer id, List<Presence> presences) {
         this.name = name;

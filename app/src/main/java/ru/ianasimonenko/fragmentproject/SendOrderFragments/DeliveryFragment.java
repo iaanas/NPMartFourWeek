@@ -2,11 +2,10 @@ package ru.ianasimonenko.fragmentproject.SendOrderFragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +20,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONObject;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,14 +34,11 @@ import ru.ianasimonenko.fragmentproject.R;
 import ru.ianasimonenko.fragmentproject.RetrofitClient;
 import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent.DummyItem;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 /**
  * A fragment representing a list of Items.
@@ -63,17 +52,11 @@ public class DeliveryFragment extends Fragment {
     private Integer rest_id;
     private String choosePay;
 
-    RadioGroup radioGroup;
-    RadioButton radioButton;
-    CheckBox checkBox;
-
     private Spinner spinnerTime;
-    private Spinner spinnerPeoples;
 
     private Button sendOrder;
     private String selected;
     private String selected2;
-    private String clientsideId;
 
     private EditText street;
     private EditText corp;
@@ -85,21 +68,14 @@ public class DeliveryFragment extends Fragment {
 //    private String houseStr;
 //    private String flatStr;
 
-    Address address;
-
-    private EditText commentView;
     private Boolean checked;
     private String accessToken;
 
     private ArrayList<DeliveryTime> priceCount;
-    DeliveryDataAdapter adapter;
-
-    private String addressString;
+    private DeliveryDataAdapter adapter;
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -124,52 +100,53 @@ public class DeliveryFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            // TODO: Customize parameters
+            int mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_with_delivery, container, false);
 
         //View
-        radioGroup = (RadioGroup) view.findViewById(R.id.radioGroupPayment);
+        RadioGroup radioGroup = view.findViewById(R.id.radioGroupPayment);
 
-        radioButton = (RadioButton) view.findViewById(R.id.radio_cash);
+        RadioButton radioButton = view.findViewById(R.id.radio_cash);
         radioButton.setText("Наличные");
         radioButton.setOnClickListener(radioButtonClickListener);
 
-        radioButton = (RadioButton) view.findViewById(R.id.radio_cashless);
+        radioButton = view.findViewById(R.id.radio_cashless);
         radioButton.setText("Карта");
         radioButton.setOnClickListener(radioButtonClickListener);
 
 
-        checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+        CheckBox checkBox = view.findViewById(R.id.checkBox);
         checked = checkBox.isChecked();
 
         //Spinner
-        spinnerTime = (Spinner) view.findViewById(R.id.spinner_time);
-        spinnerPeoples = (Spinner) view.findViewById(R.id.spinner_peoples);
+        spinnerTime = view.findViewById(R.id.spinner_time);
+        Spinner spinnerPeoples = view.findViewById(R.id.spinner_peoples);
         selected2 = spinnerPeoples.getSelectedItem().toString();
 
         //Views
-        commentView = (EditText) view.findViewById(R.id.comment);
+        EditText commentView = view.findViewById(R.id.comment);
         String comment = commentView.getText().toString();
 
-        sendOrder = (Button) view.findViewById(R.id.send_orders);
+        sendOrder = view.findViewById(R.id.send_orders);
 
         //Address
-        street = (EditText) view.findViewById(R.id.street);
-        corp = (EditText) view.findViewById(R.id.corp);
-        house = (EditText) view.findViewById(R.id.house);
-        flat = (EditText) view.findViewById(R.id.flat);
+        street = view.findViewById(R.id.street);
+        corp = view.findViewById(R.id.corp);
+        house = view.findViewById(R.id.house);
+        flat = view.findViewById(R.id.flat);
 
-        address = new Address("Санкт-Петербург", corp.getText().toString(),
+        Address address = new Address("Санкт-Петербург", corp.getText().toString(),
                 flat.getText().toString(), house.getText().toString(), street.getText().toString());
 
-        addressString = "?grant_type=" + "address"+ "&city="+"Санкт-петербург"+"&corp="+corp.getText().toString()+
-                "&flat="+flat.getText().toString()+"&house="+house.getText().toString()+"&street="+street.getText().toString();
+        String addressString = "?grant_type=" + "address" + "&city=" + "Санкт-петербург" + "&corp=" + corp.getText().toString() +
+                "&flat=" + flat.getText().toString() + "&house=" + house.getText().toString() + "&street=" + street.getText().toString();
 
 
 
@@ -183,10 +160,12 @@ public class DeliveryFragment extends Fragment {
         ApiService api = RetrofitClient.getApiService();
         Call<GenBasket> call = api.getMyBasket(accessToken);
         call.enqueue(new Callback<GenBasket>() {
+            @ParametersAreNonnullByDefault
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
                 if (response.isSuccessful()) {
 
+                    assert response.body() != null;
                     priceCount = (ArrayList<DeliveryTime>) response.body().getDeliveryTimes();
                     adapter = new DeliveryDataAdapter(inflater.getContext(), priceCount);
                     spinnerTime.setAdapter(adapter);
@@ -210,18 +189,14 @@ public class DeliveryFragment extends Fragment {
 
                     Toast.makeText(inflater.getContext(), "SUCCESS: ", Toast.LENGTH_LONG).show();
 
-                    sendOrder.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            sendOrder(selected, comment, selected2, checked);
-                        }
-                    });
+                    sendOrder.setOnClickListener(v -> sendOrder(selected, comment, selected2, checked));
 
                 } else {
                     Toast.makeText(inflater.getContext(), "NOT SUCCESS"+selected, Toast.LENGTH_LONG).show();
                 }
             }
 
+            @ParametersAreNonnullByDefault
             @Override
             public void onFailure(Call<GenBasket> call, Throwable t) {
                 Toast.makeText(inflater.getContext(), "ERROR: "+rest_id, Toast.LENGTH_LONG).show();
@@ -230,7 +205,7 @@ public class DeliveryFragment extends Fragment {
         return view;
     }
 
-    View.OnClickListener radioButtonClickListener = new View.OnClickListener() {
+    private final View.OnClickListener radioButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             RadioButton rb = (RadioButton) v;
@@ -245,19 +220,19 @@ public class DeliveryFragment extends Fragment {
         }
     };
 
-    public void sendOrder(String selected, String comment, String selected2, Boolean checked) {
+    private void sendOrder(String selected, String comment, String selected2, Boolean checked) {
         Integer rest_id_total = rest_id;
         String payment = choosePay;
 
         String clientId = UUID.randomUUID().toString();
         String clientIdClean = clientId.replaceAll("-", "");
 
-        clientsideId = clientIdClean.substring(0, 16);
+        String clientsideId = clientIdClean.substring(0, 16);
 
         Address address = new Address("Санкт-Петербург", street.getText().toString(), house.getText().toString(),
                 corp.getText().toString(), flat.getText().toString());
 
-        Example example = new Example(address, selected, null, clientsideId+"", comment, "False", "cash", selected2, "delivery",
+        Example example = new Example(address, selected, null, clientsideId +"", comment, "False", "cash", selected2, "delivery",
                 true, rest_id_total, "False");
 
 
@@ -266,6 +241,7 @@ public class DeliveryFragment extends Fragment {
 
         Call<Example> call = api.postOrderDelivery(accessToken, example);
         call.enqueue(new Callback<Example>() {
+            @ParametersAreNonnullByDefault
             @Override
             public void onResponse(Call<Example> call, Response<Example> response) {
                 if(response.isSuccessful()) {
@@ -275,12 +251,9 @@ public class DeliveryFragment extends Fragment {
                     builder.setTitle("Заказ успешно отправлен!")
                             .setMessage("Скоро с Вами свяжется нам менеджер для подтверждения деталей заказа.")
                             .setCancelable(false)
-                            .setNegativeButton("Ок, жду звонка", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(DeliveryFragment.this.getContext(), InBasketOrdersActivity.class);
-                                    startActivity(intent);
-                                }
+                            .setNegativeButton("Ок, жду звонка", (dialog, which) -> {
+                                Intent intent = new Intent(DeliveryFragment.this.getContext(), InBasketOrdersActivity.class);
+                                startActivity(intent);
                             });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
@@ -290,6 +263,7 @@ public class DeliveryFragment extends Fragment {
                 }
             }
 
+            @ParametersAreNonnullByDefault
             @Override
             public void onFailure(Call<Example> call, Throwable t) {
                 Toast.makeText(DeliveryFragment.this.getContext(), "ERROR: "+ t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -333,15 +307,15 @@ public class DeliveryFragment extends Fragment {
         void onListFragmentInteraction(DummyItem item);
     }
 
-    public class DeliveryDataAdapter extends ArrayAdapter<DeliveryTime> {
+    class DeliveryDataAdapter extends ArrayAdapter<DeliveryTime> {
 
-        List<DeliveryTime> list;
+        final List<DeliveryTime> list;
 
-        Context context;
-        private LayoutInflater inflater;
+        final Context context;
+        private final LayoutInflater inflater;
 
 
-        public DeliveryDataAdapter(Context context, List<DeliveryTime> objects) {
+        DeliveryDataAdapter(Context context, List<DeliveryTime> objects) {
             super(context, R.layout.spinner_row_delivery, objects);
 
             this.context = context;
@@ -354,19 +328,21 @@ public class DeliveryFragment extends Fragment {
             return list.get(position);
         }
 
+        @NonNull
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final ViewHolder vh;
 
             if(convertView == null) {
                 View view = inflater.inflate(R.layout.spinner_row_delivery, parent, false);
-                vh = (ViewHolder) ViewHolder.create((TextView) view);
+                vh = ViewHolder.create((TextView) view);
                 view.setTag(vh);
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }
 
             DeliveryTime item = getItem(position);
+            assert item != null;
             final String timeOfName = item.getName();
 
 
@@ -381,16 +357,16 @@ public class DeliveryFragment extends Fragment {
     }
     private static class ViewHolder {
 
-        public final TextView rootView;
-        public final TextView selectedTime;
+        final TextView rootView;
+        final TextView selectedTime;
 
         private ViewHolder(TextView rootView, TextView selectedTime) {
             this.rootView = rootView;
             this.selectedTime = selectedTime;
         }
 
-        public static ViewHolder create(TextView rootView) {
-            TextView selectedTime = (TextView) rootView.findViewById(R.id.time_spinner);
+        static ViewHolder create(TextView rootView) {
+            TextView selectedTime = rootView.findViewById(R.id.time_spinner);
 
             return new ViewHolder(rootView, selectedTime);
         }

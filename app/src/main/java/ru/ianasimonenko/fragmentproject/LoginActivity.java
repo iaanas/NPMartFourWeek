@@ -1,12 +1,9 @@
 package ru.ianasimonenko.fragmentproject;
 
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,9 +16,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.ianasimonenko.fragmentproject.SendOrderFragments.InHouseActivity;
 import ru.ianasimonenko.fragmentproject.SendOrderFragments.InHouseFragment;
-import ru.ianasimonenko.fragmentproject.SendOrderFragments.dummy.DummyContent;
 
 public class LoginActivity extends AppCompatActivity implements InHouseFragment.OnListFragmentInteractionListener {
 
@@ -29,15 +24,13 @@ public class LoginActivity extends AppCompatActivity implements InHouseFragment.
     private String testToken;
     private Intent intent2;
 
-    SharedPreferences sToken;
 
-
-    Retrofit.Builder builder = new Retrofit.Builder()
+    private final Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl("https://naparah.olegb.ru/")
             .addConverterFactory(GsonConverterFactory.create());
 
-    Retrofit retrofit = builder.build();
-    ResponseTokenClient userClient = retrofit.create(ResponseTokenClient.class);
+    private final Retrofit retrofit = builder.build();
+    private final ResponseTokenClient userClient = retrofit.create(ResponseTokenClient.class);
 
 
     @Override
@@ -49,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements InHouseFragment.
 
 
         findViewById(R.id.btn_login).setOnClickListener(
-                (view) -> { login(); }
+                (view) -> login()
         );
 
 //        findViewById(R.id.btn_secret).setOnClickListener(
@@ -65,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements InHouseFragment.
         String phone = phoneCode.getStringExtra("phone");
 
 
-        EditText code = (EditText) findViewById(R.id.et_code);
+        EditText code = findViewById(R.id.et_code);
         String codeIn = code.getText().toString();
 
 //        AuthUser login = new AuthUser(1111111111, 2341, true);
@@ -73,8 +66,9 @@ public class LoginActivity extends AppCompatActivity implements InHouseFragment.
 
         call.enqueue(new Callback<AccessUser>() {
             @Override
-            public void onResponse(Call<AccessUser> call, Response<AccessUser> response) {
+            public void onResponse(@NonNull Call<AccessUser> call, @NonNull Response<AccessUser> response) {
                 if (response.isSuccessful()) {
+                    assert response.body() != null;
                     Toast.makeText(LoginActivity.this,
                             response.body().getAccessToken() + " : " + response.body().getNeedUserData(),
                             Toast.LENGTH_LONG).show();
@@ -103,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements InHouseFragment.
             }
 
             @Override
-            public void onFailure(Call<AccessUser> call, Throwable t) {
+            public void onFailure(@NonNull Call<AccessUser> call, @NonNull Throwable t) {
                 Toast.makeText(LoginActivity.this, "error it",
                         Toast.LENGTH_LONG).show();
             }
@@ -112,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements InHouseFragment.
     }
 
     public String getMyTokenFromLogin() {
-        testToken = token.toString();
+        testToken = token;
         return "Bearer "+testToken;
     }
 
@@ -127,9 +121,10 @@ public class LoginActivity extends AppCompatActivity implements InHouseFragment.
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     try {
+                        assert response.body() != null;
                         Toast.makeText(LoginActivity.this, response.body().string(), Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -141,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements InHouseFragment.
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
 
             }
         });
@@ -151,14 +146,13 @@ public class LoginActivity extends AppCompatActivity implements InHouseFragment.
 
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction() {
 
     }
 
     public String saveToken() {
-        sToken = getPreferences(MODE_PRIVATE);
-        String savedToken = sToken.getString(token, "");
-        return savedToken;
+        SharedPreferences sToken = getPreferences(MODE_PRIVATE);
+        return sToken.getString(token, "");
     }
 
 }

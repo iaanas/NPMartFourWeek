@@ -5,12 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -29,6 +29,8 @@ import ru.ianasimonenko.fragmentproject.BasketModel.GenBasket;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -39,22 +41,19 @@ public class InCartFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     private ArrayList<BasketPosition> priceCount;
 
-    private View parentView;
     private ListView listView;
 
     private BasketDataAdapter adapter;
 
-    private Button incButton;
-
-    private TextView decText;
-
-    private static Integer basketPosition;
+    //    private Button incButton;
+//
+//    private TextView decText;
+//
+//    private static Integer basketPosition;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -78,22 +77,23 @@ public class InCartFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            // TODO: Customize parameters
+            int mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
 
     @SuppressLint("WrongViewCast")
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_incart_list2, container, false);
+        View view = inflater.inflate(R.layout.fragment_incart_list_two, container, false);
         View view2 = inflater.inflate(R.layout.basket_row, container, false);
 
         priceCount = new ArrayList<>();
 
-        parentView = view.findViewById(R.id.parentLayoutBasket);
+        View parentView = view.findViewById(R.id.parentLayoutBasket);
 
-        listView = (ListView) view.findViewById(R.id.listViewBasket);
+        listView = view.findViewById(R.id.listViewBasket);
 
 //        decButton = (ImageButton) view2.findViewById(R.id.bask_min);
 
@@ -104,9 +104,11 @@ public class InCartFragment extends Fragment {
         ApiService api = RetrofitClient.getApiService();
         Call<GenBasket> call = api.getMyBasket(accessToken);
         call.enqueue(new Callback<GenBasket>() {
+            @ParametersAreNonnullByDefault
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
                 if (response.isSuccessful()) {
+                    assert response.body() != null;
                     priceCount = (ArrayList<BasketPosition>) response.body().getBasketPositions();
 
                     adapter = new BasketDataAdapter(inflater.getContext(), priceCount);
@@ -141,6 +143,7 @@ public class InCartFragment extends Fragment {
                 }
             }
 
+            @ParametersAreNonnullByDefault
             @Override
             public void onFailure(Call<GenBasket> call, Throwable t) {
 
@@ -178,11 +181,9 @@ public class InCartFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(BasketDataAdapter item);
     }
 
-    public void decButton(Integer basketPosition2) {
+    private void decButton(Integer basketPosition2) {
 
         ApiService api = RetrofitClient.getApiService();
 
@@ -191,6 +192,7 @@ public class InCartFragment extends Fragment {
 
         Call<GenBasket> call = api.decReaseButton(accessToken, basketPosition2, "decrease_quantity");
         call.enqueue(new Callback<GenBasket>() {
+            @ParametersAreNonnullByDefault
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
 
@@ -201,6 +203,7 @@ public class InCartFragment extends Fragment {
                 }
             }
 
+            @ParametersAreNonnullByDefault
             @Override
             public void onFailure(Call<GenBasket> call, Throwable t) {
 //                Toast.makeText(InCartFragment.this.getActivity(), "ERROR!!!", Toast.LENGTH_LONG).show();
@@ -209,7 +212,7 @@ public class InCartFragment extends Fragment {
 
     }
 
-    public void incButton(Integer basketPosition2) {
+    private void incButton(Integer basketPosition2) {
 
         LoginActivity activity = new LoginActivity();
         String accessToken = activity.getMyTokenFromLogin();
@@ -218,6 +221,7 @@ public class InCartFragment extends Fragment {
 
         Call<GenBasket> call = api.decReaseButton(accessToken, basketPosition2, "increase_quantity");
         call.enqueue(new Callback<GenBasket>() {
+            @ParametersAreNonnullByDefault
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
 
@@ -228,6 +232,7 @@ public class InCartFragment extends Fragment {
                 }
             }
 
+            @ParametersAreNonnullByDefault
             @Override
             public void onFailure(Call<GenBasket> call, Throwable t) {
 //                Toast.makeText(InCartFragment.this.getActivity(), "ERROR!!!", Toast.LENGTH_LONG).show();
@@ -236,7 +241,7 @@ public class InCartFragment extends Fragment {
 
     }
 
-    public void deleteForeve(Integer basketPosition) {
+    private void deleteForeve(Integer basketPosition) {
         LoginActivity activity = new LoginActivity();
         String accessToken = activity.getMyTokenFromLogin();
 
@@ -244,6 +249,7 @@ public class InCartFragment extends Fragment {
 
         Call<GenBasket> call = api.decReaseButton(accessToken, basketPosition, "delete");
         call.enqueue(new Callback<GenBasket>() {
+            @ParametersAreNonnullByDefault
             @Override
             public void onResponse(Call<GenBasket> call, Response<GenBasket> response) {
 
@@ -254,6 +260,7 @@ public class InCartFragment extends Fragment {
                 }
             }
 
+            @ParametersAreNonnullByDefault
             @Override
             public void onFailure(Call<GenBasket> call, Throwable t) {
 //                Toast.makeText(InCartFragment.this.getActivity(), "ERROR!!!", Toast.LENGTH_LONG).show();
@@ -263,18 +270,22 @@ public class InCartFragment extends Fragment {
 
 
 
-    public void restartInCartFragment() {
+    private void restartInCartFragment() {
+        assert getFragmentManager() != null;
         InCartFragment fragment = (InCartFragment) getFragmentManager().findFragmentById(R.id.frame_layout_bo);
 
+        assert fragment != null;
         getFragmentManager().beginTransaction()
                 .detach(fragment)
                 .attach(fragment)
                 .commit();
     }
 
-    public void restartInCartTotalFragment() {
+    private void restartInCartTotalFragment() {
+        assert getFragmentManager() != null;
         TotalBasketFragment fragment = (TotalBasketFragment) getFragmentManager().findFragmentById(R.id.frame_layout_total);
 
+        assert fragment != null;
         getFragmentManager().beginTransaction()
                 .detach(fragment)
                 .attach(fragment)
@@ -284,13 +295,13 @@ public class InCartFragment extends Fragment {
 
     public class BasketDataAdapter extends ArrayAdapter<BasketPosition> {
 
-        List<BasketPosition> list;
+        final List<BasketPosition> list;
 
-        Context context;
-        private LayoutInflater inflater;
+        final Context context;
+        private final LayoutInflater inflater;
 
 
-        public BasketDataAdapter(Context context, List<BasketPosition> objects) {
+        BasketDataAdapter(Context context, List<BasketPosition> objects) {
             super(context, 0, objects);
 
             this.context = context;
@@ -303,13 +314,14 @@ public class InCartFragment extends Fragment {
             return list.get(position);
         }
 
+        @NonNull
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final ViewHolder vh;
 
             if(convertView == null) {
                 View view = inflater.inflate(R.layout.basket_row, parent, false);
-                vh = (ViewHolder) ViewHolder.create((RelativeLayout) view);
+                vh = ViewHolder.create((RelativeLayout) view);
                 view.setTag(vh);
             } else {
                 vh = (ViewHolder) convertView.getTag();
@@ -317,88 +329,65 @@ public class InCartFragment extends Fragment {
 
             BasketPosition item = getItem(position);
 
+            assert item != null;
             vh.name_of_position.setText(item.getPosition().getName());
-            vh.quantity.setText(item.getQuantity().toString());
+            vh.quantity.setText(String.valueOf(item.getQuantity()));
 
 
-            ArrayList<String> arr = new ArrayList<>();
-            arr.addAll(item.getPosition().getImages());
+            ArrayList<String> arr = new ArrayList<>(item.getPosition().getImages());
             for(int i = 0; i<arr.size(); i++) {
                 Picasso.with(context).load(item.getPosition().getImages().get(i)).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(vh.imageView);
             }
 
-            vh.price_single_item.setText(item.getPriceSingleItem().toString() + "РУБ.");
+            String MONEY_CHOOSE = "РУБ.";
+            vh.price_single_item.setText(String.valueOf(item.getPriceSingleItem()) + MONEY_CHOOSE);
 
-            vh.price_total.setText("Итого: "+item.getPriceTotal().toString());
+            String TOTAL_SUM = "Итого: ";
+            vh.price_total.setText(TOTAL_SUM +String.valueOf(item.getPriceTotal()));
 
 
-            vh.decButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(item.getQuantity() == 1) {
-                        Toast.makeText(context, "ITS LOST", Toast.LENGTH_LONG).show();
-                        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT);
-                                builder.setTitle("Последний продукт в корзине")
-                                .setMessage("Вы действитеотно хотите его удалить из корзины?")
-                                .setNegativeButton("Нет, оставить",
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.cancel();
-                                            }
-                                        })
-                                .setPositiveButton("Да, удалить", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        decButton(item.getId());
-                                        restartInCartFragment();
-                                        restartInCartTotalFragment();
-                                    }
-                                });
-                                builder.show();
+            vh.decButton.setOnClickListener(v -> {
+                if(item.getQuantity() == 1) {
+                    Toast.makeText(context, "ITS LOST", Toast.LENGTH_LONG).show();
+                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT);
+                            builder.setTitle("Последний продукт в корзине")
+                            .setMessage("Вы действитеотно хотите его удалить из корзины?")
+                            .setNegativeButton("Нет, оставить",
+                                    (dialog, which) -> dialog.cancel())
+                            .setPositiveButton("Да, удалить", (dialog, which) -> {
+                                decButton(item.getId());
+                                restartInCartFragment();
+                                restartInCartTotalFragment();
+                            });
+                            builder.show();
 
-                    } else {
-                        decButton(item.getId());
-                        restartInCartFragment();
-                        restartInCartTotalFragment();
-                    }
-
-                }
-            });
-
-            vh.incButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    incButton(item.getId());
+                } else {
+                    decButton(item.getId());
                     restartInCartFragment();
                     restartInCartTotalFragment();
                 }
+
+            });
+
+            vh.incButton.setOnClickListener(v -> {
+                incButton(item.getId());
+                restartInCartFragment();
+                restartInCartTotalFragment();
             });
 
 
-            vh.deleteForeve.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT);
-                    builder.setTitle("Действительно удалить?")
-                            .setMessage("Подтверждение удаления блюда")
-                            .setNegativeButton("Нет, оставить",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.cancel();
-                                        }
-                                    })
-                            .setPositiveButton("Да, удалить", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    deleteForeve(item.getId());
-                                    restartInCartFragment();
-                                    restartInCartTotalFragment();
-                                }
-                            });
-                    builder.show();
-                }
+            vh.deleteForeve.setOnClickListener(v -> {
+                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT);
+                builder.setTitle("Действительно удалить?")
+                        .setMessage("Подтверждение удаления блюда")
+                        .setNegativeButton("Нет, оставить",
+                                (dialog, which) -> dialog.cancel())
+                        .setPositiveButton("Да, удалить", (dialog, which) -> {
+                            deleteForeve(item.getId());
+                            restartInCartFragment();
+                            restartInCartTotalFragment();
+                        });
+                builder.show();
             });
 
             return vh.rootView;
@@ -409,19 +398,19 @@ public class InCartFragment extends Fragment {
     }
     private static class ViewHolder {
 
-        public final RelativeLayout rootView;
-        public final ImageView imageView;
-        public final TextView quantity;
-        public final TextView price_single_item;
-        public final TextView price_sub_items;
-        public final TextView price_total;
-        public final TextView name_of_position;
+        final RelativeLayout rootView;
+        final ImageView imageView;
+        final TextView quantity;
+        final TextView price_single_item;
+        final TextView price_sub_items;
+        final TextView price_total;
+        final TextView name_of_position;
 
-        public final ImageButton decButton;
+        final ImageButton decButton;
 
-        public final ImageButton incButton;
+        final ImageButton incButton;
 
-        public final ImageButton deleteForeve;
+        final ImageButton deleteForeve;
 
         private ViewHolder(RelativeLayout rootView, ImageView imageView,
                            TextView quantity, TextView price_single_item,
@@ -439,19 +428,19 @@ public class InCartFragment extends Fragment {
             this.deleteForeve = deleteForeve;
         }
 
-        public static ViewHolder create(RelativeLayout rootView) {
-            ImageView imageView = (ImageView) rootView.findViewById(R.id.bask_image);
-            TextView quantity = (TextView) rootView.findViewById(R.id.bask_count);
-            TextView price_single_item = (TextView) rootView.findViewById(R.id.bask_cost_item);
-            TextView price_sub_items = (TextView) rootView.findViewById(R.id.bask_subItems);
-            TextView price_total = (TextView) rootView.findViewById(R.id.bask_cost_total);
-            TextView name_of_position = (TextView) rootView.findViewById(R.id.bask_name);
+        static ViewHolder create(RelativeLayout rootView) {
+            ImageView imageView = rootView.findViewById(R.id.bask_image);
+            TextView quantity = rootView.findViewById(R.id.bask_count);
+            TextView price_single_item = rootView.findViewById(R.id.bask_cost_item);
+            TextView price_sub_items = rootView.findViewById(R.id.bask_subItems);
+            TextView price_total = rootView.findViewById(R.id.bask_cost_total);
+            TextView name_of_position = rootView.findViewById(R.id.bask_name);
 
-            ImageButton decButton = (ImageButton) rootView.findViewById(R.id.bask_min);
+            ImageButton decButton = rootView.findViewById(R.id.bask_min);
 
-            ImageButton incButton = (ImageButton) rootView.findViewById(R.id.back_max);
+            ImageButton incButton = rootView.findViewById(R.id.back_max);
 
-            ImageButton deleteForeve = (ImageButton) rootView.findViewById(R.id.del_pos_total);
+            ImageButton deleteForeve = rootView.findViewById(R.id.del_pos_total);
 
             return new ViewHolder(rootView, imageView, quantity, price_single_item,
                     price_sub_items, price_total, name_of_position, decButton, incButton, deleteForeve);

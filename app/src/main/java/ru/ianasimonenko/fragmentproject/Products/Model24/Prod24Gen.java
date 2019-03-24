@@ -48,7 +48,7 @@ public class Prod24Gen {
     private Integer basketCounter;
     @SerializedName("client")
     @Expose
-    private Client_ client;
+    private ClientModel client;
     @SerializedName("company")
     @Expose
     private Company company;
@@ -157,11 +157,11 @@ public class Prod24Gen {
         this.basketCounter = basketCounter;
     }
 
-    public Client_ getClient() {
+    public ClientModel getClient() {
         return client;
     }
 
-    public void setClient(Client_ client) {
+    public void setClient(ClientModel client) {
         this.client = client;
     }
 

@@ -3,7 +3,6 @@ package ru.ianasimonenko.fragmentproject;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
 
 public class RestaurantActivity extends AppCompatActivity implements RestaurantFragment.OnListFragmentInteractionListener {
 
@@ -14,8 +13,4 @@ public class RestaurantActivity extends AppCompatActivity implements RestaurantF
     }
 
 
-    @Override
-    public void onListFragmentInteraction(DataRestaurantAdapter item) {
-
-    }
 }

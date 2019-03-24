@@ -17,7 +17,7 @@ public class GenOrders {
     private Integer basketCounter;
     @SerializedName("client")
     @Expose
-    private Client__ client;
+    private ClientOrdModTwo client;
     @SerializedName("company")
     @Expose
     private Company company;
@@ -46,11 +46,11 @@ public class GenOrders {
         this.basketCounter = basketCounter;
     }
 
-    public Client__ getClient() {
+    public ClientOrdModTwo getClient() {
         return client;
     }
 
-    public void setClient(Client__ client) {
+    public void setClient(ClientOrdModTwo client) {
         this.client = client;
     }
 

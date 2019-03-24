@@ -2,20 +2,14 @@ package ru.ianasimonenko.fragmentproject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import retrofit2.Call;
@@ -23,11 +17,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ru.ianasimonenko.fragmentproject.Model.Example;
 import ru.ianasimonenko.fragmentproject.Model.Menu;
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -39,8 +30,6 @@ public class ItemFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     private ListView listView;
@@ -49,7 +38,7 @@ public class ItemFragment extends Fragment {
     private ArrayList<Menu> contactList;
     private MyMenuAdapter adapter;
 
-    private Button button;
+//    private Button button;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -73,13 +62,14 @@ public class ItemFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            // TODO: Customize parameters
+            int mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
 
     @SuppressLint("ResourceType")
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
@@ -99,13 +89,8 @@ public class ItemFragment extends Fragment {
 
         parentView = view.findViewById(R.layout.fragment_item_list);
 
-        listView = (ListView) view.findViewById(R.id.list);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Snackbar.make(parentView, contactList.get(position).getName() + " => ", Snackbar.LENGTH_LONG).show();
-            }
-        });
+        listView = view.findViewById(R.id.list);
+        listView.setOnItemClickListener((parent, view1, position, id) -> Snackbar.make(parentView, contactList.get(position).getName() + " => ", Snackbar.LENGTH_LONG).show());
 
         ApiService api = RetrofitClient.getApiService();
 
@@ -113,22 +98,22 @@ public class ItemFragment extends Fragment {
 
         call.enqueue(new Callback<Example>() {
             @Override
-            public void onResponse(Call<Example> call, Response<Example> response) {
+            public void onResponse(@NonNull Call<Example> call, @NonNull Response<Example> response) {
 
                 if(response.isSuccessful()) {
 
+                    assert response.body() != null;
                     contactList = (ArrayList<Menu>) response.body().getMenus();
 
                     adapter = new MyMenuAdapter(inflater.getContext(), contactList);
                     listView.setAdapter(adapter);
 
 
-                } else {
                 }
             }
 
             @Override
-            public void onFailure(Call<Example> call, Throwable t) {
+            public void onFailure(@NonNull Call<Example> call, @NonNull Throwable t) {
 
             }
         });
@@ -164,8 +149,6 @@ public class ItemFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(MyMenuAdapter item);
     }
 
     public interface OnFragmentInteractionListener {

@@ -6,18 +6,18 @@
         android:id="@+id/send_delivery"
         android:icon="@drawable/ic_local_shipping_black_24dp"
         app:showAsAction="withText"
-        android:title="С доставкой" />
+        android:title="@string/sendOrderMenuDeliwery" />
 
     <item
         android:id="@+id/send_take_out"
         android:icon="@drawable/ic_directions_walk_black_24dp"
         app:showAsAction="withText"
-        android:title="Самовывоз" />
+        android:title="@string/sendOrderMenuWithOrder" />
 
     <item
         android:id="@+id/send_in_house"
         android:icon="@drawable/ic_restaurant_menu_black_24dp"
         app:showAsAction="withText"
-        android:title="В ресторане" />
+        android:title="@string/sendOrderMenuInRest" />
 
 </menu>

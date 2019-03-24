@@ -3,7 +3,7 @@ package ru.ianasimonenko.fragmentproject.OrdersModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Presence {
+class Presence {
 
     @SerializedName("key")
     @Expose

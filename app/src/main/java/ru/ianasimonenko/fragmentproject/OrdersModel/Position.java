@@ -7,7 +7,7 @@ public class Position {
 
     @SerializedName("position")
     @Expose
-    private Position_ position;
+    private PositionOrdMod position;
     @SerializedName("quantity")
     @Expose
     private Integer quantity;
@@ -27,11 +27,11 @@ public class Position {
     @Expose
     private Integer id;
 
-    public Position_ getPosition() {
+    public PositionOrdMod getPosition() {
         return position;
     }
 
-    public void setPosition(Position_ position) {
+    public void setPosition(PositionOrdMod position) {
         this.position = position;
     }
 

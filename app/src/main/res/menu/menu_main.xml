@@ -16,7 +16,7 @@
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/restart"
-        android:title="Обновить"
+        android:title="@string/menuMainUpdate"
         android:icon="@drawable/ic_autorenew_black_24dp"
         android:orderInCategory="200"
         app:showAsAction="ifRoom" />

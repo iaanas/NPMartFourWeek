@@ -9,10 +9,15 @@
     <string name="backet_cart">Корзина</string>
     <string name="basket_order">Заказы</string>
 
+    <string name="activity_basket_two">LALALA</string>
+
     <string name="action_settings">Settings</string>
     <string name="action_cart">Моя корзина</string>
     <string name="action_signout">Выйти</string>
     <string name="logo_desc">App logo</string>
+
+    <string name="contentDescription">Image</string>
+
 
     <string name="drawer_home">Домой</string>
     <string name="drawer_profile">Мой профиль</string>
@@ -22,6 +27,100 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="editProfileNameSoname">Имя Фамилия</string>
+    <string name="editProfileBonus">9000 БАЛЛОВ</string>
+    <string name="editProfileNumberOfTel">(+7(111) 111–11–11)</string>
+    <string name="editProfileYourData">ВАШИ ДАННЫЕ:</string>
+    <string name="NumberOfTelHint">+7(___)___-__-__</string>
+    <string name="editProfileYourBonus">БОНУСНЫХ БАЛЛОВ: 150</string>
+    <string name="editProfileEmail">Email</string>
+    <string name="editProfileName">Имя</string>
+    <string name="editProfileSoname">Фамилия</string>
+    <string name="editProfileDateOfBirthday">Дата рождения:</string>
+    <string name="editProfileSpam">Получать информацию о заказах по email</string>
+    <string name="editProfileSave">СОХРАНИТЬ</string>
+    <string name="vEditProfileNameSoname">Имя Фамилия</string>
+    <string name="vEditProfileBonus">9000 БАЛЛОВ</string>
+    <string name="vEditProfileNumberTelephone">(+7(111) 111–11–11)</string>
+    <string name="vEditProfileYourData">ВАШИ ДАННЫЕ:</string>
+    <string name="vEditProfileNumberHint">+7(___)___-__-__</string>
+    <string name="vEPbonus">БОНУСНЫХ БАЛЛОВ: 150</string>
+    <string name="vEPemail">Email</string>
+    <string name="vEPname">Имя</string>
+    <string name="vEPsoname">Фамилия</string>
+    <string name="vEPbirthday">Дата рождения:</string>
+    <string name="vEPspam">Получать информацию о заказах по email</string>
+    <string name="vEPsave">СОХРАНИТЬ</string>
+    <string name="actInHouseChooseRest">Выберите ресторан:</string>
+    <string name="actInHouseRemember">запомнить ресторан как основной</string>
+    <string name="actInHouseTD">Укажите время доставки:</string>
+    <string name="actInHousePeoples">Кол-во приборов:</string>
+    <string name="actInHouseComment">Комментарий</string>
+    <string name="actInHouseOrder">ЗАКАЗАТЬ</string>
+    <string name="actLogHintNum">__ __ __ __</string>
+    <string name="actLogSignIn">ВОЙТИ</string>
+    <string name="actLogLogIn">ВОЙТИ</string>
+    <string name="vActLogLogIn">ВОЙТИ</string>
+    <string name="vActLogHintNumber">__ __ __ __</string>
+    <string name="vActLogSingIn">ВОЙТИ</string>
+    <string name="actPhoneProfSignIn">ВОЙТИ</string>
+    <string name="actPhoneAuthHintNumber">+7(___) ___-__-__</string>
+    <string name="actPhoneAuthCode">ПОЛУЧИТЬ КОД</string>
+    <string name="vActPhoneAuthSignIn">ВОЙТИ</string>
+    <string name="vActPhoneAuthHintNumber">+7(___) ___-__-__</string>
+    <string name="vActPhoneAuthCode">ПОЛУЧИТЬ КОД</string>
+    <string name="actProdCart">ПОЛОЖИТЬ В КОРЗИНУ</string>
+    <string name="actcartBasket">ПОЛОЖИТЬ В КОРЗИНУ</string>
+    <string name="actTakeOutChooseRest">Выберите ресторан:</string>
+    <string name="actTakeOutChoose">запомнить ресторан как основной</string>
+    <string name="actTakeOutTime">Укажите время доставки:</string>
+    <string name="actTakeOutPeoples">Кол-во приборов:</string>
+    <string name="actTakeOutComment">Комментарий</string>
+    <string name="actTakeOutOrder">ЗАКАЗАТЬ</string>
+    <string name="actWithDelAddress">Адресс доставки:</string>
+    <string name="actWithDelStreet">Улица</string>
+    <string name="actWithDelKorpys">Корпус</string>
+    <string name="actWithdelNumberHome">Номер дома</string>
+    <string name="ActWithDelNumberFlat">Номер квартиры</string>
+    <string name="actWithDelPayment">Выберите способ оплаты:</string>
+    <string name="actWithDelrestRemember">запомнить ресторан как основной</string>
+    <string name="actWithDelTimeDelivery">Укажите время доставки:</string>
+    <string name="actWithDelPeoples">Кол-во приборов:</string>
+    <string name="actWithDelComment">Комментарий</string>
+    <string name="actWithDelOrders">ЗАКАЗАТЬ</string>
+    <string name="botNavItemsMenu">Меню</string>
+    <string name="botNavItemsBonus">Блюда за баллы</string>
+    <string name="botNavItemsProfile">Профиль</string>
+    <string name="botNavItemsinfo">Инфо</string>
+    <string name="fragChooseListDelivery">ВЫБЕРИТЕ ПОДХОДЯЩИЙ ВАРИАНТ ДОСТАВКИ</string>
+    <string name="fragmentItemsProducts">ПЕРЕЙТИ К ТЕСТОВОМУ ПРОДУКТУ</string>
+    <string name="vFragProfileNameSoname">Имя Фамилия</string>
+    <string name="fragProfileName">Имя Фамилия</string>
+    <string name="fragProfileListEditProfile">РЕДАКТИРОВАТЬ ПРОФИЛЬ</string>
+    <string name="fragTotalBaskOrder">ЗАКАЗАТЬ</string>
+    <string name="menuMainUpdate">Обновить</string>
+    <string name="nadigationOurRestorants">Наши рестораны</string>
+    <string name="navigationMenuMyprofile">Мой Профиль</string>
+    <string name="navigationMenuMyOrders">Мои заказы</string>
+    <string name="navigationMenuRestaurants">Рестораны</string>
+    <string name="ordRowOrders">ЗАКАЗ №</string>
+    <string name="ordRowCreate">Создан:</string>
+    <string name="ordRowRestaurant">Ресторан:</string>
+    <string name="ordRowStatus">Статус:</string>
+    <string name="ordRowWhatToDo">Что делать:</string>
+    <string name="ordRowAddress">Адрес доставки:</string>
+    <string name="ordRowPeoples">Количество приборов:</string>
+    <string name="ordRowTimeDelivery">Время доставки:</string>
+    <string name="ordRowComments">Комментарий:</string>
+    <string name="ordRowTotal">Итого:</string>
+    <string name="ordRowAddDish">ДОБАВИТЬ БЛЮДА В КОРЗИНУ</string>
+    <string name="prodrowTitles">Название:</string>
+    <string name="prodRowQuality">Кол-во:</string>
+    <string name="prodRowCost">Цена:</string>
+    <string name="prodRowTotal">Итого:</string>
+    <string name="sendOrderMenuDeliwery">С доставкой</string>
+    <string name="sendOrderMenuWithOrder">Самовывоз</string>
+    <string name="sendOrderMenuInRest">В ресторане</string>
 
 
     <string-array name="deliveryTimes">

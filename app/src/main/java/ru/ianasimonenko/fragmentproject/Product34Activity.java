@@ -2,19 +2,19 @@ package ru.ianasimonenko.fragmentproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,49 +27,39 @@ import ru.ianasimonenko.fragmentproject.Products.Model24.Prod24Gen;
 
 public class Product34Activity extends AppCompatActivity {
 
-    private Toolbar toolbar;
+    //    private ListView listView;
+//    private View parentView;
 
-    private ListView listView;
-    private View parentView;
-
-    private List<GenProducts> prod34List;
-    private ProdAdapter adapter;
+//    private List<GenProducts> prod34List;
+//    private ProdAdapter adapter;
 
 
-    private ImageView image34;
+//    private ImageView image34;
     private TextView name34;
     private TextView price34;
     private TextView grams34;
     private TextView callories34;
     private TextView description34;
 
-    private Button button;
-
-    Retrofit.Builder builder = new Retrofit.Builder()
+    private final Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl("https://naparah.olegb.ru/")
             .addConverterFactory(GsonConverterFactory.create());
 
-    Retrofit retrofit = builder.build();
-    ProductsClient prod34 = retrofit.create(ProductsClient.class);
+    private final Retrofit retrofit = builder.build();
+    private final ProductsClient prod34 = retrofit.create(ProductsClient.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_prod_34_test);
+        setContentView(R.layout.activity_prod_test);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        button = (Button) findViewById(R.id.btnToBusket);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                prodOnServer();
-
-            }
-        });
+        Button button = findViewById(R.id.btnToBusket);
+        button.setOnClickListener(v -> prodOnServer());
 
 
         //Parsing JSON
@@ -78,33 +68,33 @@ public class Product34Activity extends AppCompatActivity {
 
         call.enqueue(new Callback<GenProducts>() {
             @Override
-            public void onResponse(Call<GenProducts> call, Response<GenProducts> response) {
+            public void onResponse(@NonNull Call<GenProducts> call, @NonNull Response<GenProducts> response) {
 
                 if(response.isSuccessful()) {
 
-                    Toast.makeText(Product34Activity.this, "Продукт успешно получен с сервера " + response.body().getDish().getName(),
+                    Toast.makeText(Product34Activity.this, "Продукт успешно получен с сервера " + Objects.requireNonNull(response.body()).getDish().getName(),
                             Toast.LENGTH_SHORT).show();
 
                     Picasso.with(Product34Activity.this).load(String.valueOf(response.body().getDish().getImages().get(0))).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(
                             (ImageView) findViewById(R.id.product_image));
 //                    image34.setImageURI(Uri.parse(String.valueOf(response.body().getDish().getImages())));
 
-                    name34 = (TextView) findViewById(R.id.product_name);
+                    name34 = findViewById(R.id.product_name);
                     name34.setText(response.body().getDish().getName());
 
-                    price34 = (TextView) findViewById(R.id.product_price);
+                    price34 = findViewById(R.id.product_price);
                     String price = String.valueOf(response.body().getDish().getPrice()) + " p.";
                     price34.setText(price);
 //
-                    grams34 = (TextView) findViewById(R.id.product_grams);
+                    grams34 = findViewById(R.id.product_grams);
                     String grams = String.valueOf(response.body().getDish().getGrams()) + " гр.";
                     grams34.setText(grams);
 //
-                    callories34 = (TextView) findViewById(R.id.product_calories);
+                    callories34 = findViewById(R.id.product_calories);
                     String callories = String.valueOf(response.body().getDish().getCalories()) + " ккал";
                     callories34.setText(callories);
 //
-                    description34 = (TextView) findViewById(R.id.product_description);
+                    description34 = findViewById(R.id.product_description);
                     description34.setText(response.body().getDish().getDescription());
 
 //                    prod34List = (List<GenProducts>) response.body().getDish();
@@ -112,12 +102,11 @@ public class Product34Activity extends AppCompatActivity {
 //                    adapter = new ProdAdapter(Product34Activity.this, prod34List);
 //                    listView.setAdapter(adapter);
 
-                } else {
                 }
             }
 
             @Override
-            public void onFailure(Call<GenProducts> call, Throwable t) {
+            public void onFailure(@NonNull Call<GenProducts> call, @NonNull Throwable t) {
 
             }
         });
@@ -125,7 +114,7 @@ public class Product34Activity extends AppCompatActivity {
 
     }
 
-    public void prodOnServer() {
+    private void prodOnServer() {
 
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl("https://naparah.olegb.ru/")
@@ -141,7 +130,7 @@ public class Product34Activity extends AppCompatActivity {
 
         call.enqueue(new Callback<Prod24Gen>() {
             @Override
-            public void onResponse(Call<Prod24Gen> call, Response<Prod24Gen> response) {
+            public void onResponse(@NonNull Call<Prod24Gen> call, @NonNull Response<Prod24Gen> response) {
 
                 if (response.isSuccessful()) {
                     Toast.makeText(Product34Activity.this, "ПРОДУКТ ДОБАВЛЕН В КОРЗИНУ НА СЕРВЕРЕ", Toast.LENGTH_LONG).show();
@@ -152,7 +141,7 @@ public class Product34Activity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Prod24Gen> call, Throwable t) {
+            public void onFailure(@NonNull Call<Prod24Gen> call, @NonNull Throwable t) {
                 Toast.makeText(Product34Activity.this, "ОШИБКА",
                         Toast.LENGTH_LONG).show();
             }

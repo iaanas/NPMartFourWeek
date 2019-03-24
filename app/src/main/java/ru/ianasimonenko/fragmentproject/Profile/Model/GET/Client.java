@@ -3,10 +3,6 @@ package ru.ianasimonenko.fragmentproject.Profile.Model.GET;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.stream.Stream;
-
-import ru.ianasimonenko.fragmentproject.Profile.Interface.JSONClient;
 
 public class Client {
 

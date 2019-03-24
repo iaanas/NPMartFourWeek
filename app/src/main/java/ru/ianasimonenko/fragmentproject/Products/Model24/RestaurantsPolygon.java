@@ -4,7 +4,7 @@ package ru.ianasimonenko.fragmentproject.Products.Model24;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RestaurantsPolygon {
+class RestaurantsPolygon {
 
     @SerializedName("geometry")
     @Expose

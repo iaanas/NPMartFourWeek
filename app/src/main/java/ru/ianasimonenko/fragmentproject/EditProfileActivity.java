@@ -9,6 +9,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,12 +24,12 @@ import ru.ianasimonenko.fragmentproject.Profile.Model.GET.Client;
 public class EditProfileActivity extends AppCompatActivity {
 
 
-    Retrofit.Builder builder = new Retrofit.Builder()
+    private final Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl("https://naparah.olegb.ru/")
             .addConverterFactory(GsonConverterFactory.create());
 
-    Retrofit retrofit = builder.build();
-    Profile userClient = retrofit.create(Profile.class);
+    private final Retrofit retrofit = builder.build();
+    private final Profile userClient = retrofit.create(Profile.class);
 
 
     @Override
@@ -35,46 +39,41 @@ public class EditProfileActivity extends AppCompatActivity {
 //        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(EditProfileActivity.this), CookiePolicy.ACCEPT_ORIGINAL_SERVER);
 //        CookieHandler.setContext(cookieManager);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         findViewById(R.id.buttonSave).setOnClickListener(
-                (view) -> { login(); }
+                (view) -> login()
         );
 
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
     private void login() {
 
         //var
-        TextView birthDay = (TextView) findViewById(R.id.birthday);
+        TextView birthDay = findViewById(R.id.birthday);
 
-        EditText email = (EditText) findViewById(R.id.editTextEmail);
+        EditText email = findViewById(R.id.editTextEmail);
         String emailStr = email.getText().toString();
 
-        EditText firstName = (EditText) findViewById(R.id.editFirstName);
+        EditText firstName = findViewById(R.id.editFirstName);
         String firstNameStr = firstName.getText().toString();
 
-        EditText lastName = (EditText) findViewById(R.id.editLastName);
+        EditText lastName = findViewById(R.id.editLastName);
         String lastNameStr = lastName.getText().toString();
 
 //        Intent intent = getIntent();
 //        String token = intent.getStringExtra("access_token");
         String token= "ccec704dc2854ace9141a609174cf92a";
 
-        EditText phone = (EditText) findViewById(R.id.editTextPhone);
+        EditText phone = findViewById(R.id.editTextPhone);
         String phoneStr = phone.getText().toString();
 
-        CheckBox notify = (CheckBox) findViewById(R.id.checkbox);
+        CheckBox notify = findViewById(R.id.checkbox);
 
         String notBool = String.valueOf(notify.isChecked());
 
@@ -91,6 +90,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<Client>() {
 
+            @ParametersAreNonnullByDefault
             @Override
             public void onResponse(Call<Client> call, Response<Client> response) {
 
@@ -104,6 +104,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
             }
 
+            @ParametersAreNonnullByDefault
             @Override
             public void onFailure(Call<Client> call, Throwable t) {
                 Toast.makeText(EditProfileActivity.this, "SOS!!!", Toast.LENGTH_SHORT).show();

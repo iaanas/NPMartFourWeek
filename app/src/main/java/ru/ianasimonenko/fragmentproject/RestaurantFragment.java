@@ -2,8 +2,8 @@ package ru.ianasimonenko.fragmentproject;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,12 +17,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.ianasimonenko.fragmentproject.Model.Restaurant;
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent;
-import ru.ianasimonenko.fragmentproject.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * A fragment representing a list of Items.
@@ -34,8 +32,6 @@ public class RestaurantFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     private RecyclerView recyclerView;
@@ -64,16 +60,17 @@ public class RestaurantFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            // TODO: Customize parameters
+            int mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_restaurant_list, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.card_recycler_view);
+        recyclerView = view.findViewById(R.id.card_recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(
                 inflater.getContext()
@@ -116,7 +113,6 @@ public class RestaurantFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
 
-        void onListFragmentInteraction(DataRestaurantAdapter item);
     }
 
     private void loadJSON() {
@@ -130,17 +126,17 @@ public class RestaurantFragment extends Fragment {
 
         call.enqueue(new Callback<JSONResponse>() {
             @Override
-            public void onResponse(Call<JSONResponse> call, Response<JSONResponse> response) {
+            public void onResponse(@NonNull Call<JSONResponse> call, @NonNull Response<JSONResponse> response) {
 
                 JSONResponse jsonResponse = response.body();
-                data = new ArrayList<>(Arrays.asList(jsonResponse.getRestaurants()));
+                data = new ArrayList<>(Arrays.asList(Objects.requireNonNull(jsonResponse).getRestaurants()));
                 adapter = new DataRestaurantAdapter(data, RestaurantFragment.this.getContext());
                 recyclerView.setAdapter(adapter);
 
             }
 
             @Override
-            public void onFailure(Call<JSONResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<JSONResponse> call, @NonNull Throwable t) {
                 Log.d("Error",t.getMessage());
 
             }

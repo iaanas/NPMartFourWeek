@@ -1,9 +1,5 @@
 package ru.ianasimonenko.fragmentproject.BasketModel;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -51,7 +47,7 @@ public class GenBasket {
     private Integer basketCounter;
     @SerializedName("client")
     @Expose
-    private Client_ client;
+    private ClientBasMod client;
     @SerializedName("company")
     @Expose
     private Company company;
@@ -144,11 +140,11 @@ public class GenBasket {
         this.basketCounter = basketCounter;
     }
 
-    public Client_ getClient() {
+    public ClientBasMod getClient() {
         return client;
     }
 
-    public void setClient(Client_ client) {
+    public void setClient(ClientBasMod client) {
         this.client = client;
     }
 

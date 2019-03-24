@@ -3,17 +3,14 @@ package ru.ianasimonenko.fragmentproject;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-import com.github.clans.fab.FloatingActionButton;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,21 +32,17 @@ public class ProfileFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     private Client data;
     private ClientDataAdapter adapter;
     private ListView listView;
-    private View parentView;
-    private Button button;
-
-    TextView full_name;
-    TextView phone;
-    TextView fName;
-    TextView lName;
-    TextView email;
+    //
+//    TextView full_name;
+//    TextView phone;
+//    TextView fName;
+//    TextView lName;
+//    TextView email;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -73,27 +66,25 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            // TODO: Customize parameters
+            int mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile_list, container, false);
 
 
         data = new Client();
-        parentView = view.findViewById(R.id.parent_client_view);
-        listView = (ListView) view.findViewById(R.id.listViewProfile);
+        View parentView = view.findViewById(R.id.parent_client_view);
+        listView = view.findViewById(R.id.listViewProfile);
 
-        button = (Button) view.findViewById(R.id.edit_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfileFragment.this.getActivity(), EditProfileActivity.class);
-                startActivity(intent);
-            }
+        Button button = view.findViewById(R.id.edit_button);
+        button.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileFragment.this.getActivity(), EditProfileActivity.class);
+            startActivity(intent);
         });
 
         // Set the adapter
@@ -111,13 +102,14 @@ public class ProfileFragment extends Fragment {
 
         call.enqueue(new Callback<Status>() {
             @Override
-            public void onResponse(Call<Status> call, Response<Status> response) {
+            public void onResponse(@NonNull Call<Status> call, @NonNull Response<Status> response) {
 
                 if (response.isSuccessful()) {
 
                     Toast.makeText(inflater.getContext(), "Данные профиля успешно получены",
                             Toast.LENGTH_LONG).show();
 
+                    assert response.body() != null;
                     data = response.body().getClient();
                     adapter = new ClientDataAdapter(inflater.getContext(), data);
                     listView.setAdapter(adapter);
@@ -128,7 +120,7 @@ public class ProfileFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<Status> call, Throwable t) {
+            public void onFailure(@NonNull Call<Status> call, @NonNull Throwable t) {
 
             }
         });
