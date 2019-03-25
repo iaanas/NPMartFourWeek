@@ -39,7 +39,6 @@ public class InnerMenuActivity extends AppCompatActivity implements InnerMenuFra
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-message"));
 
-
         menuItemList = new ArrayList<>();
         listView = findViewById(R.id.list_inner_menu);
         ApiService api = RetrofitClient.getApiService();
@@ -54,7 +53,6 @@ public class InnerMenuActivity extends AppCompatActivity implements InnerMenuFra
                 listView.setAdapter(adapter);
 
             }
-
 
             @Override
             public void onFailure(Call<Example> call, Throwable t) {
