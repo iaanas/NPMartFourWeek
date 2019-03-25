@@ -8,6 +8,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import ru.naparahandroid.fragmentproject.BasketModel.ExampleTimes;
 import ru.naparahandroid.fragmentproject.BasketModel.GenBasket;
 import ru.naparahandroid.fragmentproject.Model.Example;
@@ -16,8 +17,11 @@ import ru.naparahandroid.fragmentproject.OrdersModel.GenOrders;
 public interface ApiService {
 
 
-    @GET("/api/app/menus/")
+    @GET("/api/app/menus2/")
     Call<Example> getMyJSON();
+
+    @GET("/api/app/menus2/{id}")
+    Call<ru.naparahandroid.fragmentproject.InnerMenu.Example> getMyJSONInnerMenu(@Path("id") Integer idMenu);
 
     @GET("/api/app/basket/")
     Call<GenBasket> getMyBasket(@Header("Authorization") String token);

@@ -34,6 +34,8 @@ public class InOrdersFragment extends Fragment {
 
     private ListView listView;
 
+    private ListView listOrdersDetails;
+
     private OrdersDataAdapter adapter;
 
     /**
@@ -67,6 +69,7 @@ public class InOrdersFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_orders, container, false);
+        View viewOrdersDetailsView = inflater.inflate(R.layout.orders_row, container, false);
 
         // Set the adapter
         priceCount = new ArrayList<>();
@@ -74,6 +77,8 @@ public class InOrdersFragment extends Fragment {
         View parentView = view.findViewById(R.id.parentLayoutOrders);
 
         listView = view.findViewById(R.id.listViewOrders);
+
+        listOrdersDetails = viewOrdersDetailsView.findViewById(R.id.orders_details);
 
         Button addOrderAgain = view.findViewById(R.id.button_add_in_orders);
 

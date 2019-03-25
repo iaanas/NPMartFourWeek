@@ -1,8 +1,14 @@
 package ru.naparahandroid.fragmentproject;
 
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,29 +18,33 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.naparahandroid.fragmentproject.Model.Menu;
+import ru.naparahandroid.fragmentproject.InnerMenu.Category;
 
-class MyMenuAdapter extends ArrayAdapter<Menu> {
-
-    private final List<Menu> contactList;
+public class MyInnerMenuAdapter extends ArrayAdapter<Category> {
+    private final List<Category> contactList;
     private final Context context;
     private final LayoutInflater mInflater;
 
+    private SendData sendData;
+
+    private Integer finId;
+
+
     // Constructors
-    public MyMenuAdapter(Context context, ArrayList<Menu> objects) {
+    public MyInnerMenuAdapter(Context context, ArrayList<Category> objects) {
         super(context, 0, objects);
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         contactList = objects;
     }
 
+
     @Override
-    public Menu getItem(int position) {
+    public Category getItem(int position) {
         return contactList.get(position);
     }
 
@@ -43,30 +53,48 @@ class MyMenuAdapter extends ArrayAdapter<Menu> {
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         final ViewHolder vh;
         if (convertView == null) {
-            View view = mInflater.inflate(R.layout.fragment_item, parent, false);
+            View view = mInflater.inflate(R.layout.inner_menu, parent, false);
             vh = ViewHolder.create((RelativeLayout) view);
             view.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
 
-        Menu item = getItem(position);
+        Category item = getItem(position);
 
         assert item != null;
-        vh.textViewName.setText(item.getName());
+//        vh.textViewName.setText(item.getName());
 //        vh.textViewSlug.setText(item.getSlug());
 //        vh.textViewId.setText(item.getId());
-        Picasso.with(context).load(item.getImage()).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(vh.imageView);
+//        Picasso.with(context).load(item.getMenu().getImage()).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(vh.imageView);
 //        Picasso.with(context).load(item.getBgImage()).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(vh.imageViewBg);
 
+        vh.testButton.setText(item.getName());
+
         vh.testButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MyMenuAdapter.this.getContext(), InnerMenuActivity.class);
-            intent.putExtra("idInnerMenu", String.valueOf(item.getId()));
-            MyMenuAdapter.this.getContext().startActivities(new Intent[]{intent});
+
+            Intent intent = new Intent("custom-message");
+            intent.putExtra("id", item.getId().toString());
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
         });
 
         return vh.rootView;
     }
+
+    public interface SendData {
+        void onItemSelected(Integer id);
+    }
+
+    public void setOnItemSelected(SendData sendData) {
+        this.sendData = sendData;
+    }
+
+    public Integer sendIdFromAdapter() {
+        return finId;
+    }
+
+
 
     private static class ViewHolder {
         final RelativeLayout rootView;
