@@ -10,7 +10,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/layout">
+        android:id="@+id/layout"
+        tools:ignore="UselessParent">
 
         <ListView
             android:id="@+id/list"
@@ -26,7 +27,8 @@
             android:layout_height="match_parent"
             android:background="#EB85E0B6"
             android:elevation="4dp"
-            android:paddingBottom="24dp">
+            android:paddingBottom="24dp"
+            tools:targetApi="lollipop">
 
 
             <TextView
@@ -35,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="70dp"
-                android:text="@string/vFragProfileNameSoname"
+                android:text="@string/fragProfileName"
                 android:textColor="#fff"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -76,7 +78,8 @@
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:paddingRight="5dp"
-            android:paddingLeft="5dp">
+            android:paddingLeft="5dp"
+            tools:targetApi="lollipop">
 
             <TextView
                 android:id="@+id/first_name"

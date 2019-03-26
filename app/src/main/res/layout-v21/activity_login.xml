@@ -14,7 +14,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginTop="22dp"
         android:gravity="center_horizontal"
-        android:text="@string/vActLogLogIn"
+        android:text="@string/actLogSignIn"
         android:textColor="#fff"
         android:textSize="26sp"
         android:textStyle="bold" />
@@ -29,7 +29,8 @@
         android:background="@color/colorPrimary"
         android:elevation="4dp"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="20dp"
+        tools:targetApi="lollipop">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -48,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:gravity="center"
-                    android:hint="@string/vActLogHintNumber"
+                    android:hint="@string/actLogHintNum"
                     android:importantForAutofill="no"
                     tools:targetApi="o" />
 
@@ -68,7 +69,7 @@
                 android:background="@color/colorAccent"
                 android:textColor="@android:color/white"
                 android:gravity="center"
-                android:text="@string/vActLogSingIn"/>
+                android:text="@string/actLogLogIn"/>
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

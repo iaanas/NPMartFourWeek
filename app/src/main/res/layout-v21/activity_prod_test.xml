@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -12,7 +13,8 @@
         android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
         android:paddingTop="@dimen/tool_bar_top_padding"
-        android:transitionName="actionBar" />
+        android:transitionName="actionBar"
+        tools:targetApi="lollipop" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -100,7 +102,7 @@
 
             <Button
                 android:id="@+id/btnToBusket"
-                android:text="@string/actProdCart"
+                android:text="@string/actcartBasket"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

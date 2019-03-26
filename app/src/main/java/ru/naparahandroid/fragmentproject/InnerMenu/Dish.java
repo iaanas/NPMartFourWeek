@@ -183,4 +183,8 @@ public class Dish {
         this.toppings = toppings;
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

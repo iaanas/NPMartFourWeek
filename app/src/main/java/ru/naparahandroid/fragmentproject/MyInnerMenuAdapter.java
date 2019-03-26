@@ -1,13 +1,9 @@
 package ru.naparahandroid.fragmentproject;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.naparahandroid.fragmentproject.InnerMenu.Category;
+import ru.naparahandroid.fragmentproject.InnerMenu.Dish;
 
 public class MyInnerMenuAdapter extends ArrayAdapter<Category> {
     private final List<Category> contactList;
@@ -62,6 +59,7 @@ public class MyInnerMenuAdapter extends ArrayAdapter<Category> {
 
         Category item = getItem(position);
 
+
         assert item != null;
 //        vh.textViewName.setText(item.getName());
 //        vh.textViewSlug.setText(item.getSlug());
@@ -74,7 +72,8 @@ public class MyInnerMenuAdapter extends ArrayAdapter<Category> {
         vh.testButton.setOnClickListener(v -> {
 
             Intent intent = new Intent("custom-message");
-            intent.putExtra("id", item.getId().toString());
+            final ArrayList<Dish> list = new ArrayList<>(item.getDishes());
+            intent.putExtra("listDish", list);
             LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
         });

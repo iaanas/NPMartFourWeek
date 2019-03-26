@@ -3,14 +3,23 @@ package ru.naparahandroid.fragmentproject;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ru.naparahandroid.fragmentproject.InnerMenu.Dish;
 
 
 /**
@@ -31,9 +40,10 @@ public class InnerMenuFragment extends Fragment implements MyInnerMenuAdapter.Se
     private String mParam1;
     private String mParam2;
 
-    private MyInnerMenuAdapter.SendData sendData;
-
     private OnFragmentInteractionListener mListener;
+
+    private ListView listView;
+    private InnerMennuAdapter adapter;
 
 
     public InnerMenuFragment() {
@@ -74,12 +84,28 @@ public class InnerMenuFragment extends Fragment implements MyInnerMenuAdapter.Se
 
         View RootView = inflater.inflate(R.layout.fragment_inner_menu, container, false);
 
-        TextView text = RootView.findViewById(R.id.test_text);
+        listView = RootView.findViewById(R.id.list_im_fragment);
+
+        LocalBroadcastManager.getInstance(inflater.getContext()).registerReceiver(mMessageReceiver,
+                new IntentFilter("custom-message"));
 
 
 
         return RootView;
     }
+
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            final ArrayList<Dish> idAdapter = (ArrayList<Dish>) intent.getSerializableExtra("listDish");
+
+            Toast.makeText(context, "From Dish: "+idAdapter.get(0), Toast.LENGTH_SHORT).show();
+
+            adapter = new InnerMennuAdapter(context, idAdapter);
+            listView.setAdapter(adapter);
+        }
+    };
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

@@ -65,13 +65,13 @@
             android:name=".InBasketOrdersActivity"
             android:parentActivityName=".HomeActivity">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <action android:name="android.intent.action.USER_PRESENT" /> -->
+             <!--<intent-filter>-->
+             <!--<action android:name="android.intent.action.MAIN" />-->
+             <!--<action android:name="android.intent.action.USER_PRESENT" />-->
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <!--<category android:name="android.intent.category.LAUNCHER" />-->
+             <!--</intent-filter>-->
         </activity>
         <activity android:name=".PhoneAuthActivity">
             <!--<intent-filter>-->
@@ -95,6 +95,7 @@
 
              <intent-filter>
              <action android:name="android.intent.action.MAIN" />
+                  <action android:name="android.intent.action.USER_PRESENT" />
 
 
              <category android:name="android.intent.category.LAUNCHER" />
