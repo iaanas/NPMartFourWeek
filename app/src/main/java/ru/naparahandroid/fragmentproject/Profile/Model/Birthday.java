@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Birthday {
-
+    
     @SerializedName("day")
     @Expose
     private Integer day;
@@ -14,35 +14,39 @@ public class Birthday {
     @SerializedName("year")
     @Expose
     private Integer year;
-
-    public Birthday(Integer day, Integer month, Integer year) {
+    
+    public Birthday( Integer day , Integer month , Integer year ) {
         this.day = day;
         this.month = month;
         this.year = year;
     }
-
+    
     public Integer getDay() {
         return day;
     }
-
+    
     public void setDay(Integer day) {
         this.day = day;
     }
-
+    
     public Integer getMonth() {
         return month;
     }
-
+    
     public void setMonth(Integer month) {
         this.month = month;
     }
-
+    
     public Integer getYear() {
         return year;
     }
-
+    
     public void setYear(Integer year) {
         this.year = year;
     }
-
+    
+    @Override
+    public String toString( ) {
+        return super.toString( );
+    }
 }

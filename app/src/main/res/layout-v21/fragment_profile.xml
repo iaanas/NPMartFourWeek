@@ -37,21 +37,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="70dp"
-                android:text="@string/fragProfileName"
                 android:textColor="#fff"
                 android:textSize="24sp"
                 android:textStyle="bold" />
-
-            <!--<TextView-->
-            <!--android:id="@+id/location"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@+id/designation"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:text="9000 БАЛЛОВ"-->
-            <!--android:textColor="#fff"-->
-            <!--android:textSize="16sp" />-->
 
             <TextView
                 android:id="@+id/phone"
@@ -59,8 +47,20 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
+                android:textStyle="bold"
                 android:textColor="#fff"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/loyalty_bonus"
+                android:layout_below="@+id/phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:textSize="20sp" />
 
         </RelativeLayout>
 
@@ -72,7 +72,7 @@
             android:layout_below="@+id/profile_layout"
             android:layout_margin="5dp"
             android:layout_marginTop="5dp"
-            android:background="#fff"
+            android:background="#EB85E0B6"
             android:elevation="4dp"
             android:orientation="vertical"
             android:paddingTop="20dp"
@@ -81,62 +81,51 @@
             android:paddingLeft="5dp"
             tools:targetApi="lollipop">
 
-            <TextView
+            <EditText
                 android:id="@+id/first_name"
-                android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
+                android:hint="Ваше имя"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <EditText
                 android:id="@+id/last_name"
-                android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
+                android:hint="Ваша фамилия"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <EditText
                 android:id="@+id/email"
-                android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
+                android:hint="Ваш e-mail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/phone_in_header"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp"
+            <EditText
+                android:id="@+id/picked_date"
+                android:hint="____ / __ / __"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date" />
+
+            <Button
+                android:id="@+id/btn_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ВАША ДАТА РОЖДЕНИЯ" />
+
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:text="@string/editProfileSpam"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/orders"
-                android:textSize="16sp"
+            <Button
+                android:id="@+id/edit_profile_button"
+                android:text="РЕДАКТИРОВАТЬ ПРОФИЛЬ"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
-
-
-            <!--<android.support.design.widget.FloatingActionButton-->
-                <!--android:id="@+id/edit_button"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="bottom|right|end"-->
-                <!--android:clickable="true"-->
-                <!--app:backgroundTint="@color/colorPrimary"-->
-                <!--fab:srcCompat="@drawable/ic_edit_white_24dp"-->
-                <!--tools:ignore="MissingConstraints"-->
-                <!--tools:layout_editor_absoluteX="346dp"-->
-                <!--tools:layout_editor_absoluteY="323dp" />-->
-
-            <!--<android.support.design.widget.FloatingActionButton-->
-            <!--android:id="@+id/edit_button"-->
-            <!--android:layout_width="45dp"-->
-            <!--android:layout_height="45dp"-->
-            <!--android:layout_gravity="bottom|end"-->
-            <!--android:layout_margin="5dp"-->
-            <!--android:background="@color/colorPrimary"-->
-            <!--android:src="@drawable/ic_edit_white_24dp" />-->
 
 
 

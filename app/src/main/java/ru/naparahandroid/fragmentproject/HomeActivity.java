@@ -87,6 +87,10 @@ public class HomeActivity extends AppCompatActivity implements ItemFragment.OnLi
         int id = item.getItemId();
 
 //        if(id == R.id.action_settings) return true;
+    
+        if(id == R.id.action_search) {
+            Toast.makeText(HomeActivity.this, "SEARCH", Toast.LENGTH_LONG).show();
+        }
 
         if(id == R.id.action_cart) {
             Intent intent = new Intent(HomeActivity.this, InBasketOrdersActivity.class);

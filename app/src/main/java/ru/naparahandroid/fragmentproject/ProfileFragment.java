@@ -1,16 +1,20 @@
 package ru.naparahandroid.fragmentproject;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.io.Serializable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,6 +22,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.naparahandroid.fragmentproject.Profile.Interface.ProfileGet;
+import ru.naparahandroid.fragmentproject.Profile.Model.Example;
 import ru.naparahandroid.fragmentproject.Profile.Model.GET.ClientProfile;
 import ru.naparahandroid.fragmentproject.Profile.Model.GET.Status;
 import ru.naparahandroid.fragmentproject.dummy.DummyContent.DummyItem;
@@ -37,6 +42,9 @@ public class ProfileFragment extends Fragment {
     private ClientProfile data;
     private ClientDataAdapter adapter;
     private ListView listView;
+    
+    private Example profileFromAdapter;
+	private String accessToken;
     //
 //    TextView full_name;
 //    TextView phone;
@@ -78,14 +86,17 @@ public class ProfileFragment extends Fragment {
 
 
         data = new ClientProfile();
-        View parentView = view.findViewById(R.id.parent_client_view);
+//        View parentView = view.findViewById(R.id.parent_client_view);
         listView = view.findViewById(R.id.listViewProfile);
+	
+	    LocalBroadcastManager.getInstance(inflater.getContext()).registerReceiver(mMessageReceiver,
+			    new IntentFilter("custom-message"));
 
-        Button button = view.findViewById(R.id.edit_button);
-        button.setOnClickListener(v -> {
-            Intent intent = new Intent(ProfileFragment.this.getActivity(), EditProfileActivity.class);
-            startActivity(intent);
-        });
+//        Button button = view.findViewById(R.id.edit_button);
+//        button.setOnClickListener(v -> {
+//            Intent intent = new Intent(ProfileFragment.this.getActivity(), EditProfileActivity.class);
+//            startActivity(intent);
+//        });
 
         // Set the adapter
         Retrofit.Builder builder = new Retrofit.Builder()
@@ -113,8 +124,9 @@ public class ProfileFragment extends Fragment {
                     data = response.body().getClientProfile();
                     adapter = new ClientDataAdapter(inflater.getContext(), data);
                     listView.setAdapter(adapter);
-
-
+                    
+                    
+                    
                 }
 
             }
@@ -161,5 +173,40 @@ public class ProfileFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
+    }
+	
+	public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Serializable idAdapter = intent.getSerializableExtra("listProfile");
+			profileFromAdapter = ( Example ) idAdapter;
+			Toast.makeText(context, "Profile: "+idAdapter,
+					Toast.LENGTH_SHORT).show();
+		}
+	};
+    
+    private void editProfile() {
+	    LoginActivity activity = new LoginActivity();
+	    accessToken = activity.getMyTokenFromLogin();
+	    ApiService api = RetrofitClient.getApiService();
+	
+	    Call< Example > call = api.postEditProfile( accessToken, profileFromAdapter );
+	    call.enqueue( new Callback < Example >( ) {
+		    @Override
+		    public void onResponse( Call < Example > call , Response < Example > response ) {
+		    	
+		    	if (response.isSuccessful()) {
+		    		Toast.makeText( ProfileFragment.this.getContext(), "SUCCESS", Toast.LENGTH_SHORT ).show();
+			    } else {
+				    Toast.makeText( ProfileFragment.this.getContext(), "NOT SUCCESS "+ profileFromAdapter, Toast.LENGTH_SHORT ).show();
+			    }
+			
+		    }
+		
+		    @Override
+		    public void onFailure( Call < Example > call , Throwable t ) {
+			    Toast.makeText( ProfileFragment.this.getContext(), "ERROR "+t.getMessage(), Toast.LENGTH_SHORT ).show();
+		    }
+	    } );
     }
 }

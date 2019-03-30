@@ -55,6 +55,10 @@ public interface ApiService {
     @POST("/api/app/order/")
     Call<ru.naparahandroid.fragmentproject.BasketModel.Example> postOrderDelivery(@Header("Authorization") String token,
                                                                                   @Body ru.naparahandroid.fragmentproject.BasketModel.Example body);
+    
+    @POST("/api/client/data/")
+    Call< ru.naparahandroid.fragmentproject.Profile.Model.Example >postEditProfile( @Header("Authorization") String token,
+                                                                                    @Body ru.naparahandroid.fragmentproject.Profile.Model.Example body );
 
     @FormUrlEncoded
     @POST("/api/app/order/")
@@ -85,6 +89,9 @@ public interface ApiService {
                                     @Field("remember_restaurant") Boolean remember_restaurant,
                                     @Field("restaurant_id") Integer restaurant_id,
                                     @Field("should_not_call") String should_not_call);
+    
+    @POST("/api/app/suggestions/")
+    Call<GenOrders> postSuggestions(@Field( "q" ) String questions);
 
 
 

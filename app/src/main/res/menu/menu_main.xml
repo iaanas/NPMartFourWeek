@@ -8,6 +8,11 @@
         <!--android:title="@string/action_settings"-->
         <!--android:orderInCategory="100"-->
         <!--app:showAsAction="never" />-->
+    <item android:id="@+id/action_search"
+        android:title="Найти блюдо"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:orderInCategory="200"
+        app:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_cart"
         android:title="@string/action_cart"

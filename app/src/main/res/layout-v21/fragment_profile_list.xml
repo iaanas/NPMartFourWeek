@@ -23,11 +23,11 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <Button
-            android:id="@+id/edit_button"
-            android:text="@string/fragProfileListEditProfile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <!--<Button-->
+            <!--android:id="@+id/edit_button"-->
+            <!--android:text="@string/fragProfileListEditProfile"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
 
 
     </RelativeLayout>
